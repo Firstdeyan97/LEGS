@@ -1,0 +1,13 @@
+{
+    "port": 4000,
+    "db": {
+        "client": "sqlite",
+        "connection": "./backend/db/app.sqlite"
+    },
+    "externalApi": {
+        "baseUrl": "https://worldtimeapi.org/api"
+    },
+    "auth": {
+        "jwtSecret": "CHANGE_ME_IN_PROD"
+    }
+}

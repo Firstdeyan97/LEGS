@@ -1,0 +1,76 @@
+/project/
+├── frontend/                  
+│   ├── index.html
+│   ├── css/
+│   │   ├── variables.css      
+│   │   ├── base.css           
+│   │   ├── layout.css         
+│   │   ├── components.css     
+│   │   ├── animations.css     
+│   │   └── pages.css          
+│   ├── js/
+│   │   ├── main.js            
+│   │   ├── router.js          # [UPDATE] Tambah logic "Route Guards" (cek status login sebelum pindah halaman)
+│   │   ├── constants.js       
+│   │   ├── state.js           
+│   │   ├── services/
+│   │   │   ├── apiService.js  # [UPDATE] Tambah logic "Interceptor" untuk menyisipkan Token Bearer di header
+│   │   │   ├── authService.js # [NEW] Khusus untuk API call login, register, logout, refreshToken
+│   │   │   └── external.js    
+│   │   ├── utils/
+│   │   │   ├── dom.js         
+│   │   │   ├── format.js      
+│   │   │   ├── validate.js    
+│   │   │   ├── storage.js     # [NEW] Helper untuk aman menyimpan JWT Token di localStorage/sessionStorage
+│   │   │   └── jwtToken.js    # [NEW] Helper untuk decode payload token di sisi klien (cek role/kadaluarsa)
+│   │   ├── components/
+│   │   │   ├── Hero.js        
+│   │   │   ├── Navbar.js      # [NEW] Navigasi dinamis (berubah jika user sudah login/belum)
+│   │   │   └── Footer.js
+│   │   └── pages/
+│   │       ├── LandingPage.js 
+│   │       ├── AboutPage.js
+│   │       ├── LoginPage.js   # [NEW] Halaman Login
+│   │       ├── Register.js    # [NEW] Halaman Registrasi
+│   │       └── Dashboard.js   # [NEW] Contoh halaman yang diproteksi (Protected Route)
+│   └── assets/
+│       └── images/
+│           ├── hero.jpg
+│           └── favicon.ico
+│
+├── backend/
+│   ├── server.js              
+│   ├── models/
+│   │   └── user.js            # [UPDATE] Tambahkan field password_hash dan role (admin/user)
+│   ├── controllers/           # [NEW] Pemisah antara Routes dan Services
+│   │   ├── authController.js  # [NEW] Handle req/res untuk login/register
+│   │   └── userController.js  # [NEW] Handle req/res untuk data user
+│   ├── routes/
+│   │   ├── authRoutes.js      # [NEW] Endpoint: /api/auth/login, /api/auth/register
+│   │   └── userRoutes.js      
+│   ├── middlewares/           # [NEW] Penjaga gerbang API
+│   │   ├── authMiddleware.js  # [NEW] Verifikasi JWT Token dari header request
+│   │   ├── roleMiddleware.js  # [NEW] Cek hak akses (Otorisasi: misal hanya 'admin' yg boleh)
+│   │   └── errorHandler.js    # [NEW] Tangkapan error global agar response selalu elegan & konsisten
+│   ├── db/
+│   │   ├── connection.js      
+│   │   └── models.js          
+│   ├── services/
+│   │   ├── authService.js     # [NEW] Logic komparasi password (bcrypt) dan generate JWT
+│   │   └── userService.js     # Logic manipulasi data user ke DB
+│   └── utils/
+│       ├── logger.js
+│       ├── jwtUtil.js         # [NEW] Helper untuk sign dan verify token
+│       ├── hashUtil.js        # [NEW] Helper hashing password (misal bungkus bcrypt/argon2)
+│       └── response.js        # Standarisasi format response (misal: { status, data, message })
+│
+├── config/
+│   ├── config.json            # Tetap ada, tapi HANYA untuk config non-rahasia (misal: pagination limit default)
+│   └── production.json
+│
+├── .env                       # [NEW] Wajib ada untuk kredensial (PORT, DB_URL, JWT_SECRET). Tidak di-commit!
+├── .env.example               # [NEW] Contoh template .env untuk developer lain
+├── .gitignore                 # [NEW] Mengabaikan node_modules, .env, .log
+├── package.json               # [NEW] Definisi dependencies Node.js (express, jsonwebtoken, bcryptjs, dll)
+├── README.md
+└── .editorconfig

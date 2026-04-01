@@ -1,0 +1,35 @@
+1. Rencana Kita (Grand Plan) & Posisi Kita Saat Ini
+Saat ini kita sedang berada di fase Membangun Fondasi Keamanan & Autentikasi Backend.
+
+Sesuai dokumen SRS: aplikasi LEGS tidak memiliki fitur register. Portal ini sangat tertutup. Oleh karena itu, langkah paling pertama dan paling logis sebelum kita membuat dashboard atau antarmuka webnya adalah: Bagaimana caranya "pintu" sistem ini bisa dikunci dan siapa yang pegang kuncinya?
+
+Roadmap Singkat Kita:
+
+✅ Langkah 1: Koneksi Database & Server. (Selesai)
+
+📍 Langkah 2: Menyiapkan Alat Kunci (Bcrypt & JWT) & Model Database. (Kita sedang di sini)
+
+👉 Langkah 3: Menyuntikkan Akun Admin Pertama (Seeder) langsung ke MySQL.
+
+👉 Langkah 4: Membuat API Login (/api/auth/login).
+
+👉 Langkah 5: Melangkah ke Frontend Vanilla JS untuk membuat Halaman Login yang elegan.
+
+👉 Langkah 6: Membangun CRUD Aplikasi (agar Admin bisa nambah menu di dashboard).
+
+Kita mengerjakan backend keamanan dulu agar saat UI frontend selesai, kita tinggal "colok" ke API yang sudah terjamin keamanannya.
+
+2. Misteri JWT_SECRET di File .env
+Anda sangat jeli! Teks rahasia_super_kuat_legs_ut_2026 itu memang sengaja saya buat seadanya hanya untuk tahap development di laptop lokal Anda saat ini.
+
+Apa fungsinya? Saat staf login dan password-nya benar, server akan mencetak "Karcis Digital" (Token JWT). Nah, JWT_SECRET adalah stempel "Tanda Tangan Asli" dari server Anda. Jika ada orang iseng memalsukan karcis tersebut, server akan tahu karena tanda tangannya tidak cocok dengan rahasia ini.
+
+Apakah untuk Production cukup seperti itu? TIDAK. Saat nanti aplikasi ini di-deploy ke server internal kampus, kita wajib menggantinya dengan string kriptografi acak yang sangat panjang (misalnya hasil dari 64 karakter hexadecimal seperti a1b2c3d4e5f6...). Untuk sekarang agar kita mudah testing, teks apa pun bisa digunakan.
+
+
+ase Proyek	Status	Fokus Pengerjaan
+Fase 1: Infrastruktur & Database	✅ Selesai	Setup Node.js, koneksi MySQL, struktur database (core_users & legs_applications), kriptografi Bcrypt, dan Seeder Admin.
+Fase 2: Autentikasi & Gerbang Login	✅ Selesai	API Login, penanganan CORS, penyimpanan JWT Token, dan UI Login Premium yang fungsional.
+Fase 3: Core Dashboard & Proteksi Rute	🎯 SEKARANG	Mengamankan Frontend agar tidak bisa diakses tanpa login, membuat API daftar aplikasi, dan membangun UI Dashboard Utama.
+Fase 4: Manajemen Aplikasi (Admin)	🔒 Terkunci	Membuat antarmuka CRUD untuk Admin mendaftarkan URL aplikasi baru tanpa perlu mengubah source code.
+Fase 5: Manajemen Pengguna (Admin)	🔒 Terkunci	Membuat antarmuka CRUD untuk mengelola staf yang berhak mengakses LEGS.

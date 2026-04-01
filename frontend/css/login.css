@@ -1,0 +1,31 @@
+.login-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at top left, #0f5bcc 0%, var(--ut-deep-blue) 100%); position: relative; overflow: hidden; padding: 20px; }
+.glow-orb { position: absolute; border-radius: 50%; filter: blur(80px); z-index: 1; opacity: 0.6; animation: floatOrb 10s infinite ease-in-out alternate; }
+.orb-primary { top: -5%; left: 5%; width: 400px; height: 400px; background-color: var(--ut-light-blue); }
+.orb-accent { bottom: -10%; right: 10%; width: 350px; height: 350px; background-color: var(--ut-gold); animation-delay: -3s; }
+.premium-light-card { width: 100%; max-width: 420px; padding: 45px; position: relative; z-index: 10; background: rgba(255, 247, 225, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 28px; box-shadow: 15px 15px 35px rgba(0, 0, 0, 0.3), -5px -5px 25px rgba(255, 199, 46, 0.1), inset 2px 2px 4px rgba(255, 255, 255, 0.8); }
+.login-header { text-align: center; margin-bottom: 30px; }
+.brand-logo-container { display: flex; justify-content: center; margin-bottom: 16px; }
+.logo-placeholder { width: 65px; height: 65px; background: linear-gradient(135deg, var(--ut-deep-blue), #0f5bcc); border-radius: 18px; display: flex; align-items: center; justify-content: center; color: var(--ut-gold); box-shadow: 0 8px 20px rgba(10, 68, 148, 0.3); border: 2px solid rgba(255, 255, 255, 0.5); }
+.brand-title { color: var(--ut-deep-blue); font-size: 32px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.5px; }
+.friendly-text { color: #475569; font-size: 13.5px; line-height: 1.6; font-weight: 500; }
+.neuromorphic-input-group { margin-bottom: 22px; display: flex; flex-direction: column; }
+.neuromorphic-input-group label { font-size: 13px; color: var(--ut-deep-blue); font-weight: 700; margin-bottom: 8px; padding-left: 4px; letter-spacing: 0.3px; }
+.login-form input[type="text"], .login-form input[type="password"] { width: 100%; padding: 15px 18px; background: #fdfaf0; border: 1px solid rgba(10, 68, 148, 0.1); border-radius: 14px; font-size: 15px; color: var(--ut-deep-blue); font-weight: 600; box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.04), inset -3px -3px 6px #fff; transition: all 0.3s ease; }
+.login-form input:focus { outline: none; background: #ffffff; border-color: var(--ut-deep-blue); box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.05), 0 0 0 4px rgba(10, 68, 148, 0.15); }
+.password-wrapper { position: relative; width: 100%; }
+.password-wrapper input { padding-right: 48px; }
+.btn-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #94a3b8; padding: 5px; display: flex; align-items: center; justify-content: center; }
+.btn-icon:hover { color: var(--ut-deep-blue); }
+.btn-icon svg { pointer-events: none; } /* [FIX BUG MATA LOGIN] */
+.btn-glow { width: 100%; padding: 16px 18px; font-size: 15.5px; font-weight: 700; background: linear-gradient(135deg, var(--ut-deep-blue), #0f5bcc); color: var(--ut-cream); border: none; border-radius: 14px; margin-top: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; transition: all 0.3s; box-shadow: 6px 6px 16px rgba(10, 68, 148, 0.3), -4px -4px 12px rgba(255, 255, 255, 0.8); }
+.btn-glow:hover { background: linear-gradient(135deg, var(--ut-gold), #eab308); color: var(--ut-deep-blue); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 199, 46, 0.4); }
+.alert { padding: 14px 16px; border-radius: 12px; font-size: 13.5px; margin-bottom: 20px; text-align: center; font-weight: 600; animation: fadeIn 0.3s ease; }
+.alert.hidden { display: none; }
+.alert.error { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+.alert.success { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+@keyframes floatOrb { 0% { transform: translate(0, 0); } 100% { transform: translate(25px, -25px); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+.shake { animation: shake 0.4s both; }
+@keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-3px, 0, 0); } 40%, 60% { transform: translate3d(3px, 0, 0); } }
+.spinner { width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.3); border-top: 2.5px solid currentColor; border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }

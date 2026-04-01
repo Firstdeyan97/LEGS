@@ -1,0 +1,13 @@
+:root {
+  /* Palet Dasar EXVAN */
+  --bg: #0b1220;
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.6);
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+
+  /* Palet Identitas UT Premium */
+  --ut-deep-blue: #0A4494;
+  --ut-gold: #ffc72e;
+  --ut-light-blue: #1bb0d1;
+  --ut-cream: #fff7e1;
+}

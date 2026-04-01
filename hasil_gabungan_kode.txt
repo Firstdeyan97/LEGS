@@ -1,0 +1,3465 @@
+=== HASIL GABUNGAN KODE PROYEK ===
+Direktori Sumber: C:\Users\user\Documents\Firstdeyan\LEGS
+======================================================================
+
+
+================================================================================
+/// FILE: README.md
+================================================================================
+
+
+
+================================================================================
+/// FILE: backend\package-lock.json
+================================================================================
+
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "backend",
+      "version": "1.0.0",
+      "license": "ISC",
+      "dependencies": {
+        "bcrypt": "^6.0.0",
+        "cors": "^2.8.6",
+        "dotenv": "^17.3.1",
+        "jsonwebtoken": "^9.0.3",
+        "morgan": "^1.10.1",
+        "mysql2": "^3.20.0",
+        "winston": "^3.19.0"
+      },
+      "devDependencies": {
+        "nodemon": "^3.1.14"
+      }
+    },
+    "node_modules/@colors/colors": {
+      "version": "1.6.0",
+      "resolved": "https://registry.npmjs.org/@colors/colors/-/colors-1.6.0.tgz",
+      "integrity": "sha512-Ir+AOibqzrIsL6ajt3Rz3LskB7OiMVHqltZmspbW/TJuTVuyOMirVqAkjfY6JISiLHgyNqicAC8AyHHGzNd/dA==",
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.1.90"
+      }
+    },
+    "node_modules/@dabh/diagnostics": {
+      "version": "2.0.8",
+      "resolved": "https://registry.npmjs.org/@dabh/diagnostics/-/diagnostics-2.0.8.tgz",
+      "integrity": "sha512-R4MSXTVnuMzGD7bzHdW2ZhhdPC/igELENcq5IjEverBvq5hn1SXCWcsi6eSsdWP0/Ur+SItRRjAktmdoX/8R/Q==",
+      "license": "MIT",
+      "dependencies": {
+        "@so-ric/colorspace": "^1.1.6",
+        "enabled": "2.0.x",
+        "kuler": "^2.0.0"
+      }
+    },
+    "node_modules/@so-ric/colorspace": {
+      "version": "1.1.6",
+      "resolved": "https://registry.npmjs.org/@so-ric/colorspace/-/colorspace-1.1.6.tgz",
+      "integrity": "sha512-/KiKkpHNOBgkFJwu9sh48LkHSMYGyuTcSFK/qMBdnOAlrRJzRSXAOFB5qwzaVQuDl8wAvHVMkaASQDReTahxuw==",
+      "license": "MIT",
+      "dependencies": {
+        "color": "^5.0.2",
+        "text-hex": "1.0.x"
+      }
+    },
+    "node_modules/@types/node": {
+      "version": "25.5.0",
+      "resolved": "https://registry.npmjs.org/@types/node/-/node-25.5.0.tgz",
+      "integrity": "sha512-jp2P3tQMSxWugkCUKLRPVUpGaL5MVFwF8RDuSRztfwgN1wmqJeMSbKlnEtQqU8UrhTmzEmZdu2I6v2dpp7XIxw==",
+      "license": "MIT",
+      "peer": true,
+      "dependencies": {
+        "undici-types": "~7.18.0"
+      }
+    },
+    "node_modules/@types/triple-beam": {
+      "version": "1.3.5",
+      "resolved": "https://registry.npmjs.org/@types/triple-beam/-/triple-beam-1.3.5.tgz",
+      "integrity": "sha512-6WaYesThRMCl19iryMYP7/x2OVgCtbIVflDGFpWnb9irXI3UjYE4AzmYuiUKY1AJstGijoY+MgUszMgRxIYTYw==",
+      "license": "MIT"
+    },
+    "node_modules/anymatch": {
+      "version": "3.1.3",
+      "resolved": "https://registry.npmjs.org/anymatch/-/anymatch-3.1.3.tgz",
+      "integrity": "sha512-KMReFUr0B4t+D+OBkjR3KYqvocp2XaSzO55UcB6mgQMd3KbcE+mWTyvVV7D/zsdEbNnV6acZUutkiHQXvTr1Rw==",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "normalize-path": "^3.0.0",
+        "picomatch": "^2.0.4"
+      },
+      "engines": {
+        "node": ">= 8"
+      }
+    },
+    "node_modules/async": {
+      "version": "3.2.6",
+      "resolved": "https://registry.npmjs.org/async/-/async-3.2.6.tgz",
+      "integrity": "sha512-htCUDlxyyCLMgaM3xXg0C0LW2xqfuQ6p05pCEIsXuyQ+a1koYKTuBMzRNwmybfLgvJDMd0r1LTn4+E0Ti6C2AA==",
+      "license": "MIT"
+    },
+    "node_modules/aws-ssl-profiles": {
+      "version": "1.1.2",
+      "resolved": "https://registry.npmjs.org/aws-ssl-profiles/-/aws-ssl-profiles-1.1.2.tgz",
+      "integrity": "sha512-NZKeq9AfyQvEeNlN0zSYAaWrmBffJh3IELMZfRpJVWgrpEbtEpnjvzqBPf+mxoI287JohRDoa+/nsfqqiZmF6g==",
+      "license": "MIT",
+      "engines": {
+        "node": ">= 6.0.0"
+      }
+    },
+    "node_modules/balanced-match": {
+      "version": "4.0.4",
+      "resolved": "https://registry.npmjs.org/balanced-match/-/balanced-match-4.0.4.tgz",
+      "integrity": "sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": "18 || 20 || >=22"
+      }
+    },
+    "node_modules/basic-auth": {
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/basic-auth/-/basic-auth-2.0.1.tgz",
+      "integrity": "sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==",
+      "license": "MIT",
+      "dependencies": {
+        "safe-buffer": "5.1.2"
+      },
+      "engines": {
+        "node": ">= 0.8"
+      }
+    },
+    "node_modules/basic-auth/node_modules/safe-buffer": {
+      "version": "5.1.2",
+      "resolved": "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.1.2.tgz",
+      "integrity": "sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==",
+      "license": "MIT"
+    },
+    "node_modules/bcrypt": {
+      "version": "6.0.0",
+      "resolved": "https://registry.npmjs.org/bcrypt/-/bcrypt-6.0.0.tgz",
+      "integrity": "sha512-cU8v/EGSrnH+HnxV2z0J7/blxH8gq7Xh2JFT6Aroax7UohdmiJJlxApMxtKfuI7z68NvvVcmR78k2LbT6efhRg==",
+      "hasInstallScript": true,
+      "license": "MIT",
+      "dependencies": {
+        "node-addon-api": "^8.3.0",
+        "node-gyp-build": "^4.8.4"
+      },
+      "engines": {
+        "node": ">= 18"
+      }
+    },
+    "node_modules/binary-extensions": {
+      "version": "2.3.0",
+      "resolved": "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.3.0.tgz",
+      "integrity": "sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=8"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/brace-expansion": {
+      "version": "5.0.5",
+      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.5.tgz",
+      "integrity": "sha512-VZznLgtwhn+Mact9tfiwx64fA9erHH/MCXEUfB/0bX/6Fz6ny5EGTXYltMocqg4xFAQZtnO3DHWWXi8RiuN7cQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "balanced-match": "^4.0.2"
+      },
+      "engines": {
+        "node": "18 || 20 || >=22"
+      }
+    },
+    "node_modules/braces": {
+      "version": "3.0.3",
+      "resolved": "https://registry.npmjs.org/braces/-/braces-3.0.3.tgz",
+      "integrity": "sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "fill-range": "^7.1.1"
+      },
+      "engines": {
+        "node": ">=8"
+      }
+    },
+    "node_modules/buffer-equal-constant-time": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/buffer-equal-constant-time/-/buffer-equal-constant-time-1.0.1.tgz",
+      "integrity": "sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==",
+      "license": "BSD-3-Clause"
+    },
+    "node_modules/chokidar": {
+      "version": "3.6.0",
+      "resolved": "https://registry.npmjs.org/chokidar/-/chokidar-3.6.0.tgz",
+      "integrity": "sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "anymatch": "~3.1.2",
+        "braces": "~3.0.2",
+        "glob-parent": "~5.1.2",
+        "is-binary-path": "~2.1.0",
+        "is-glob": "~4.0.1",
+        "normalize-path": "~3.0.0",
+        "readdirp": "~3.6.0"
+      },
+      "engines": {
+        "node": ">= 8.10.0"
+      },
+      "funding": {
+        "url": "https://paulmillr.com/funding/"
+      },
+      "optionalDependencies": {
+        "fsevents": "~2.3.2"
+      }
+    },
+    "node_modules/color": {
+      "version": "5.0.3",
+      "resolved": "https://registry.npmjs.org/color/-/color-5.0.3.tgz",
+      "integrity": "sha512-ezmVcLR3xAVp8kYOm4GS45ZLLgIE6SPAFoduLr6hTDajwb3KZ2F46gulK3XpcwRFb5KKGCSezCBAY4Dw4HsyXA==",
+      "license": "MIT",
+      "dependencies": {
+        "color-convert": "^3.1.3",
+        "color-string": "^2.1.3"
+      },
+      "engines": {
+        "node": ">=18"
+      }
+    },
+    "node_modules/color-convert": {
+      "version": "3.1.3",
+      "resolved": "https://registry.npmjs.org/color-convert/-/color-convert-3.1.3.tgz",
+      "integrity": "sha512-fasDH2ont2GqF5HpyO4w0+BcewlhHEZOFn9c1ckZdHpJ56Qb7MHhH/IcJZbBGgvdtwdwNbLvxiBEdg336iA9Sg==",
+      "license": "MIT",
+      "dependencies": {
+        "color-name": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=14.6"
+      }
+    },
+    "node_modules/color-name": {
+      "version": "2.1.0",
+      "resolved": "https://registry.npmjs.org/color-name/-/color-name-2.1.0.tgz",
+      "integrity": "sha512-1bPaDNFm0axzE4MEAzKPuqKWeRaT43U/hyxKPBdqTfmPF+d6n7FSoTFxLVULUJOmiLp01KjhIPPH+HrXZJN4Rg==",
+      "license": "MIT",
+      "engines": {
+        "node": ">=12.20"
+      }
+    },
+    "node_modules/color-string": {
+      "version": "2.1.4",
+      "resolved": "https://registry.npmjs.org/color-string/-/color-string-2.1.4.tgz",
+      "integrity": "sha512-Bb6Cq8oq0IjDOe8wJmi4JeNn763Xs9cfrBcaylK1tPypWzyoy2G3l90v9k64kjphl/ZJjPIShFztenRomi8WTg==",
+      "license": "MIT",
+      "dependencies": {
+        "color-name": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=18"
+      }
+    },
+    "node_modules/cors": {
+      "version": "2.8.6",
+      "resolved": "https://registry.npmjs.org/cors/-/cors-2.8.6.tgz",
+      "integrity": "sha512-tJtZBBHA6vjIAaF6EnIaq6laBBP9aq/Y3ouVJjEfoHbRBcHBAHYcMh/w8LDrk2PvIMMq8gmopa5D4V8RmbrxGw==",
+      "license": "MIT",
+      "dependencies": {
+        "object-assign": "^4",
+        "vary": "^1"
+      },
+      "engines": {
+        "node": ">= 0.10"
+      },
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/express"
+      }
+    },
+    "node_modules/debug": {
+      "version": "4.4.3",
+      "resolved": "https://registry.npmjs.org/debug/-/debug-4.4.3.tgz",
+      "integrity": "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "ms": "^2.1.3"
+      },
+      "engines": {
+        "node": ">=6.0"
+      },
+      "peerDependenciesMeta": {
+        "supports-color": {
+          "optional": true
+        }
+      }
+    },
+    "node_modules/denque": {
+      "version": "2.1.0",
+      "resolved": "https://registry.npmjs.org/denque/-/denque-2.1.0.tgz",
+      "integrity": "sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==",
+      "license": "Apache-2.0",
+      "engines": {
+        "node": ">=0.10"
+      }
+    },
+    "node_modules/depd": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/depd/-/depd-2.0.0.tgz",
+      "integrity": "sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==",
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.8"
+      }
+    },
+    "node_modules/dotenv": {
+      "version": "17.3.1",
+      "resolved": "https://registry.npmjs.org/dotenv/-/dotenv-17.3.1.tgz",
+      "integrity": "sha512-IO8C/dzEb6O3F9/twg6ZLXz164a2fhTnEWb95H23Dm4OuN+92NmEAlTrupP9VW6Jm3sO26tQlqyvyi4CsnY9GA==",
+      "license": "BSD-2-Clause",
+      "engines": {
+        "node": ">=12"
+      },
+      "funding": {
+        "url": "https://dotenvx.com"
+      }
+    },
+    "node_modules/ecdsa-sig-formatter": {
+      "version": "1.0.11",
+      "resolved": "https://registry.npmjs.org/ecdsa-sig-formatter/-/ecdsa-sig-formatter-1.0.11.tgz",
+      "integrity": "sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==",
+      "license": "Apache-2.0",
+      "dependencies": {
+        "safe-buffer": "^5.0.1"
+      }
+    },
+    "node_modules/ee-first": {
+      "version": "1.1.1",
+      "resolved": "https://registry.npmjs.org/ee-first/-/ee-first-1.1.1.tgz",
+      "integrity": "sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==",
+      "license": "MIT"
+    },
+    "node_modules/enabled": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/enabled/-/enabled-2.0.0.tgz",
+      "integrity": "sha512-AKrN98kuwOzMIdAizXGI86UFBoo26CL21UM763y1h/GMSJ4/OHU9k2YlsmBpyScFo/wbLzWQJBMCW4+IO3/+OQ==",
+      "license": "MIT"
+    },
+    "node_modules/fecha": {
+      "version": "4.2.3",
+      "resolved": "https://registry.npmjs.org/fecha/-/fecha-4.2.3.tgz",
+      "integrity": "sha512-OP2IUU6HeYKJi3i0z4A19kHMQoLVs4Hc+DPqqxI2h/DPZHTm/vjsfC6P0b4jCMy14XizLBqvndQ+UilD7707Jw==",
+      "license": "MIT"
+    },
+    "node_modules/fill-range": {
+      "version": "7.1.1",
+      "resolved": "https://registry.npmjs.org/fill-range/-/fill-range-7.1.1.tgz",
+      "integrity": "sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "to-regex-range": "^5.0.1"
+      },
+      "engines": {
+        "node": ">=8"
+      }
+    },
+    "node_modules/fn.name": {
+      "version": "1.1.0",
+      "resolved": "https://registry.npmjs.org/fn.name/-/fn.name-1.1.0.tgz",
+      "integrity": "sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==",
+      "license": "MIT"
+    },
+    "node_modules/fsevents": {
+      "version": "2.3.3",
+      "resolved": "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz",
+      "integrity": "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==",
+      "dev": true,
+      "hasInstallScript": true,
+      "license": "MIT",
+      "optional": true,
+      "os": [
+        "darwin"
+      ],
+      "engines": {
+        "node": "^8.16.0 || ^10.6.0 || >=11.0.0"
+      }
+    },
+    "node_modules/generate-function": {
+      "version": "2.3.1",
+      "resolved": "https://registry.npmjs.org/generate-function/-/generate-function-2.3.1.tgz",
+      "integrity": "sha512-eeB5GfMNeevm/GRYq20ShmsaGcmI81kIX2K9XQx5miC8KdHaC6Jm0qQ8ZNeGOi7wYB8OsdxKs+Y2oVuTFuVwKQ==",
+      "license": "MIT",
+      "dependencies": {
+        "is-property": "^1.0.2"
+      }
+    },
+    "node_modules/glob-parent": {
+      "version": "5.1.2",
+      "resolved": "https://registry.npmjs.org/glob-parent/-/glob-parent-5.1.2.tgz",
+      "integrity": "sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "is-glob": "^4.0.1"
+      },
+      "engines": {
+        "node": ">= 6"
+      }
+    },
+    "node_modules/has-flag": {
+      "version": "3.0.0",
+      "resolved": "https://registry.npmjs.org/has-flag/-/has-flag-3.0.0.tgz",
+      "integrity": "sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/iconv-lite": {
+      "version": "0.7.2",
+      "resolved": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.7.2.tgz",
+      "integrity": "sha512-im9DjEDQ55s9fL4EYzOAv0yMqmMBSZp6G0VvFyTMPKWxiSBHUj9NW/qqLmXUwXrrM7AvqSlTCfvqRb0cM8yYqw==",
+      "license": "MIT",
+      "dependencies": {
+        "safer-buffer": ">= 2.1.2 < 3.0.0"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      },
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/express"
+      }
+    },
+    "node_modules/ignore-by-default": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/ignore-by-default/-/ignore-by-default-1.0.1.tgz",
+      "integrity": "sha512-Ius2VYcGNk7T90CppJqcIkS5ooHUZyIQK+ClZfMfMNFEF9VSE73Fq+906u/CWu92x4gzZMWOwfFYckPObzdEbA==",
+      "dev": true,
+      "license": "ISC"
+    },
+    "node_modules/inherits": {
+      "version": "2.0.4",
+      "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz",
+      "integrity": "sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==",
+      "license": "ISC"
+    },
+    "node_modules/is-binary-path": {
+      "version": "2.1.0",
+      "resolved": "https://registry.npmjs.org/is-binary-path/-/is-binary-path-2.1.0.tgz",
+      "integrity": "sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "binary-extensions": "^2.0.0"
+      },
+      "engines": {
+        "node": ">=8"
+      }
+    },
+    "node_modules/is-extglob": {
+      "version": "2.1.1",
+      "resolved": "https://registry.npmjs.org/is-extglob/-/is-extglob-2.1.1.tgz",
+      "integrity": "sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.10.0"
+      }
+    },
+    "node_modules/is-glob": {
+      "version": "4.0.3",
+      "resolved": "https://registry.npmjs.org/is-glob/-/is-glob-4.0.3.tgz",
+      "integrity": "sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "is-extglob": "^2.1.1"
+      },
+      "engines": {
+        "node": ">=0.10.0"
+      }
+    },
+    "node_modules/is-number": {
+      "version": "7.0.0",
+      "resolved": "https://registry.npmjs.org/is-number/-/is-number-7.0.0.tgz",
+      "integrity": "sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.12.0"
+      }
+    },
+    "node_modules/is-property": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/is-property/-/is-property-1.0.2.tgz",
+      "integrity": "sha512-Ks/IoX00TtClbGQr4TWXemAnktAQvYB7HzcCxDGqEZU6oCmb2INHuOoKxbtR+HFkmYWBKv/dOZtGRiAjDhj92g==",
+      "license": "MIT"
+    },
+    "node_modules/is-stream": {
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/is-stream/-/is-stream-2.0.1.tgz",
+      "integrity": "sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==",
+      "license": "MIT",
+      "engines": {
+        "node": ">=8"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/jsonwebtoken": {
+      "version": "9.0.3",
+      "resolved": "https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-9.0.3.tgz",
+      "integrity": "sha512-MT/xP0CrubFRNLNKvxJ2BYfy53Zkm++5bX9dtuPbqAeQpTVe0MQTFhao8+Cp//EmJp244xt6Drw/GVEGCUj40g==",
+      "license": "MIT",
+      "dependencies": {
+        "jws": "^4.0.1",
+        "lodash.includes": "^4.3.0",
+        "lodash.isboolean": "^3.0.3",
+        "lodash.isinteger": "^4.0.4",
+        "lodash.isnumber": "^3.0.3",
+        "lodash.isplainobject": "^4.0.6",
+        "lodash.isstring": "^4.0.1",
+        "lodash.once": "^4.0.0",
+        "ms": "^2.1.1",
+        "semver": "^7.5.4"
+      },
+      "engines": {
+        "node": ">=12",
+        "npm": ">=6"
+      }
+    },
+    "node_modules/jwa": {
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/jwa/-/jwa-2.0.1.tgz",
+      "integrity": "sha512-hRF04fqJIP8Abbkq5NKGN0Bbr3JxlQ+qhZufXVr0DvujKy93ZCbXZMHDL4EOtodSbCWxOqR8MS1tXA5hwqCXDg==",
+      "license": "MIT",
+      "dependencies": {
+        "buffer-equal-constant-time": "^1.0.1",
+        "ecdsa-sig-formatter": "1.0.11",
+        "safe-buffer": "^5.0.1"
+      }
+    },
+    "node_modules/jws": {
+      "version": "4.0.1",
+      "resolved": "https://registry.npmjs.org/jws/-/jws-4.0.1.tgz",
+      "integrity": "sha512-EKI/M/yqPncGUUh44xz0PxSidXFr/+r0pA70+gIYhjv+et7yxM+s29Y+VGDkovRofQem0fs7Uvf4+YmAdyRduA==",
+      "license": "MIT",
+      "dependencies": {
+        "jwa": "^2.0.1",
+        "safe-buffer": "^5.0.1"
+      }
+    },
+    "node_modules/kuler": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/kuler/-/kuler-2.0.0.tgz",
+      "integrity": "sha512-Xq9nH7KlWZmXAtodXDDRE7vs6DU1gTU8zYDHDiWLSip45Egwq3plLHzPn27NgvzL2r1LMPC1vdqh98sQxtqj4A==",
+      "license": "MIT"
+    },
+    "node_modules/lodash.includes": {
+      "version": "4.3.0",
+      "resolved": "https://registry.npmjs.org/lodash.includes/-/lodash.includes-4.3.0.tgz",
+      "integrity": "sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w==",
+      "license": "MIT"
+    },
+    "node_modules/lodash.isboolean": {
+      "version": "3.0.3",
+      "resolved": "https://registry.npmjs.org/lodash.isboolean/-/lodash.isboolean-3.0.3.tgz",
+      "integrity": "sha512-Bz5mupy2SVbPHURB98VAcw+aHh4vRV5IPNhILUCsOzRmsTmSQ17jIuqopAentWoehktxGd9e/hbIXq980/1QJg==",
+      "license": "MIT"
+    },
+    "node_modules/lodash.isinteger": {
+      "version": "4.0.4",
+      "resolved": "https://registry.npmjs.org/lodash.isinteger/-/lodash.isinteger-4.0.4.tgz",
+      "integrity": "sha512-DBwtEWN2caHQ9/imiNeEA5ys1JoRtRfY3d7V9wkqtbycnAmTvRRmbHKDV4a0EYc678/dia0jrte4tjYwVBaZUA==",
+      "license": "MIT"
+    },
+    "node_modules/lodash.isnumber": {
+      "version": "3.0.3",
+      "resolved": "https://registry.npmjs.org/lodash.isnumber/-/lodash.isnumber-3.0.3.tgz",
+      "integrity": "sha512-QYqzpfwO3/CWf3XP+Z+tkQsfaLL/EnUlXWVkIk5FUPc4sBdTehEqZONuyRt2P67PXAk+NXmTBcc97zw9t1FQrw==",
+      "license": "MIT"
+    },
+    "node_modules/lodash.isplainobject": {
+      "version": "4.0.6",
+      "resolved": "https://registry.npmjs.org/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz",
+      "integrity": "sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==",
+      "license": "MIT"
+    },
+    "node_modules/lodash.isstring": {
+      "version": "4.0.1",
+      "resolved": "https://registry.npmjs.org/lodash.isstring/-/lodash.isstring-4.0.1.tgz",
+      "integrity": "sha512-0wJxfxH1wgO3GrbuP+dTTk7op+6L41QCXbGINEmD+ny/G/eCqGzxyCsh7159S+mgDDcoarnBw6PC1PS5+wUGgw==",
+      "license": "MIT"
+    },
+    "node_modules/lodash.once": {
+      "version": "4.1.1",
+      "resolved": "https://registry.npmjs.org/lodash.once/-/lodash.once-4.1.1.tgz",
+      "integrity": "sha512-Sb487aTOCr9drQVL8pIxOzVhafOjZN9UU54hiN8PU3uAiSV7lx1yYNpbNmex2PK6dSJoNTSJUUswT651yww3Mg==",
+      "license": "MIT"
+    },
+    "node_modules/logform": {
+      "version": "2.7.0",
+      "resolved": "https://registry.npmjs.org/logform/-/logform-2.7.0.tgz",
+      "integrity": "sha512-TFYA4jnP7PVbmlBIfhlSe+WKxs9dklXMTEGcBCIvLhE/Tn3H6Gk1norupVW7m5Cnd4bLcr08AytbyV/xj7f/kQ==",
+      "license": "MIT",
+      "dependencies": {
+        "@colors/colors": "1.6.0",
+        "@types/triple-beam": "^1.3.2",
+        "fecha": "^4.2.0",
+        "ms": "^2.1.1",
+        "safe-stable-stringify": "^2.3.1",
+        "triple-beam": "^1.3.0"
+      },
+      "engines": {
+        "node": ">= 12.0.0"
+      }
+    },
+    "node_modules/long": {
+      "version": "5.3.2",
+      "resolved": "https://registry.npmjs.org/long/-/long-5.3.2.tgz",
+      "integrity": "sha512-mNAgZ1GmyNhD7AuqnTG3/VQ26o760+ZYBPKjPvugO8+nLbYfX6TVpJPseBvopbdY+qpZ/lKUnmEc1LeZYS3QAA==",
+      "license": "Apache-2.0"
+    },
+    "node_modules/lru.min": {
+      "version": "1.1.4",
+      "resolved": "https://registry.npmjs.org/lru.min/-/lru.min-1.1.4.tgz",
+      "integrity": "sha512-DqC6n3QQ77zdFpCMASA1a3Jlb64Hv2N2DciFGkO/4L9+q/IpIAuRlKOvCXabtRW6cQf8usbmM6BE/TOPysCdIA==",
+      "license": "MIT",
+      "engines": {
+        "bun": ">=1.0.0",
+        "deno": ">=1.30.0",
+        "node": ">=8.0.0"
+      },
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/sponsors/wellwelwel"
+      }
+    },
+    "node_modules/minimatch": {
+      "version": "10.2.5",
+      "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-10.2.5.tgz",
+      "integrity": "sha512-MULkVLfKGYDFYejP07QOurDLLQpcjk7Fw+7jXS2R2czRQzR56yHRveU5NDJEOviH+hETZKSkIk5c+T23GjFUMg==",
+      "dev": true,
+      "license": "BlueOak-1.0.0",
+      "dependencies": {
+        "brace-expansion": "^5.0.5"
+      },
+      "engines": {
+        "node": "18 || 20 || >=22"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/isaacs"
+      }
+    },
+    "node_modules/morgan": {
+      "version": "1.10.1",
+      "resolved": "https://registry.npmjs.org/morgan/-/morgan-1.10.1.tgz",
+      "integrity": "sha512-223dMRJtI/l25dJKWpgij2cMtywuG/WiUKXdvwfbhGKBhy1puASqXwFzmWZ7+K73vUPoR7SS2Qz2cI/g9MKw0A==",
+      "license": "MIT",
+      "dependencies": {
+        "basic-auth": "~2.0.1",
+        "debug": "2.6.9",
+        "depd": "~2.0.0",
+        "on-finished": "~2.3.0",
+        "on-headers": "~1.1.0"
+      },
+      "engines": {
+        "node": ">= 0.8.0"
+      }
+    },
+    "node_modules/morgan/node_modules/debug": {
+      "version": "2.6.9",
+      "resolved": "https://registry.npmjs.org/debug/-/debug-2.6.9.tgz",
+      "integrity": "sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==",
+      "license": "MIT",
+      "dependencies": {
+        "ms": "2.0.0"
+      }
+    },
+    "node_modules/morgan/node_modules/ms": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz",
+      "integrity": "sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==",
+      "license": "MIT"
+    },
+    "node_modules/ms": {
+      "version": "2.1.3",
+      "resolved": "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz",
+      "integrity": "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==",
+      "license": "MIT"
+    },
+    "node_modules/mysql2": {
+      "version": "3.20.0",
+      "resolved": "https://registry.npmjs.org/mysql2/-/mysql2-3.20.0.tgz",
+      "integrity": "sha512-eCLUs7BNbgA6nf/MZXsaBO1SfGs0LtLVrJD3WeWq+jPLDWkSufTD+aGMwykfUVPdZnblaUK1a8G/P63cl9FkKg==",
+      "license": "MIT",
+      "dependencies": {
+        "aws-ssl-profiles": "^1.1.2",
+        "denque": "^2.1.0",
+        "generate-function": "^2.3.1",
+        "iconv-lite": "^0.7.2",
+        "long": "^5.3.2",
+        "lru.min": "^1.1.4",
+        "named-placeholders": "^1.1.6",
+        "sql-escaper": "^1.3.3"
+      },
+      "engines": {
+        "node": ">= 8.0"
+      },
+      "peerDependencies": {
+        "@types/node": ">= 8"
+      }
+    },
+    "node_modules/named-placeholders": {
+      "version": "1.1.6",
+      "resolved": "https://registry.npmjs.org/named-placeholders/-/named-placeholders-1.1.6.tgz",
+      "integrity": "sha512-Tz09sEL2EEuv5fFowm419c1+a/jSMiBjI9gHxVLrVdbUkkNUUfjsVYs9pVZu5oCon/kmRh9TfLEObFtkVxmY0w==",
+      "license": "MIT",
+      "dependencies": {
+        "lru.min": "^1.1.0"
+      },
+      "engines": {
+        "node": ">=8.0.0"
+      }
+    },
+    "node_modules/node-addon-api": {
+      "version": "8.7.0",
+      "resolved": "https://registry.npmjs.org/node-addon-api/-/node-addon-api-8.7.0.tgz",
+      "integrity": "sha512-9MdFxmkKaOYVTV+XVRG8ArDwwQ77XIgIPyKASB1k3JPq3M8fGQQQE3YpMOrKm6g//Ktx8ivZr8xo1Qmtqub+GA==",
+      "license": "MIT",
+      "engines": {
+        "node": "^18 || ^20 || >= 21"
+      }
+    },
+    "node_modules/node-gyp-build": {
+      "version": "4.8.4",
+      "resolved": "https://registry.npmjs.org/node-gyp-build/-/node-gyp-build-4.8.4.tgz",
+      "integrity": "sha512-LA4ZjwlnUblHVgq0oBF3Jl/6h/Nvs5fzBLwdEF4nuxnFdsfajde4WfxtJr3CaiH+F6ewcIB/q4jQ4UzPyid+CQ==",
+      "license": "MIT",
+      "bin": {
+        "node-gyp-build": "bin.js",
+        "node-gyp-build-optional": "optional.js",
+        "node-gyp-build-test": "build-test.js"
+      }
+    },
+    "node_modules/nodemon": {
+      "version": "3.1.14",
+      "resolved": "https://registry.npmjs.org/nodemon/-/nodemon-3.1.14.tgz",
+      "integrity": "sha512-jakjZi93UtB3jHMWsXL68FXSAosbLfY0In5gtKq3niLSkrWznrVBzXFNOEMJUfc9+Ke7SHWoAZsiMkNP3vq6Jw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "chokidar": "^3.5.2",
+        "debug": "^4",
+        "ignore-by-default": "^1.0.1",
+        "minimatch": "^10.2.1",
+        "pstree.remy": "^1.1.8",
+        "semver": "^7.5.3",
+        "simple-update-notifier": "^2.0.0",
+        "supports-color": "^5.5.0",
+        "touch": "^3.1.0",
+        "undefsafe": "^2.0.5"
+      },
+      "bin": {
+        "nodemon": "bin/nodemon.js"
+      },
+      "engines": {
+        "node": ">=10"
+      },
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/nodemon"
+      }
+    },
+    "node_modules/normalize-path": {
+      "version": "3.0.0",
+      "resolved": "https://registry.npmjs.org/normalize-path/-/normalize-path-3.0.0.tgz",
+      "integrity": "sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.10.0"
+      }
+    },
+    "node_modules/object-assign": {
+      "version": "4.1.1",
+      "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz",
+      "integrity": "sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==",
+      "license": "MIT",
+      "engines": {
+        "node": ">=0.10.0"
+      }
+    },
+    "node_modules/on-finished": {
+      "version": "2.3.0",
+      "resolved": "https://registry.npmjs.org/on-finished/-/on-finished-2.3.0.tgz",
+      "integrity": "sha512-ikqdkGAAyf/X/gPhXGvfgAytDZtDbr+bkNUJ0N9h5MI/dmdgCs3l6hoHrcUv41sRKew3jIwrp4qQDXiK99Utww==",
+      "license": "MIT",
+      "dependencies": {
+        "ee-first": "1.1.1"
+      },
+      "engines": {
+        "node": ">= 0.8"
+      }
+    },
+    "node_modules/on-headers": {
+      "version": "1.1.0",
+      "resolved": "https://registry.npmjs.org/on-headers/-/on-headers-1.1.0.tgz",
+      "integrity": "sha512-737ZY3yNnXy37FHkQxPzt4UZ2UWPWiCZWLvFZ4fu5cueciegX0zGPnrlY6bwRg4FdQOe9YU8MkmJwGhoMybl8A==",
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.8"
+      }
+    },
+    "node_modules/one-time": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/one-time/-/one-time-1.0.0.tgz",
+      "integrity": "sha512-5DXOiRKwuSEcQ/l0kGCF6Q3jcADFv5tSmRaJck/OqkVFcOzutB134KRSfF0xDrL39MNnqxbHBbUUcjZIhTgb2g==",
+      "license": "MIT",
+      "dependencies": {
+        "fn.name": "1.x.x"
+      }
+    },
+    "node_modules/picomatch": {
+      "version": "2.3.2",
+      "resolved": "https://registry.npmjs.org/picomatch/-/picomatch-2.3.2.tgz",
+      "integrity": "sha512-V7+vQEJ06Z+c5tSye8S+nHUfI51xoXIXjHQ99cQtKUkQqqO1kO/KCJUfZXuB47h/YBlDhah2H3hdUGXn8ie0oA==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=8.6"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/jonschlinkert"
+      }
+    },
+    "node_modules/pstree.remy": {
+      "version": "1.1.8",
+      "resolved": "https://registry.npmjs.org/pstree.remy/-/pstree.remy-1.1.8.tgz",
+      "integrity": "sha512-77DZwxQmxKnu3aR542U+X8FypNzbfJ+C5XQDk3uWjWxn6151aIMGthWYRXTqT1E5oJvg+ljaa2OJi+VfvCOQ8w==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/readable-stream": {
+      "version": "3.6.2",
+      "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-3.6.2.tgz",
+      "integrity": "sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==",
+      "license": "MIT",
+      "dependencies": {
+        "inherits": "^2.0.3",
+        "string_decoder": "^1.1.1",
+        "util-deprecate": "^1.0.1"
+      },
+      "engines": {
+        "node": ">= 6"
+      }
+    },
+    "node_modules/readdirp": {
+      "version": "3.6.0",
+      "resolved": "https://registry.npmjs.org/readdirp/-/readdirp-3.6.0.tgz",
+      "integrity": "sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "picomatch": "^2.2.1"
+      },
+      "engines": {
+        "node": ">=8.10.0"
+      }
+    },
+    "node_modules/safe-buffer": {
+      "version": "5.2.1",
+      "resolved": "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.2.1.tgz",
+      "integrity": "sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==",
+      "funding": [
+        {
+          "type": "github",
+          "url": "https://github.com/sponsors/feross"
+        },
+        {
+          "type": "patreon",
+          "url": "https://www.patreon.com/feross"
+        },
+        {
+          "type": "consulting",
+          "url": "https://feross.org/support"
+        }
+      ],
+      "license": "MIT"
+    },
+    "node_modules/safe-stable-stringify": {
+      "version": "2.5.0",
+      "resolved": "https://registry.npmjs.org/safe-stable-stringify/-/safe-stable-stringify-2.5.0.tgz",
+      "integrity": "sha512-b3rppTKm9T+PsVCBEOUR46GWI7fdOs00VKZ1+9c1EWDaDMvjQc6tUwuFyIprgGgTcWoVHSKrU8H31ZHA2e0RHA==",
+      "license": "MIT",
+      "engines": {
+        "node": ">=10"
+      }
+    },
+    "node_modules/safer-buffer": {
+      "version": "2.1.2",
+      "resolved": "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz",
+      "integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==",
+      "license": "MIT"
+    },
+    "node_modules/semver": {
+      "version": "7.7.4",
+      "resolved": "https://registry.npmjs.org/semver/-/semver-7.7.4.tgz",
+      "integrity": "sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==",
+      "license": "ISC",
+      "bin": {
+        "semver": "bin/semver.js"
+      },
+      "engines": {
+        "node": ">=10"
+      }
+    },
+    "node_modules/simple-update-notifier": {
+      "version": "2.0.0",
+      "resolved": "https://registry.npmjs.org/simple-update-notifier/-/simple-update-notifier-2.0.0.tgz",
+      "integrity": "sha512-a2B9Y0KlNXl9u/vsW6sTIu9vGEpfKu2wRV6l1H3XEas/0gUIzGzBoP/IouTcUQbm9JWZLH3COxyn03TYlFax6w==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "semver": "^7.5.3"
+      },
+      "engines": {
+        "node": ">=10"
+      }
+    },
+    "node_modules/sql-escaper": {
+      "version": "1.3.3",
+      "resolved": "https://registry.npmjs.org/sql-escaper/-/sql-escaper-1.3.3.tgz",
+      "integrity": "sha512-BsTCV265VpTp8tm1wyIm1xqQCS+Q9NHx2Sr+WcnUrgLrQ6yiDIvHYJV5gHxsj1lMBy2zm5twLaZao8Jd+S8JJw==",
+      "license": "MIT",
+      "engines": {
+        "bun": ">=1.0.0",
+        "deno": ">=2.0.0",
+        "node": ">=12.0.0"
+      },
+      "funding": {
+        "type": "github",
+        "url": "https://github.com/mysqljs/sql-escaper?sponsor=1"
+      }
+    },
+    "node_modules/stack-trace": {
+      "version": "0.0.10",
+      "resolved": "https://registry.npmjs.org/stack-trace/-/stack-trace-0.0.10.tgz",
+      "integrity": "sha512-KGzahc7puUKkzyMt+IqAep+TVNbKP+k2Lmwhub39m1AsTSkaDutx56aDCo+HLDzf/D26BIHTJWNiTG1KAJiQCg==",
+      "license": "MIT",
+      "engines": {
+        "node": "*"
+      }
+    },
+    "node_modules/string_decoder": {
+      "version": "1.3.0",
+      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-1.3.0.tgz",
+      "integrity": "sha512-hkRX8U1WjJFd8LsDJ2yQ/wWWxaopEsABU1XfkM8A+j0+85JAGppt16cr1Whg6KIbb4okU6Mql6BOj+uup/wKeA==",
+      "license": "MIT",
+      "dependencies": {
+        "safe-buffer": "~5.2.0"
+      }
+    },
+    "node_modules/supports-color": {
+      "version": "5.5.0",
+      "resolved": "https://registry.npmjs.org/supports-color/-/supports-color-5.5.0.tgz",
+      "integrity": "sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "has-flag": "^3.0.0"
+      },
+      "engines": {
+        "node": ">=4"
+      }
+    },
+    "node_modules/text-hex": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/text-hex/-/text-hex-1.0.0.tgz",
+      "integrity": "sha512-uuVGNWzgJ4yhRaNSiubPY7OjISw4sw4E5Uv0wbjp+OzcbmVU/rsT8ujgcXJhn9ypzsgr5vlzpPqP+MBBKcGvbg==",
+      "license": "MIT"
+    },
+    "node_modules/to-regex-range": {
+      "version": "5.0.1",
+      "resolved": "https://registry.npmjs.org/to-regex-range/-/to-regex-range-5.0.1.tgz",
+      "integrity": "sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "is-number": "^7.0.0"
+      },
+      "engines": {
+        "node": ">=8.0"
+      }
+    },
+    "node_modules/touch": {
+      "version": "3.1.1",
+      "resolved": "https://registry.npmjs.org/touch/-/touch-3.1.1.tgz",
+      "integrity": "sha512-r0eojU4bI8MnHr8c5bNo7lJDdI2qXlWWJk6a9EAFG7vbhTjElYhBVS3/miuE0uOuoLdb8Mc/rVfsmm6eo5o9GA==",
+      "dev": true,
+      "license": "ISC",
+      "bin": {
+        "nodetouch": "bin/nodetouch.js"
+      }
+    },
+    "node_modules/triple-beam": {
+      "version": "1.4.1",
+      "resolved": "https://registry.npmjs.org/triple-beam/-/triple-beam-1.4.1.tgz",
+      "integrity": "sha512-aZbgViZrg1QNcG+LULa7nhZpJTZSLm/mXnHXnbAbjmN5aSa0y7V+wvv6+4WaBtpISJzThKy+PIPxc1Nq1EJ9mg==",
+      "license": "MIT",
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/undefsafe": {
+      "version": "2.0.5",
+      "resolved": "https://registry.npmjs.org/undefsafe/-/undefsafe-2.0.5.tgz",
+      "integrity": "sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==",
+      "dev": true,
+      "license": "MIT"
+    },
+    "node_modules/undici-types": {
+      "version": "7.18.2",
+      "resolved": "https://registry.npmjs.org/undici-types/-/undici-types-7.18.2.tgz",
+      "integrity": "sha512-AsuCzffGHJybSaRrmr5eHr81mwJU3kjw6M+uprWvCXiNeN9SOGwQ3Jn8jb8m3Z6izVgknn1R0FTCEAP2QrLY/w==",
+      "license": "MIT",
+      "peer": true
+    },
+    "node_modules/util-deprecate": {
+      "version": "1.0.2",
+      "resolved": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz",
+      "integrity": "sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==",
+      "license": "MIT"
+    },
+    "node_modules/vary": {
+      "version": "1.1.2",
+      "resolved": "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz",
+      "integrity": "sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==",
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.8"
+      }
+    },
+    "node_modules/winston": {
+      "version": "3.19.0",
+      "resolved": "https://registry.npmjs.org/winston/-/winston-3.19.0.tgz",
+      "integrity": "sha512-LZNJgPzfKR+/J3cHkxcpHKpKKvGfDZVPS4hfJCc4cCG0CgYzvlD6yE/S3CIL/Yt91ak327YCpiF/0MyeZHEHKA==",
+      "license": "MIT",
+      "dependencies": {
+        "@colors/colors": "^1.6.0",
+        "@dabh/diagnostics": "^2.0.8",
+        "async": "^3.2.3",
+        "is-stream": "^2.0.0",
+        "logform": "^2.7.0",
+        "one-time": "^1.0.0",
+        "readable-stream": "^3.4.0",
+        "safe-stable-stringify": "^2.3.1",
+        "stack-trace": "0.0.x",
+        "triple-beam": "^1.3.0",
+        "winston-transport": "^4.9.0"
+      },
+      "engines": {
+        "node": ">= 12.0.0"
+      }
+    },
+    "node_modules/winston-transport": {
+      "version": "4.9.0",
+      "resolved": "https://registry.npmjs.org/winston-transport/-/winston-transport-4.9.0.tgz",
+      "integrity": "sha512-8drMJ4rkgaPo1Me4zD/3WLfI/zPdA9o2IipKODunnGDcuqbHwjsbB79ylv04LCGGzU0xQ6vTznOMpQGaLhhm6A==",
+      "license": "MIT",
+      "dependencies": {
+        "logform": "^2.7.0",
+        "readable-stream": "^3.6.2",
+        "triple-beam": "^1.3.0"
+      },
+      "engines": {
+        "node": ">= 12.0.0"
+      }
+    }
+  }
+}
+
+
+================================================================================
+/// FILE: backend\package.json
+================================================================================
+
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.10.1",
+    "mysql2": "^3.20.0",
+    "winston": "^3.19.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
+
+
+================================================================================
+/// FILE: backend\seedAdmin.js
+================================================================================
+
+require('dotenv').config();
+const User = require('./models/user');
+const { hashPassword } = require('./utils/hashUtil');
+const logger = require('./utils/logger');
+const pool = require('./db/connection'); // Tetap di-import agar koneksi DB menyala
+
+const seedAdmin = async () => {
+    try {
+        logger.info('⏳ Memulai proses injeksi akun Super Admin ke database...');
+
+        // 1. Validasi: Cek apakah akun admin sudah pernah dibuat
+        const usernameAdmin = 'admin_legs';
+        const existingAdmin = await User.findByUsername(usernameAdmin);
+        
+        if (existingAdmin) {
+            logger.warn('⚠️ Akun Super Admin sudah ada di database. Proses dibatalkan.');
+            process.exit(0);
+        }
+
+        // 2. Persiapkan Kredensial (Password default sementara)
+        const plainPassword = 'PasswordSuperKuat123!'; 
+        logger.info('⏳ Sedang melakukan enkripsi bcrypt pada password...');
+        const hashedPassword = await hashPassword(plainPassword);
+
+        // 3. Eksekusi Insert ke Database melalui Model
+        await User.create({
+            id_pegawai: null, // Kosongkan dulu karena tabel core_pegawai belum ada datanya
+            username: usernameAdmin,
+            password_hash: hashedPassword,
+            role: 'admin',
+            created_by: 'system_seeder'
+        });
+
+        logger.info('✅ SUKSES! Akun Super Admin berhasil disuntikkan ke tabel core_users.');
+        logger.info('=========================================');
+        logger.info(`Username : ${usernameAdmin}`);
+        logger.info(`Password : ${plainPassword}`);
+        logger.info('=========================================');
+        logger.info('Silakan catat kredensial di atas, lalu hapus file ini jika sudah masuk Production.');
+
+    } catch (error) {
+        logger.error(`❌ Gagal menyuntikkan admin: ${error.message}`);
+    } finally {
+        process.exit(0); // Matikan script dengan aman
+    }
+};
+
+// Jalankan fungsi
+seedAdmin();
+
+================================================================================
+/// FILE: backend\server.js
+================================================================================
+
+require('dotenv').config();
+require('./db/connection');
+const express = require('express');
+const cors = require('cors'); // [WAJIB] Import CORS
+const errorHandler = require('./middlewares/errorHandler');
+const httpLogger = require('./middlewares/httpLogger');
+const logger = require('./utils/logger');               
+const { success } = require('./utils/response');
+const authRoutes = require('./routes/authRoutes');
+const applicationRoutes = require('./routes/applicationRoutes');
+const userRoutes = require('./routes/userRoutes')
+
+const app = express();
+const PORT = process.env.PORT || 4000;
+
+// 1. Global Middlewares
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// 1.5. Pasang HTTP Logger
+app.use(httpLogger);
+
+app.get('/api/health', (req, res) => {
+    logger.info("Endpoint health check berhasil diakses.");
+    return success(res, "EXVAN Backend is running smoothly", { uptime: process.uptime() });
+});
+
+app.use('/api/auth', authRoutes);
+app.use('/api/applications', applicationRoutes);
+app.use('/api/users', userRoutes);
+
+
+app.use(errorHandler);
+
+app.listen(PORT, () => {
+    logger.info(`🚀 Server is running elegantly on http://localhost:${PORT}`);
+});
+
+================================================================================
+/// FILE: backend\controllers\applicationController.js
+================================================================================
+
+const Application = require('../models/application');
+const { success } = require('../utils/response');
+
+// Untuk Landing Page User
+const getAllActive = async (req, res, next) => {
+    try {
+        const apps = await Application.findAllActive();
+        return success(res, 'Data aplikasi publik berhasil dimuat.', apps);
+    } catch (error) {
+        next(error);
+    }
+};
+
+// --- KHUSUS ADMIN ---
+
+// Ambil semua data untuk tabel manajemen
+const getAllForAdmin = async (req, res, next) => {
+    try {
+        const apps = await Application.findAll();
+        return success(res, 'Seluruh data aplikasi berhasil dimuat.', apps);
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Tambah aplikasi baru
+const createApp = async (req, res, next) => {
+    try {
+        const { app_name, target_url } = req.body;
+        if (!app_name || !target_url) {
+            throw { statusCode: 400, message: 'Nama Aplikasi dan URL Tujuan wajib diisi.' };
+        }
+        
+        const insertId = await Application.create(req.body);
+        return success(res, 'Aplikasi baru berhasil didaftarkan.', { id: insertId }, 201);
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Update aplikasi
+const updateApp = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const { app_name, target_url } = req.body;
+        if (!app_name || !target_url) {
+            throw { statusCode: 400, message: 'Nama Aplikasi dan URL Tujuan tidak boleh kosong.' };
+        }
+
+        const affectedRows = await Application.update(id, req.body);
+        if (affectedRows === 0) throw { statusCode: 404, message: 'Aplikasi tidak ditemukan.' };
+
+        return success(res, 'Data aplikasi berhasil diperbarui.');
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Hapus aplikasi
+const deleteApp = async (req, res, next) => {
+    try {
+        const id = req.params.id;
+        const affectedRows = await Application.delete(id);
+        if (affectedRows === 0) throw { statusCode: 404, message: 'Aplikasi tidak ditemukan.' };
+
+        return success(res, 'Aplikasi berhasil dihapus secara permanen.');
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { getAllActive, getAllForAdmin, createApp, updateApp, deleteApp };
+
+================================================================================
+/// FILE: backend\controllers\authController.js
+================================================================================
+
+const authService = require('../services/authService');
+const { success } = require('../utils/response');
+
+const login = async (req, res, next) => {
+    try {
+        const { username, password } = req.body;
+
+        // Validasi input kosong
+        if (!username || !password) {
+            throw { statusCode: 400, message: 'Username dan password wajib diisi.' };
+        }
+
+        // Eksekusi logika login di Service
+        const data = await authService.login(username, password);
+
+        // Jika berhasil, kembalikan response sukses
+        return success(res, 'Login berhasil.', data);
+    } catch (error) {
+        // Jika gagal, lempar ke errorHandler global EXVAN
+        next(error);
+    }
+};
+
+module.exports = { login };
+
+================================================================================
+/// FILE: backend\controllers\userController.js
+================================================================================
+
+const User = require('../models/user');
+const { hashPassword } = require('../utils/hashUtil');
+const { success } = require('../utils/response');
+
+const getAllUsers = async (req, res, next) => {
+    try {
+        const users = await User.findAll();
+        return success(res, 'Data pengguna berhasil dimuat.', users);
+    } catch (error) { next(error); }
+};
+
+const createUser = async (req, res, next) => {
+    try {
+        const { username, password, role } = req.body;
+        if (!username || !password) throw { statusCode: 400, message: 'Username dan Password wajib diisi.' };
+        
+        // Cek duplikat username
+        const existing = await User.findByUsername(username);
+        if (existing) throw { statusCode: 400, message: 'Username sudah digunakan.' };
+
+        const hashedPassword = await hashPassword(password);
+        await User.create({ username, password_hash: hashedPassword, role: role || 'user', created_by: req.user.username });
+        return success(res, 'Pengguna baru berhasil ditambahkan.', null, 201);
+    } catch (error) { next(error); }
+};
+
+const updateUserRole = async (req, res, next) => {
+    try {
+        const { role, is_active } = req.body;
+        await User.updateStatusAndRole(req.params.id, role, is_active);
+        return success(res, 'Hak akses pengguna berhasil diperbarui.');
+    } catch (error) { next(error); }
+};
+
+const resetPassword = async (req, res, next) => {
+    try {
+        // Password default jika di-reset admin
+        const defaultPassword = 'UTLibrary2026!';
+        const hashedPassword = await hashPassword(defaultPassword);
+        await User.resetPassword(req.params.id, hashedPassword);
+        return success(res, `Password berhasil direset menjadi: ${defaultPassword}`);
+    } catch (error) { next(error); }
+};
+
+const deleteUser = async (req, res, next) => {
+    try {
+        await User.delete(req.params.id);
+        return success(res, 'Pengguna berhasil dihapus.');
+    } catch (error) { next(error); }
+};
+
+module.exports = { getAllUsers, createUser, updateUserRole, resetPassword, deleteUser };
+
+================================================================================
+/// FILE: backend\db\connection.js
+================================================================================
+
+require('dotenv').config();
+const mysql = require('mysql2/promise');
+const logger = require('../utils/logger'); // Menggunakan logger elegan bawaan kita
+
+// Membuat Connection Pool yang efisien
+const pool = mysql.createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
+
+// Fungsi kritis untuk mengecek database saat server pertama kali menyala
+const testConnection = async () => {
+    try {
+        const connection = await pool.getConnection();
+        logger.info('✅ Berhasil terhubung ke database MySQL (LEGS)');
+        connection.release();
+    } catch (error) {
+        logger.error(`❌ Gagal terhubung ke database: ${error.message}`);
+        // Jika gagal konek DB, matikan sistem. Jangan biarkan aplikasi jalan dalam keadaan cacat.
+        process.exit(1); 
+    }
+};
+
+testConnection();
+
+module.exports = pool;
+
+================================================================================
+/// FILE: backend\db\models.js
+================================================================================
+
+
+
+
+
+================================================================================
+/// FILE: backend\middlewares\authMiddleware.js
+================================================================================
+
+const { verifyToken } = require('../utils/jwtUtil');
+const { error } = require('../utils/response');
+
+const authenticate = (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        
+        // Cek apakah ada Karcis di dalam header
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return error(res, 'Akses ditolak. Token tidak ditemukan.', null, 401);
+        }
+
+        const token = authHeader.split(' ')[1];
+        const decoded = verifyToken(token);
+        
+        // Simpan data user (ID, username, role) ke request untuk dipakai di fungsi selanjutnya
+        req.user = decoded; 
+        next();
+    } catch (err) {
+        return error(res, 'Sesi tidak valid atau telah berakhir.', null, 401);
+    }
+};
+
+module.exports = authenticate;
+
+================================================================================
+/// FILE: backend\middlewares\errorHandler.js
+================================================================================
+
+const logger = require('../utils/logger'); // [NEW] Import logger
+const { error } = require('../utils/response');
+
+const errorHandler = (err, req, res, next) => { 
+    logger.error(`${err.name}: ${err.message}\nStack: ${err.stack}`);
+
+    const statusCode = err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+    
+    return error(res, message, err.details || null, statusCode);
+};
+
+module.exports = errorHandler;
+
+================================================================================
+/// FILE: backend\middlewares\httpLogger.js
+================================================================================
+
+const morgan = require('morgan');
+const logger = require('../utils/logger');
+
+/**
+ * Membelokkan output Morgan agar tidak menggunakan console.log,
+ * melainkan menggunakan Winston logger level 'info'.
+ */
+const streamOptions = {
+    write: (message) => logger.info(message.trim()),
+};
+
+// Format 'dev' menghasilkan log yang ringkas dan berwarna (Method, Endpoint, Status, Waktu).
+// Untuk production yang lebih detail, bisa diganti menggunakan format 'combined'.
+const format = process.env.NODE_ENV === 'production' ? 'combined' : 'dev';
+
+const httpLogger = morgan(format, { stream: streamOptions });
+
+module.exports = httpLogger;
+
+================================================================================
+/// FILE: backend\middlewares\roleMiddleware.js
+================================================================================
+
+const { error } = require('../utils/response');
+const logger = require('../utils/logger');
+
+const requireRole = (role) => {
+    return (req, res, next) => {
+        // req.user didapat dari authMiddleware sebelumnya
+        if (!req.user || req.user.role !== role) {
+            logger.warn(`🛑 Pelanggaran Akses: User ${req.user?.username} mencoba mengakses rute khusus ${role}.`);
+            return error(res, `Akses ditolak. Anda tidak memiliki hak akses sebagai ${role}.`, null, 403);
+        }
+        next();
+    };
+};
+
+module.exports = requireRole;
+
+================================================================================
+/// FILE: backend\models\application.js
+================================================================================
+
+const pool = require('../db/connection');
+
+class Application {
+    // Dipakai di Landing Page (Hanya yang aktif)
+    static async findAllActive() {
+        const [rows] = await pool.execute(
+            'SELECT id, app_name, description, target_url FROM legs_applications WHERE is_active = 1 ORDER BY app_name ASC'
+        );
+        return rows;
+    }
+
+    // Dipakai di Tabel Admin (Tampilkan semua, termasuk yang non-aktif)
+    static async findAll() {
+        const [rows] = await pool.execute(
+            'SELECT * FROM legs_applications ORDER BY created_at DESC'
+        );
+        return rows;
+    }
+
+    // Tambah Aplikasi Baru
+    static async create(data) {
+        const { app_name, description, target_url, is_active } = data;
+        const [result] = await pool.execute(
+            'INSERT INTO legs_applications (app_name, description, target_url, is_active) VALUES (?, ?, ?, ?)',
+            [app_name, description || null, target_url, is_active !== undefined ? is_active : 1]
+        );
+        return result.insertId;
+    }
+
+    // Edit Aplikasi
+    static async update(id, data) {
+        const { app_name, description, target_url, is_active } = data;
+        const [result] = await pool.execute(
+            'UPDATE legs_applications SET app_name = ?, description = ?, target_url = ?, is_active = ? WHERE id = ?',
+            [app_name, description || null, target_url, is_active, id]
+        );
+        return result.affectedRows; // Mengembalikan 1 jika sukses
+    }
+
+    // Hapus Aplikasi Permanen
+    static async delete(id) {
+        const [result] = await pool.execute('DELETE FROM legs_applications WHERE id = ?', [id]);
+        return result.affectedRows;
+    }
+}
+
+module.exports = Application;
+
+================================================================================
+/// FILE: backend\models\user.js
+================================================================================
+
+const pool = require('../db/connection');
+
+class User {
+    static async findByUsername(username) {
+        const [rows] = await pool.execute('SELECT * FROM core_users WHERE username = ? AND is_active = 1', [username]);
+        return rows[0]; 
+    }
+
+    // [BARU] Ambil semua data user untuk Admin
+    static async findAll() {
+        const [rows] = await pool.execute('SELECT id, id_pegawai, username, role, is_active, created_at FROM core_users ORDER BY created_at DESC');
+        return rows;
+    }
+
+    static async create(data) {
+        const { id_pegawai, username, password_hash, role, created_by } = data;
+        const [result] = await pool.execute(
+            `INSERT INTO core_users (id_pegawai, username, password_hash, role, created_by) VALUES (?, ?, ?, ?, ?)`,
+            [id_pegawai || null, username, password_hash, role || 'user', created_by || 'system']
+        );
+        return result.insertId;
+    }
+
+    // [BARU] Ganti hak akses (Role) & Status
+    static async updateStatusAndRole(id, role, is_active) {
+        const [result] = await pool.execute('UPDATE core_users SET role = ?, is_active = ? WHERE id = ?', [role, is_active, id]);
+        return result.affectedRows;
+    }
+
+    // [BARU] Reset Password
+    static async resetPassword(id, newHash) {
+        const [result] = await pool.execute('UPDATE core_users SET password_hash = ? WHERE id = ?', [newHash, id]);
+        return result.affectedRows;
+    }
+
+    // [BARU] Hapus Permanen
+    static async delete(id) {
+        const [result] = await pool.execute('DELETE FROM core_users WHERE id = ?', [id]);
+        return result.affectedRows;
+    }
+}
+module.exports = User;
+
+================================================================================
+/// FILE: backend\routes\applicationRoutes.js
+================================================================================
+
+const express = require('express');
+const router = express.Router();
+const applicationController = require('../controllers/applicationController');
+const authenticate = require('../middlewares/authMiddleware');
+const requireRole = require('../middlewares/roleMiddleware');
+
+// Rute Publik (Semua user yang sudah login bisa akses)
+router.get('/', authenticate, applicationController.getAllActive);
+
+// ==========================================================
+// RUTE KHUSUS ADMIN (Dilindungi oleh authenticate & requireRole)
+// ==========================================================
+router.get('/all', authenticate, requireRole('admin'), applicationController.getAllForAdmin);
+router.post('/', authenticate, requireRole('admin'), applicationController.createApp);
+router.put('/:id', authenticate, requireRole('admin'), applicationController.updateApp);
+router.delete('/:id', authenticate, requireRole('admin'), applicationController.deleteApp);
+
+module.exports = router;
+
+================================================================================
+/// FILE: backend\routes\authRoutes.js
+================================================================================
+
+const express = require('express');
+const router = express.Router();
+const authController = require('../controllers/authController');
+
+// Endpoint: POST /api/auth/login
+router.post('/login', authController.login);
+
+module.exports = router;
+
+================================================================================
+/// FILE: backend\routes\userRoutes.js
+================================================================================
+
+const express = require('express');
+const router = express.Router();
+const userController = require('../controllers/userController');
+const authenticate = require('../middlewares/authMiddleware');
+const requireRole = require('../middlewares/roleMiddleware');
+
+// Semua rute user murni KHUSUS ADMIN
+router.use(authenticate, requireRole('admin'));
+
+router.get('/', userController.getAllUsers);
+router.post('/', userController.createUser);
+router.put('/:id/role', userController.updateUserRole);
+router.put('/:id/reset-password', userController.resetPassword);
+router.delete('/:id', userController.deleteUser);
+
+module.exports = router;
+
+================================================================================
+/// FILE: backend\services\authService.js
+================================================================================
+
+const User = require('../models/user');
+const { comparePassword } = require('../utils/hashUtil');
+const { generateToken } = require('../utils/jwtUtil');
+
+const login = async (username, password) => {
+    // 1. Cari user di database berdasarkan username
+    const user = await User.findByUsername(username);
+    if (!user) {
+        // Kita lempar error dengan statusCode 401 (Unauthorized)
+        throw { statusCode: 401, message: 'Username atau password salah.' };
+    }
+
+    // 2. Cocokkan password plaintext dari user dengan hash di database
+    const isMatch = await comparePassword(password, user.password_hash);
+    if (!isMatch) {
+        throw { statusCode: 401, message: 'Username atau password salah.' };
+    }
+
+    // 3. Jika cocok, siapkan data untuk dibungkus ke dalam Token JWT
+    const payload = {
+        id: user.id,
+        username: user.username,
+        role: user.role
+    };
+
+    // 4. Generate Token
+    const token = generateToken(payload);
+
+    // 5. Kembalikan token dan data user (tanpa password) untuk dikonsumsi Frontend
+    return {
+        token,
+        user: {
+            id: user.id,
+            username: user.username,
+            role: user.role
+        }
+    };
+};
+
+module.exports = { login };
+
+================================================================================
+/// FILE: backend\services\userService.js
+================================================================================
+
+
+
+
+
+
+================================================================================
+/// FILE: backend\utils\hashUtil.js
+================================================================================
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10; // Standar industri untuk keseimbangan keamanan & performa
+
+const hashPassword = async (password) => {
+    return await bcrypt.hash(password, saltRounds);
+};
+
+const comparePassword = async (password, hash) => {
+    return await bcrypt.compare(password, hash);
+};
+
+module.exports = { hashPassword, comparePassword };
+
+================================================================================
+/// FILE: backend\utils\jwtUtil.js
+================================================================================
+
+const jwt = require('jsonwebtoken');
+
+
+const generateToken = (payload) => {
+    return jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRES_IN || '8h' 
+    });
+};
+
+const verifyToken = (token) => {
+    return jwt.verify(token, process.env.JWT_SECRET);
+};
+
+module.exports = { generateToken, verifyToken };
+
+================================================================================
+/// FILE: backend\utils\logger.js
+================================================================================
+
+const { createLogger, format, transports } = require('winston');
+const { combine, timestamp, printf, colorize } = format;
+
+// Syarat Format: [WAKTU] LEVEL: PESAN
+const customFormat = printf(({ level, message, timestamp }) => {
+    return `[${timestamp}] ${level}: ${message}`;
+});
+
+/**
+ * Konfigurasi Winston Logger untuk EXVAN.
+ * Menyimpan log error di file terpisah, dan semua log di gabungan.
+ */
+const logger = createLogger({
+    level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+    format: combine(
+        timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        customFormat
+    ),
+    transports: [
+        // Simpan log error secara spesifik ke file ini
+        new transports.File({ filename: 'logs/error.log', level: 'error' }),
+        // Simpan semua log (info, warning, error) ke file ini
+        new transports.File({ filename: 'logs/combined.log' })
+    ],
+});
+
+// Jika tidak di production, tampilkan juga log di Terminal/Console dengan warna agar cantik
+if (process.env.NODE_ENV !== 'production') {
+    logger.add(new transports.Console({
+        format: combine(
+            colorize(), // Memberi warna pada level (merah untuk error, hijau untuk info)
+            timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+            customFormat
+        )
+    }));
+}
+
+module.exports = logger;
+
+
+
+
+================================================================================
+/// FILE: backend\utils\response.js
+================================================================================
+
+const success = (res, message = "OK", data = null, code = 200) => {
+    return res.status(code).json({
+        status: "success",
+        code: code,
+        message: message,
+        data: data,
+        errors: null
+    });
+};
+
+const error = (res, message = "Error", errors = null, code = 400) => {
+    return res.status(code).json({
+        status: "error",
+        code: code,
+        message: message,
+        data: null,
+        errors: errors
+    });
+};
+
+module.exports = { success, error };
+
+================================================================================
+/// FILE: config\config.json
+================================================================================
+
+{
+    "port": 4000,
+    "db": {
+        "client": "sqlite",
+        "connection": "./backend/db/app.sqlite"
+    },
+    "externalApi": {
+        "baseUrl": "https://worldtimeapi.org/api"
+    },
+    "auth": {
+        "jwtSecret": "CHANGE_ME_IN_PROD"
+    }
+}
+
+================================================================================
+/// FILE: config\production.json
+================================================================================
+
+{
+    "port": 4000,
+    "db": {
+        "client": "sqlite",
+        "connection": "./backend/db/app.sqlite"
+    },
+    "externalApi": {
+        "baseUrl": "https://worldtimeapi.org/api"
+    },
+    "auth": {
+        "jwtSecret": "CHANGE_ME_IN_PROD"
+    }
+}
+
+================================================================================
+/// FILE: docs\PRD n SRS.md
+================================================================================
+
+# 📄 Product Requirements Document (PRD) & Software Requirements Specification (SRS)
+
+**Nama Proyek:** LEGS (Library Engine Generate System)
+**Konteks:** Portal Internal Perpustakaan Pusat Universitas Terbuka
+
+---
+
+## BAGIAN 1: PRD (Product Requirements Document)
+
+### 1. Visi Produk
+
+LEGS adalah sebuah portal web internal (Gateway Hub) yang bertindak sebagai pintu gerbang tunggal dan aman menuju seluruh aplikasi serta _engine_ yang digunakan oleh staf Perpustakaan Pusat. Sistem ini dirancang sepenuhnya dinamis, minimalis, dan elegan tanpa memerlukan perubahan _source code_ saat ada penambahan aplikasi baru.
+
+### 2. Target Pengguna
+
+- **Administrator (IT):** Memiliki kendali penuh untuk mengelola akses pengguna dan mendaftarkan aplikasi baru ke dalam portal.
+- **Pengguna (Pustakawan/Staf Operasional/AdminIT):** Menggunakan portal murni sebagai _launcher_ atau _dashboard_ untuk mengakses aplikasi kerja (seperti ETL Karil, dll).
+
+### 3. Ruang Lingkup & Fitur Utama
+
+- **Sistem Autentikasi Tertutup:** Tidak ada fitur pendaftaran publik (_register_). Akses masuk murni menggunakan kombinasi **Username** dan **Password**.
+- **Landing Page Dinamis (App Dashboard):** Menampilkan daftar aplikasi dalam bentuk _Grid/Card_ tipografi yang elegan dan bersih, tanpa menggunakan _file_ gambar/ikon.
+- **Modul Manajemen Pengguna (User CRUD):** Antarmuka khusus admin untuk menambah, melihat, mengedit, dan menghapus staf yang berhak mengakses LEGS.
+- **Modul Manajemen Aplikasi (App CRUD):** Antarmuka khusus admin untuk mendaftarkan URL aplikasi baru, lengkap dengan Nama dan Deskripsi, agar langsung tampil di _Landing Page_.
+
+---
+
+## BAGIAN 2: SRS (Software Requirements Specification)
+
+### 1. Tumpukan Teknologi (Tech Stack)
+
+Aplikasi ini akan dibangun menggunakan standar struktur **EXVAN**:
+
+- **Backend:** Node.js dengan kerangka kerja Express.js.
+- **Frontend:** Vanilla JavaScript, HTML5, dan CSS3 murni.
+- **Database:** MySQL.
+
+### 2. Kebutuhan Fungsional (Functional Requirements)
+
+**A. Autentikasi & Keamanan**
+
+- Sistem harus memvalidasi sesi pengguna sebelum menampilkan _dashboard_ (menggunakan JWT atau _Session Cookie_).
+- Sistem wajib melakukan _hashing_ kriptografi standar industri (misal: `bcrypt`) pada setiap _password_ sebelum disimpan ke MySQL. Tidak boleh ada _password_ dalam bentuk _plaintext_.
+
+**B. Manajemen Pengguna (Khusus Admin)**
+
+- Sistem menyediakan form _Create User_ dengan input: `Username`, `Password`, dan `Role` (Admin/User).
+- Sistem dapat mereset _password_ pengguna dan memperbarui data _role_.
+- Sistem dapat menghapus akun secara permanen (_hard delete_) atau menonaktifkannya (_soft delete_).
+
+**C. Manajemen Aplikasi (Khusus Admin)**
+
+- Sistem menyediakan form _Create App_ dengan input: `Nama Aplikasi`, `Deskripsi Singkat`, `URL Tujuan`, dan `Status` (Aktif/Nonaktif).
+- Sistem tidak menyediakan fitur unggah _file_ (logo/ikon). Tampilan aplikasi di _dashboard_ murni mengandalkan desain tipografi (teks) yang modern dan proporsional.
+
+**D. Landing Page (Dashboard Pengguna)**
+
+- Sistem mengambil data aplikasi yang berstatus "Aktif" dari MySQL dan menampilkannya (_Read_).
+- Setiap _card_ aplikasi yang diklik akan mengarahkan (_redirect/open new tab_) pengguna ke `URL Tujuan` yang terdaftar.
+
+### 3. Kebutuhan Non-Fungsional (Non-Functional Requirements)
+
+- **Keamanan Database:** Semua _query_ ke MySQL harus dilindungi dari serangan _SQL Injection_ (menggunakan _Prepared Statements_ atau ORM ringan).
+- **Antarmuka Pengguna (UI/UX):** Tampilan harus ekstra responsif, cantik, dan modern. Mengutamakan _whitespace_, kombinasi warna yang profesional, serta penulisan kode CSS yang modular dan rapi.
+- **Struktur Kode:** Penulisan _code_ berbasis Javascript harus rapi, modular, jelas, dan menerapkan prinsip _Software Engineering_ yang baik agar sistem sangat stabil dalam jangka panjang.
+
+
+================================================================================
+/// FILE: frontend\index.html
+================================================================================
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LEGS Portal - Perpustakaan Pusat UT</title>
+    
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/base.css" />
+    <link rel="stylesheet" href="/css/pages.css" />
+  </head>
+  <body>
+    <div id="app"></div>
+    
+    <script type="module" src="/js/main.js"></script>
+  </body>
+</html>
+
+================================================================================
+/// FILE: frontend\css\animations.css
+================================================================================
+
+
+
+
+
+
+================================================================================
+/// FILE: frontend\css\base.css
+================================================================================
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font);
+  background-color: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button, input {
+  font-family: inherit;
+}
+
+================================================================================
+/// FILE: frontend\css\components.css
+================================================================================
+
+
+.btn {
+  border: 1px solid var(--panel-border);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, rgba(124, 92, 255, 0.9), rgba(34, 197, 94, 0.6));
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.card-pad {
+  padding: 18px;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.kpi {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 700px) {
+  .kpi {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kpi .tile {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.kpi .tile .label {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.kpi .tile .value {
+  font-size: 22px;
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+.footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+}
+
+.footer-inner {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+
+
+
+================================================================================
+/// FILE: frontend\css\layout.css
+================================================================================
+
+
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(12px);
+  background: rgba(11, 18, 32, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  font-weight: 800;
+  letter-spacing: 0.4px;
+}
+
+.nav {
+  display: flex;
+  gap: 10px;
+}
+
+.main {
+  padding: 24px 0 48px;
+}
+
+
+
+
+================================================================================
+/// FILE: frontend\css\pages.css
+================================================================================
+
+/* --- LOGIN PAGE: DEEP BLUE & CREAM PREMIUM EDITION --- */
+.login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Latar belakang Dark (Deep Blue UT) */
+    background: radial-gradient(circle at top left, #0f5bcc 0%, var(--ut-deep-blue) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glow Orbs (Bola Cahaya Ambient) */
+.glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: 1;
+    opacity: 0.6;
+    animation: floatOrb 10s infinite ease-in-out alternate;
+}
+.orb-primary {
+    top: -5%; left: 5%;
+    width: 400px; height: 400px;
+    background-color: var(--ut-light-blue);
+}
+.orb-accent {
+    bottom: -10%; right: 10%;
+    width: 350px; height: 350px;
+    background-color: var(--ut-gold);
+    animation-delay: -3s;
+}
+
+/* Form Container (Light Cream Glass + Neumorphism) */
+.premium-light-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 45px 45px;
+    position: relative;
+    z-index: 10;
+    
+    /* Penggunaan Warna Krem/Beige Utama */
+    background: rgba(255, 247, 225, 0.95); /* var(--ut-cream) dengan transparansi 95% */
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    
+    /* Aksen putih hanya sebagai list tipis (border) */
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 28px;
+    
+    /* Neumorphism Shadow (Menonjol dari latar gelap) */
+    box-shadow: 
+        15px 15px 35px rgba(0, 0, 0, 0.3), 
+        -5px -5px 25px rgba(255, 199, 46, 0.1),
+        inset 2px 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Penempatan Logo Presisi */
+.brand-logo-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+.logo-placeholder {
+    width: 65px;
+    height: 65px;
+    background: linear-gradient(135deg, var(--ut-deep-blue), #0f5bcc);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ut-gold);
+    box-shadow: 0 8px 20px rgba(10, 68, 148, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.5); /* Aksen putih */
+}
+
+.brand-title {
+    color: var(--ut-deep-blue);
+    font-size: 32px;
+    font-weight: 800;
+    margin-bottom: 4px;
+    letter-spacing: -0.5px;
+}
+
+.friendly-text {
+    color: #475569; /* Slate Gray untuk teks di atas Krem */
+    font-size: 13.5px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+/* Group & Label */
+.neuromorphic-input-group {
+    margin-bottom: 22px;
+    display: flex;
+    flex-direction: column;
+}
+.neuromorphic-input-group label {
+    font-size: 13px;
+    color: var(--ut-deep-blue);
+    font-weight: 700;
+    margin-bottom: 8px;
+    padding-left: 4px;
+    letter-spacing: 0.3px;
+}
+
+/* Input Styles: Tenggelam ke dalam Beige (Inset Shadow) */
+.login-form input[type="text"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 15px 18px;
+    background: #fdfaf0; /* Krem yang lebih muda untuk input */
+    border: 1px solid rgba(10, 68, 148, 0.1);
+    border-radius: 14px;
+    font-size: 15px;
+    color: var(--ut-deep-blue);
+    font-weight: 600;
+    box-shadow: 
+        inset 4px 4px 8px rgba(0, 0, 0, 0.04), 
+        inset -3px -3px 6px rgba(255, 255, 255, 1);
+    transition: all 0.3s ease;
+}
+.login-form input:focus {
+    outline: none;
+    background: #ffffff; /* Putih dipakai murni saat fokus input saja */
+    border-color: var(--ut-deep-blue);
+    box-shadow: 
+        inset 3px 3px 6px rgba(0, 0, 0, 0.05), 
+        0 0 0 4px rgba(10, 68, 148, 0.15);
+}
+.login-form input::placeholder {
+    color: #94a3b8;
+    font-weight: 500;
+}
+
+/* Wrapper Ikon Mata */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+}
+.password-wrapper input {
+    padding-right: 48px;
+}
+.btn-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+.btn-icon:hover { color: var(--ut-deep-blue); }
+
+/* Tombol Submit Utama */
+.btn-glow.login-btn {
+    width: 100%;
+    padding: 16px 18px;
+    font-size: 15.5px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--ut-deep-blue), #0f5bcc);
+    color: var(--ut-cream);
+    border: none;
+    border-radius: 14px;
+    margin-top: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        6px 6px 16px rgba(10, 68, 148, 0.3), 
+        -4px -4px 12px rgba(255, 255, 255, 0.8);
+}
+.btn-glow.login-btn:hover {
+    background: linear-gradient(135deg, var(--ut-gold), #eab308);
+    color: var(--ut-deep-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 199, 46, 0.4);
+}
+
+/* Alert Box */
+.alert {
+    padding: 14px 16px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+    animation: fadeIn 0.3s ease;
+}
+.alert.hidden { display: none; }
+.alert.error { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+.alert.success { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+
+/* Animasi */
+@keyframes floatOrb { 0% { transform: translate(0, 0); } 100% { transform: translate(25px, -25px); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+.shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+@keyframes shake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
+  40%, 60% { transform: translate3d(3px, 0, 0); }
+}
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2.5px solid rgba(255,255,255,0.3);
+    border-top: 2.5px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* --- UNIFIED BACKGROUND (LOGIN & DASHBOARD) --- */
+.login-wrapper, .app-unified-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top left, #0f5bcc 0%, var(--ut-deep-blue) 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
+}
+
+/* --- DASHBOARD PREMIUM PANEL --- */
+.dashboard-panel {
+    width: 100%;
+    max-width: 1100px;
+    height: 90vh; /* Agar tidak kepanjangan, ada ruang untuk background Deep Blue terlihat */
+    display: flex;
+    flex-direction: column;
+    padding: 0; /* Padding diatur per elemen di dalamnya */
+    overflow: hidden;
+}
+
+/* Navigasi Dalam Dashboard */
+.dashboard-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 40px;
+    border-bottom: 1px solid rgba(10, 68, 148, 0.1);
+    background: rgba(255, 255, 255, 0.4); /* Transparansi halus */
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-placeholder-small {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--ut-deep-blue), #0f5bcc);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ut-gold);
+}
+
+.brand-text-dark {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ut-deep-blue);
+    letter-spacing: -0.5px;
+}
+
+.user-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.greeting-text {
+    color: #475569;
+    font-size: 14.5px;
+}
+.greeting-text strong {
+    color: var(--ut-deep-blue);
+    font-weight: 700;
+}
+
+.btn-logout-premium {
+    background: transparent;
+    border: 1.5px solid rgba(10, 68, 148, 0.2);
+    color: var(--ut-deep-blue);
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-logout-premium:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #b91c1c;
+}
+
+/* Area Konten Utama */
+.dashboard-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto; /* Bisa di-scroll jika aplikasi banyak */
+}
+
+.content-header {
+    margin-bottom: 35px;
+}
+
+.content-title {
+    color: var(--ut-deep-blue);
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+}
+
+.content-subtitle {
+    color: #475569;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* Grid & Card Aplikasi */
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.app-card-premium {
+    background: #ffffff; /* Putih bersih kontras dengan latar panel Krem */
+    border: 1px solid rgba(10, 68, 148, 0.08);
+    border-radius: 16px;
+    padding: 28px 24px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 170px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.app-card-premium:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(10, 68, 148, 0.1), 0 0 0 2px var(--ut-light-blue);
+}
+
+.app-card-title {
+    color: var(--ut-deep-blue);
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.app-card-desc {
+    color: #64748b;
+    font-size: 13.5px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.app-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--ut-deep-blue);
+    font-weight: 700;
+    font-size: 13.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.app-card-premium:hover .app-card-footer {
+    color: var(--ut-gold);
+}
+
+/* State Kosong & Loading */
+.empty-state-premium {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 16px;
+    border: 2px dashed rgba(10, 68, 148, 0.2);
+    color: var(--ut-deep-blue);
+}
+
+.loading-state {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: var(--ut-deep-blue);
+    font-weight: 600;
+    padding: 40px;
+}
+
+.spinner-dark {
+    width: 20px;
+    height: 20px;
+    border: 2.5px solid rgba(10, 68, 148, 0.2);
+    border-top: 2.5px solid var(--ut-deep-blue);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+/* --- PREMIUM TABLE STYLES --- */
+.table-container {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1px; /* Sebagai border halus */
+    box-shadow: 0 10px 25px rgba(10, 68, 148, 0.08);
+    overflow-x: auto;
+}
+
+.premium-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.premium-table th {
+    background: #fdfaf0; /* Krem muda */
+    color: var(--ut-deep-blue);
+    font-weight: 800;
+    padding: 18px 24px;
+    font-size: 14.5px;
+    border-bottom: 2px solid rgba(10, 68, 148, 0.1);
+}
+
+.premium-table th:first-child { border-top-left-radius: 16px; }
+.premium-table th:last-child { border-top-right-radius: 16px; }
+
+.premium-table td {
+    padding: 18px 24px;
+    border-bottom: 1px solid rgba(10, 68, 148, 0.05);
+    font-size: 14.5px;
+    color: #334155;
+}
+
+.premium-table tr:hover td {
+    background: rgba(27, 176, 209, 0.03); /* Highlight sangat tipis */
+}
+
+/* Badge Status */
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+}
+.status-badge.active { background: #dcfce7; color: #166534; }
+.status-badge.inactive { background: #fee2e2; color: #991b1b; }
+
+/* Tombol Aksi Tabel */
+.btn-action {
+    background: transparent;
+    border: none;
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+    margin-left: 12px;
+    transition: color 0.2s;
+}
+.edit-btn { color: var(--ut-light-blue); }
+.edit-btn:hover { color: var(--ut-deep-blue); }
+.delete-btn { color: #f87171; }
+.delete-btn:hover { color: #b91c1c; }
+
+/* --- MODAL (POP-UP) STYLES --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(11, 18, 32, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+.premium-select {
+    width: 100%;
+    padding: 15px 18px;
+    background: #fdfaf0;
+    border: 1px solid rgba(10, 68, 148, 0.1);
+    border-radius: 14px;
+    font-size: 15px;
+    color: var(--ut-deep-blue);
+    font-weight: 600;
+    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.04);
+    cursor: pointer;
+}
+.premium-select:focus {
+    outline: none;
+    background: #ffffff;
+    border-color: var(--ut-deep-blue);
+}
+
+/* --- SEGMENTED NAV TABS (ADMIN MENU) --- */
+.nav-menu-center {
+    display: flex;
+    gap: 8px;
+    background: rgba(10, 68, 148, 0.06);
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid rgba(10, 68, 148, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.nav-tab {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-tab:hover { color: var(--ut-deep-blue); }
+
+.nav-tab.active {
+    background: #ffffff;
+    color: var(--ut-deep-blue);
+    box-shadow: 0 4px 12px rgba(10, 68, 148, 0.08);
+}
+
+================================================================================
+/// FILE: frontend\css\variables.css
+================================================================================
+
+:root {
+  /* Palet Dasar EXVAN */
+  --bg: #0b1220;
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.6);
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+
+  /* Palet Identitas UT Premium */
+  --ut-deep-blue: #0A4494;
+  --ut-gold: #ffc72e;
+  --ut-light-blue: #1bb0d1;
+  --ut-cream: #fff7e1;
+}
+
+================================================================================
+/// FILE: frontend\js\constants.js
+================================================================================
+
+// URL dasar untuk mengarah ke backend EXVAN kita
+export const API_BASE_URL = 'http://localhost:4000/api';
+
+================================================================================
+/// FILE: frontend\js\main.js
+================================================================================
+
+import Router from './router.js';
+import LoginPage from './pages/LoginPage.js';
+import LandingPage from './pages/LandingPage.js';
+import AdminAppPage from './pages/AdminAppPage.js';
+import AdminUserPage from './pages/AdminUserPage.js'; // [TAMBAHKAN INI]
+
+const routes = [
+    { path: '/login', component: LoginPage },
+    { path: '/', component: LandingPage },
+    { path: '/admin/apps', component: AdminAppPage },
+    { path: '/admin/users', component: AdminUserPage } // [TAMBAHKAN INI]
+];
+
+const appRouter = new Router(routes);
+
+document.addEventListener('DOMContentLoaded', () => {
+    appRouter.loadRoute();
+});
+
+================================================================================
+/// FILE: frontend\js\router.js
+================================================================================
+
+class Router {
+    constructor(routes) {
+        this.routes = routes;
+        this.rootElement = document.getElementById('app'); 
+        window.addEventListener('popstate', () => this.loadRoute());
+    }
+
+    navigate(path) {
+        window.history.pushState({}, "", path);
+        this.loadRoute();
+    }
+
+    async loadRoute() {
+        const currentPath = window.location.pathname;
+        let route = this.routes.find(r => r.path === currentPath) || this.routes.find(r => r.path === '/404');
+        
+        // --- LOGIKA SATPAM (ROUTE GUARD) ---
+        const isAuthenticated = !!localStorage.getItem('jwt_token');
+
+        // Jika belum login tapi mencoba akses halaman selain login -> tendang ke /login
+        if (!isAuthenticated && currentPath !== '/login') {
+            this.navigate('/login');
+            return;
+        }
+
+        // Jika sudah login tapi mencoba buka halaman login -> tendang ke Dashboard (/)
+        if (isAuthenticated && currentPath === '/login') {
+            this.navigate('/');
+            return;
+        }
+
+        if (!route) {
+            this.rootElement.innerHTML = `<h1 style="color:white; text-align:center; margin-top:50px;">404 - Halaman Tidak Ditemukan</h1>`;
+            return;
+        }
+
+        try {
+            const pageHTML = await route.component.render();
+            this.rootElement.innerHTML = pageHTML;
+            if (route.component.afterRender) {
+                await route.component.afterRender();
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
+export default Router;
+
+================================================================================
+/// FILE: frontend\js\state.js
+================================================================================
+
+
+
+
+
+
+================================================================================
+/// FILE: frontend\js\components\Footer.js
+================================================================================
+
+
+
+
+
+
+================================================================================
+/// FILE: frontend\js\components\Hero.js
+================================================================================
+
+
+
+
+
+
+================================================================================
+/// FILE: frontend\js\pages\AboutPage.js
+================================================================================
+
+
+
+
+
+
+================================================================================
+/// FILE: frontend\js\pages\AdminAppPage.js
+================================================================================
+
+import ApiService from '../services/apiService.js';
+import { Dialog } from '../utils/dialog.js';
+
+const AdminAppPage = {
+    render: async () => {
+        const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
+        if (userData.role !== 'admin') return `<div>Akses Ditolak</div>`;
+
+        return `
+            <div class="app-unified-wrapper">
+                <div class="glow-orb orb-primary"></div><div class="glow-orb orb-accent"></div>
+                <div class="dashboard-panel premium-light-card">
+                    <nav class="dashboard-nav">
+                        <div class="nav-brand">
+                            <div class="logo-placeholder-small"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg></div>
+                            <span class="brand-text-dark">LEGS Panel</span>
+                        </div>
+                        <div class="nav-menu-center">
+                            <button class="nav-tab" data-path="/">Portal Utama</button>
+                            <button class="nav-tab active" data-path="/admin/apps">Aplikasi</button>
+                            <button class="nav-tab" data-path="/admin/users">Pengguna</button>
+                        </div>
+                        <div class="user-controls">
+                            <span class="greeting-text">Halo, <strong>${userData.username}</strong></span>
+                            <button id="logoutBtn" class="btn-logout-premium" style="margin-left:10px;">Akhiri Sesi</button>
+                        </div>
+                    </nav>
+                    <main class="dashboard-content">
+                        <header class="content-header" style="display:flex; justify-content:space-between; align-items:center;">
+                            <div><h1 class="content-title">Manajemen Aplikasi</h1><p class="content-subtitle">Atur modul dan engine yang tampil di portal.</p></div>
+                            <button id="openModalBtn" class="btn-glow login-btn" style="width:auto; padding:12px 24px; margin-top:0;">+ Tambah Aplikasi</button>
+                        </header>
+                        <div class="table-container">
+                            <table class="premium-table">
+                                <thead><tr><th>Nama Aplikasi</th><th>URL Tujuan</th><th>Status</th><th style="text-align:right;">Aksi</th></tr></thead>
+                                <tbody id="tableBody"><tr><td colspan="4" style="text-align:center;">Memuat data...</td></tr></tbody>
+                            </table>
+                        </div>
+                    </main>
+                </div>
+                <div id="appModal" class="modal-overlay hidden">
+                    <div class="modal-card premium-light-card" style="max-width: 500px; padding: 35px;">
+                        <div class="modal-header" style="margin-bottom: 25px; display:flex; justify-content:space-between;">
+                            <h2 id="modalTitle" class="content-title" style="font-size: 22px;">Form Aplikasi</h2>
+                            <button id="closeModalBtn" class="btn-icon" style="position:static;">✖</button>
+                        </div>
+                        <form id="appForm" class="login-form">
+                            <input type="hidden" id="appId" value="">
+                            <div class="form-group neuromorphic-input-group"><label>Nama Aplikasi</label><input type="text" id="appName" required autocomplete="off"></div>
+                            <div class="form-group neuromorphic-input-group"><label>URL Tujuan</label><input type="text" id="targetUrl" required autocomplete="off"></div>
+                            <div class="form-group neuromorphic-input-group"><label>Deskripsi</label><input type="text" id="description" autocomplete="off"></div>
+                            <div class="form-group neuromorphic-input-group">
+                                <label>Status</label>
+                                <select id="isActive" class="premium-select"><option value="1">Aktif</option><option value="0">Non-aktif</option></select>
+                            </div>
+                            <div id="modalAlert" class="alert hidden"></div>
+                            <button type="submit" id="saveAppBtn" class="btn-glow login-btn">Simpan Data</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+    afterRender: async () => {
+        // Navigasi Tab
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                window.history.pushState({}, "", e.target.getAttribute('data-path'));
+                window.dispatchEvent(new Event('popstate'));
+            });
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            Dialog.confirm('Akhiri Sesi', 'Yakin ingin keluar dari portal?', () => {
+                localStorage.removeItem('jwt_token'); localStorage.removeItem('user_data');
+                window.history.pushState({}, "", "/login"); window.dispatchEvent(new Event('popstate'));
+            });
+        });
+
+        const modal = document.getElementById('appModal');
+        const loadTable = async () => {
+            const tbody = document.getElementById('tableBody');
+            try {
+                const res = await ApiService.get('/applications/all');
+                tbody.innerHTML = res.data.map(app => `
+                    <tr>
+                        <td style="font-weight:700; color:var(--ut-deep-blue);">${app.app_name}</td>
+                        <td style="color:#64748b;">${app.target_url}</td>
+                        <td><span class="status-badge ${app.is_active ? 'active' : 'inactive'}">${app.is_active ? 'Aktif' : 'Non-aktif'}</span></td>
+                        <td style="text-align:right;">
+                            <button class="btn-action edit-btn" data-app='${JSON.stringify(app)}'>Edit</button>
+                            <button class="btn-action delete-btn" data-id="${app.id}">Hapus</button>
+                        </td>
+                    </tr>`).join('');
+
+                document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', (e) => openModal(JSON.parse(e.target.getAttribute('data-app')))));
+                document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', (e) => {
+                    Dialog.confirm('Hapus Aplikasi', 'Aplikasi ini akan dihapus permanen. Lanjutkan?', async () => {
+                        await ApiService.delete(`/applications/${e.target.getAttribute('data-id')}`); loadTable();
+                    });
+                }));
+            } catch (err) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:red;">${err.message}</td></tr>`; }
+        };
+
+        const openModal = (app = null) => {
+            document.getElementById('modalAlert').className = 'alert hidden';
+            if(app) {
+                document.getElementById('appId').value = app.id; document.getElementById('appName').value = app.app_name;
+                document.getElementById('targetUrl').value = app.target_url; document.getElementById('description').value = app.description || '';
+                document.getElementById('isActive').value = app.is_active;
+            } else { document.getElementById('appForm').reset(); document.getElementById('appId').value = ''; }
+            modal.classList.remove('hidden');
+        };
+
+        document.getElementById('openModalBtn').addEventListener('click', () => openModal());
+        document.getElementById('closeModalBtn').addEventListener('click', () => modal.classList.add('hidden'));
+        document.getElementById('appForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const payload = { app_name: document.getElementById('appName').value, target_url: document.getElementById('targetUrl').value, description: document.getElementById('description').value, is_active: parseInt(document.getElementById('isActive').value) };
+            try {
+                const id = document.getElementById('appId').value;
+                if (id) await ApiService.put(`/applications/${id}`, payload); else await ApiService.post('/applications', payload);
+                modal.classList.add('hidden'); loadTable(); 
+            } catch (err) { const alert = document.getElementById('modalAlert'); alert.textContent = err.message; alert.className = 'alert error'; }
+        });
+        loadTable();
+    }
+};
+export default AdminAppPage;
+
+================================================================================
+/// FILE: frontend\js\pages\AdminUserPage.js
+================================================================================
+
+import ApiService from '../services/apiService.js';
+import { Dialog } from '../utils/dialog.js';
+
+const AdminUserPage = {
+    render: async () => {
+        const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
+        if (userData.role !== 'admin') return `<div>Akses Ditolak</div>`;
+
+        return `
+            <div class="app-unified-wrapper">
+                <div class="glow-orb orb-primary"></div><div class="glow-orb orb-accent"></div>
+                <div class="dashboard-panel premium-light-card">
+                    <nav class="dashboard-nav">
+                        <div class="nav-brand">
+                            <div class="logo-placeholder-small"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg></div>
+                            <span class="brand-text-dark">LEGS Panel</span>
+                        </div>
+                        <div class="nav-menu-center">
+                            <button class="nav-tab" data-path="/">Portal Utama</button>
+                            <button class="nav-tab" data-path="/admin/apps">Aplikasi</button>
+                            <button class="nav-tab active" data-path="/admin/users">Pengguna</button>
+                        </div>
+                        <div class="user-controls">
+                            <span class="greeting-text">Halo, <strong>${userData.username}</strong></span>
+                            <button id="logoutBtn" class="btn-logout-premium" style="margin-left:10px;">Akhiri Sesi</button>
+                        </div>
+                    </nav>
+                    <main class="dashboard-content">
+                        <header class="content-header" style="display:flex; justify-content:space-between; align-items:center;">
+                            <div><h1 class="content-title">Manajemen Pengguna</h1><p class="content-subtitle">Atur hak akses staf untuk portal LEGS.</p></div>
+                            <button id="openUserModalBtn" class="btn-glow login-btn" style="width:auto; padding:12px 24px; margin-top:0;">+ Akun Baru</button>
+                        </header>
+                        <div class="table-container">
+                            <table class="premium-table">
+                                <thead><tr><th>Username</th><th>Role</th><th>Status</th><th style="text-align:right;">Aksi</th></tr></thead>
+                                <tbody id="userTableBody"><tr><td colspan="4" style="text-align:center;">Memuat data...</td></tr></tbody>
+                            </table>
+                        </div>
+                    </main>
+                </div>
+
+                <div id="userModal" class="modal-overlay hidden">
+                    <div class="modal-card premium-light-card" style="max-width: 450px; padding: 35px;">
+                        <div class="modal-header" style="margin-bottom: 25px; display:flex; justify-content:space-between;">
+                            <h2 class="content-title" style="font-size: 22px;">Buat Akun Staf</h2>
+                            <button id="closeUserModalBtn" class="btn-icon" style="position:static;">✖</button>
+                        </div>
+                        <form id="userForm" class="login-form">
+                            <div class="form-group neuromorphic-input-group"><label>Username</label><input type="text" id="newUsername" required autocomplete="off"></div>
+                            <div class="form-group neuromorphic-input-group"><label>Password</label><input type="password" id="newPassword" required></div>
+                            <div class="form-group neuromorphic-input-group">
+                                <label>Hak Akses (Role)</label>
+                                <select id="newRole" class="premium-select"><option value="user">User Biasa</option><option value="admin">Administrator</option></select>
+                            </div>
+                            <div id="userModalAlert" class="alert hidden"></div>
+                            <button type="submit" id="saveUserBtn" class="btn-glow login-btn">Buat Akun</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        `;
+    },
+    afterRender: async () => {
+        // Navigasi Tab
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                window.history.pushState({}, "", e.target.getAttribute('data-path'));
+                window.dispatchEvent(new Event('popstate'));
+            });
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            Dialog.confirm('Akhiri Sesi', 'Yakin ingin keluar dari portal?', () => {
+                localStorage.removeItem('jwt_token'); localStorage.removeItem('user_data');
+                window.history.pushState({}, "", "/login"); window.dispatchEvent(new Event('popstate'));
+            });
+        });
+
+        const loadTable = async () => {
+            const tbody = document.getElementById('userTableBody');
+            try {
+                const res = await ApiService.get('/users');
+                tbody.innerHTML = res.data.map(user => `
+                    <tr>
+                        <td style="font-weight:700; color:var(--ut-deep-blue);">${user.username}</td>
+                        <td style="text-transform: capitalize; color:#64748b;">${user.role}</td>
+                        <td><span class="status-badge ${user.is_active ? 'active' : 'inactive'}">${user.is_active ? 'Aktif' : 'Terblokir'}</span></td>
+                        <td style="text-align:right;">
+                            <button class="btn-action reset-btn" data-id="${user.id}" style="color:var(--ut-gold);">Reset Sandi</button>
+                            <button class="btn-action delete-btn" data-id="${user.id}" data-name="${user.username}">Hapus</button>
+                        </td>
+                    </tr>`).join('');
+
+                // Action: Reset Password
+                document.querySelectorAll('.reset-btn').forEach(btn => btn.addEventListener('click', (e) => {
+                    Dialog.confirm('Reset Kata Sandi', 'Sandi staf ini akan direset menjadi "UTLibrary2026!". Lanjutkan?', async () => {
+                        try {
+                            const res = await ApiService.put(`/users/${e.target.getAttribute('data-id')}/reset-password`);
+                            Dialog.alert('Berhasil', res.message);
+                        } catch (err) { Dialog.alert('Error', err.message); }
+                    });
+                }));
+
+                // Action: Delete User
+                document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', (e) => {
+                    const name = e.target.getAttribute('data-name');
+                    if(name === JSON.parse(localStorage.getItem('user_data')).username) return Dialog.alert('Ditolak', 'Anda tidak bisa menghapus akun Anda sendiri saat sedang login.');
+                    
+                    Dialog.confirm('Hapus Akun', `Akun staf "${name}" akan dihapus permanen. Lanjutkan?`, async () => {
+                        try { await ApiService.delete(`/users/${e.target.getAttribute('data-id')}`); loadTable(); } 
+                        catch (err) { Dialog.alert('Error', err.message); }
+                    });
+                }));
+            } catch (err) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:red;">${err.message}</td></tr>`; }
+        };
+
+        const modal = document.getElementById('userModal');
+        document.getElementById('openUserModalBtn').addEventListener('click', () => { document.getElementById('userForm').reset(); modal.classList.remove('hidden'); });
+        document.getElementById('closeUserModalBtn').addEventListener('click', () => modal.classList.add('hidden'));
+
+        document.getElementById('userForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                await ApiService.post('/users', { username: document.getElementById('newUsername').value, password: document.getElementById('newPassword').value, role: document.getElementById('newRole').value });
+                modal.classList.add('hidden'); loadTable(); Dialog.alert('Berhasil', 'Akun staf baru telah dibuat.');
+            } catch (err) { const alert = document.getElementById('userModalAlert'); alert.textContent = err.message; alert.className = 'alert error'; }
+        });
+        loadTable();
+    }
+};
+export default AdminUserPage;
+
+================================================================================
+/// FILE: frontend\js\pages\LandingPage.js
+================================================================================
+
+import ApiService from '../services/apiService.js';
+import { Dialog } from '../utils/dialog.js';
+
+const LandingPage = {
+    render: async () => {
+        const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
+        
+        // Menu Tengah yang Estetik (Hanya untuk Admin)
+        const adminNavHTML = userData.role === 'admin' ? `
+            <div class="nav-menu-center">
+                <button class="nav-tab active" data-path="/">Portal Utama</button>
+                <button class="nav-tab" data-path="/admin/apps">Aplikasi</button>
+                <button class="nav-tab" data-path="/admin/users">Pengguna</button>
+            </div>
+        ` : '';
+
+        return `
+            <div class="app-unified-wrapper">
+                <div class="glow-orb orb-primary"></div><div class="glow-orb orb-accent"></div>
+                <div class="dashboard-panel premium-light-card">
+                    <nav class="dashboard-nav">
+                        <div class="nav-brand">
+                            <div class="logo-placeholder-small"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg></div>
+                            <span class="brand-text-dark">LEGS</span>
+                        </div>
+                        ${adminNavHTML}
+                        <div class="user-controls">
+                            <span class="greeting-text">Halo, <strong>${userData.username || 'Staf'}</strong></span>
+                            <button id="logoutBtn" class="btn-logout-premium" style="margin-left: 10px;">Akhiri Sesi</button>
+                        </div>
+                    </nav>
+                    <main class="dashboard-content">
+                        <header class="content-header">
+                            <h1 class="content-title">Library Engine Generate System</h1>
+                            <p class="content-subtitle">Pilih modul atau engine yang ingin Anda akses hari ini.</p>
+                        </header>
+                        <div id="appGrid" class="app-grid"><div class="loading-state"><span class="spinner-dark"></span> Memuat engine...</div></div>
+                    </main>
+                </div>
+            </div>
+        `;
+    },
+
+    afterRender: async () => {
+        // Logika Navigasi Tab
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                const path = e.target.getAttribute('data-path');
+                window.history.pushState({}, "", path);
+                window.dispatchEvent(new Event('popstate'));
+            });
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            Dialog.confirm('Akhiri Sesi', 'Apakah Anda yakin ingin keluar dari portal?', () => {
+                localStorage.removeItem('jwt_token'); localStorage.removeItem('user_data');
+                window.history.pushState({}, "", "/login"); window.dispatchEvent(new Event('popstate'));
+            });
+        });
+
+        const appGrid = document.getElementById('appGrid');
+        try {
+            const res = await ApiService.get('/applications');
+            if (res.data.length === 0) return appGrid.innerHTML = `<div class="empty-state-premium"><h3>Belum ada engine</h3></div>`;
+            appGrid.innerHTML = res.data.map(app => `
+                <a href="${app.target_url}" target="_blank" class="app-card-premium">
+                    <div class="app-card-body"><h2 class="app-card-title">${app.app_name}</h2><p class="app-card-desc">${app.description || ''}</p></div>
+                    <div class="app-card-footer"><span>Buka Modul</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
+                </a>`).join('');
+        } catch (error) { appGrid.innerHTML = `<div class="alert error">${error.message}</div>`; }
+    }
+};
+export default LandingPage;
+
+================================================================================
+/// FILE: frontend\js\pages\LoginPage.js
+================================================================================
+
+import ApiService from '../services/apiService.js';
+
+const LoginPage = {
+    render: async () => {
+        return `
+            <div class="login-wrapper">
+                <div class="glow-orb orb-primary"></div>
+                <div class="glow-orb orb-accent"></div>
+
+                <div class="login-card premium-light-card">
+                    <div class="login-header">
+                        <div class="brand-logo-container">
+                            <div class="logo-placeholder">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
+                            </div>
+                        </div>
+                        <h1 class="brand-title">LEGS</h1>
+                        <p class="friendly-text">Library Engine Generate System<br>Silakan masuk ke ruang kerja Anda.</p>
+                    </div>
+                    
+                    <form id="loginForm" class="login-form">
+                        <div class="form-group neuromorphic-input-group">
+                            <label for="username">Username Akses</label>
+                            <input type="text" id="username" placeholder="Ketik username di sini..." required autocomplete="off" />
+                        </div>
+                        
+                        <div class="form-group neuromorphic-input-group">
+                            <label for="password">Kata Sandi</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="password" placeholder="Ketik sandi rahasia..." required />
+                                <button type="button" id="togglePassword" class="btn-icon" aria-label="Lihat Password">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div id="loginAlert" class="alert hidden"></div>
+                        
+                        <button type="submit" id="loginBtn" class="btn-glow login-btn">
+                            Buka Aplikasi Sekarang
+                        </button>
+                    </form>
+                </div>
+            </div>
+        `;
+    },
+
+    afterRender: async () => {
+        const loginForm = document.getElementById('loginForm');
+        const loginAlert = document.getElementById('loginAlert');
+        const loginBtn = document.getElementById('loginBtn');
+        const togglePasswordBtn = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        const usernameInput = document.getElementById('username');
+
+        // Fitur Mata Visibilitas Password
+        togglePasswordBtn.addEventListener('click', () => {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            togglePasswordBtn.style.color = type === 'text' ? 'var(--ut-deep-blue)' : 'var(--ut-gray)';
+        });
+
+        // Submit Logic
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault(); 
+            
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            const originalBtnText = loginBtn.innerHTML;
+            loginBtn.innerHTML = '<span class="spinner"></span> Mengamankan Sesi...';
+            loginBtn.disabled = true;
+            loginAlert.className = 'alert hidden';
+
+            try {
+                const response = await ApiService.post('/auth/login', { username, password });
+                
+                localStorage.setItem('jwt_token', response.data.token);
+                localStorage.setItem('user_data', JSON.stringify(response.data.user));
+
+                loginAlert.textContent = 'Akses Diberikan. Selamat Bekerja!';
+                loginAlert.className = 'alert success';
+                
+                setTimeout(() => {
+                    window.history.pushState({}, "", "/");
+                    window.dispatchEvent(new Event('popstate'));
+                }, 1000);
+
+            } catch (error) {
+                let friendlyMsg = error.message;
+                if (friendlyMsg.includes('Failed to fetch') || friendlyMsg.includes('NetworkError')) {
+                    friendlyMsg = 'Ups! Gagal terhubung ke server utama. Pastikan koneksi jaringan Anda stabil.';
+                }
+
+                loginAlert.textContent = friendlyMsg;
+                loginAlert.className = 'alert error';
+                loginBtn.innerHTML = originalBtnText;
+                loginBtn.disabled = false;
+                
+                loginForm.classList.add('shake');
+                setTimeout(() => loginForm.classList.remove('shake'), 400);
+            }
+        });
+    }
+};
+
+export default LoginPage;
+
+================================================================================
+/// FILE: frontend\js\services\apiService.js
+================================================================================
+
+import { API_BASE_URL } from '../constants.js';
+
+class ApiService {
+    static async request(endpoint, options = {}) {
+        const url = `${API_BASE_URL}${endpoint}`;
+        const token = localStorage.getItem('jwt_token');
+        
+        const headers = { 
+            'Content-Type': 'application/json',
+            ...(token && { 'Authorization': `Bearer ${token}` }),
+            ...options.headers 
+        };
+
+        try {
+            const response = await fetch(url, { ...options, headers });
+            const responseData = await response.json();
+
+            if (response.status === 401 || response.status === 403) {
+                if(response.status === 401) {
+                    localStorage.removeItem('jwt_token');
+                    localStorage.removeItem('user_data');
+                    window.location.href = '/login';
+                }
+                throw new Error(responseData.message || 'Akses ditolak.');
+            }
+
+            if (!response.ok) {
+                throw new Error(responseData.message || 'Terjadi kesalahan pada server');
+            }
+            return responseData;
+        } catch (error) {
+            throw error; 
+        }
+    }
+
+    static get(endpoint) { return this.request(endpoint, { method: 'GET' }); }
+    static post(endpoint, data) { return this.request(endpoint, { method: 'POST', body: JSON.stringify(data) }); }
+    static put(endpoint, data) { return this.request(endpoint, { method: 'PUT', body: JSON.stringify(data) }); }
+    static delete(endpoint) { return this.request(endpoint, { method: 'DELETE' }); }
+}
+
+export default ApiService;
+
+================================================================================
+/// FILE: frontend\js\services\externalService.js
+================================================================================
+
+
+
+
+
+
+================================================================================
+/// FILE: frontend\js\utils\dialog.js
+================================================================================
+
+export const Dialog = {
+    createOverlay: function() {
+        let overlay = document.getElementById('legs-dialog-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'legs-dialog-overlay';
+            overlay.className = 'modal-overlay hidden';
+            overlay.style.zIndex = '9999'; // Pastikan paling atas
+            overlay.innerHTML = `
+                <div class="modal-card premium-light-card" style="max-width: 400px; padding: 35px; text-align: center;">
+                    <h3 id="legs-dialog-title" class="content-title" style="font-size: 22px; margin-bottom: 12px;"></h3>
+                    <p id="legs-dialog-message" style="color: #475569; margin-bottom: 28px; font-size: 14.5px; line-height: 1.6;"></p>
+                    <div style="display: flex; gap: 16px; justify-content: center;">
+                        <button id="legs-dialog-cancel" class="btn-logout-premium" style="display: none; padding: 12px 24px;">Batal</button>
+                        <button id="legs-dialog-confirm" class="btn-glow login-btn" style="margin-top: 0; padding: 12px 24px; width: auto;">OK</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+        return overlay;
+    },
+
+    alert: function(title, message) {
+        const overlay = this.createOverlay();
+        document.getElementById('legs-dialog-title').textContent = title;
+        document.getElementById('legs-dialog-message').textContent = message;
+        document.getElementById('legs-dialog-cancel').style.display = 'none';
+
+        const confirmBtn = document.getElementById('legs-dialog-confirm');
+        confirmBtn.textContent = 'Mengerti';
+        
+        overlay.classList.remove('hidden');
+        confirmBtn.onclick = () => { overlay.classList.add('hidden'); };
+    },
+
+    confirm: function(title, message, onConfirm) {
+        const overlay = this.createOverlay();
+        document.getElementById('legs-dialog-title').textContent = title;
+        document.getElementById('legs-dialog-message').textContent = message;
+        
+        const cancelBtn = document.getElementById('legs-dialog-cancel');
+        const confirmBtn = document.getElementById('legs-dialog-confirm');
+        
+        cancelBtn.style.display = 'block';
+        confirmBtn.textContent = 'Ya, Lanjutkan';
+        
+        overlay.classList.remove('hidden');
+
+        cancelBtn.onclick = () => { overlay.classList.add('hidden'); };
+        confirmBtn.onclick = () => { 
+            overlay.classList.add('hidden'); 
+            onConfirm(); 
+        };
+    }
+};
+
+================================================================================
+/// FILE: frontend\js\utils\dom.js
+================================================================================
+
+
+
+
+
+
+================================================================================
+/// FILE: frontend\js\utils\format.js
+================================================================================
+
+
+
+
+
+
+================================================================================
+/// FILE: frontend\js\utils\validate.js
+================================================================================
+
+
+
+
+
