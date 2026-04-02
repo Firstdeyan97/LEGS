@@ -25,6 +25,7 @@ Direktori Sumber: C:\Users\user\Documents\Firstdeyan\LEGS
       "license": "ISC",
       "dependencies": {
         "bcrypt": "^6.0.0",
+        "cookie-parser": "^1.4.7",
         "cors": "^2.8.6",
         "dotenv": "^17.3.1",
         "jsonwebtoken": "^9.0.3",
@@ -268,6 +269,34 @@ Direktori Sumber: C:\Users\user\Documents\Firstdeyan\LEGS
       "engines": {
         "node": ">=18"
       }
+    },
+    "node_modules/cookie": {
+      "version": "0.7.2",
+      "resolved": "https://registry.npmjs.org/cookie/-/cookie-0.7.2.tgz",
+      "integrity": "sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==",
+      "license": "MIT",
+      "engines": {
+        "node": ">= 0.6"
+      }
+    },
+    "node_modules/cookie-parser": {
+      "version": "1.4.7",
+      "resolved": "https://registry.npmjs.org/cookie-parser/-/cookie-parser-1.4.7.tgz",
+      "integrity": "sha512-nGUvgXnotP3BsjiLX2ypbQnWoGUPIIfHQNZkkC668ntrzGWEZVW70HDEB1qnNGMicPje6EttlIgzo51YSwNQGw==",
+      "license": "MIT",
+      "dependencies": {
+        "cookie": "0.7.2",
+        "cookie-signature": "1.0.6"
+      },
+      "engines": {
+        "node": ">= 0.8.0"
+      }
+    },
+    "node_modules/cookie-signature": {
+      "version": "1.0.6",
+      "resolved": "https://registry.npmjs.org/cookie-signature/-/cookie-signature-1.0.6.tgz",
+      "integrity": "sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==",
+      "license": "MIT"
     },
     "node_modules/cors": {
       "version": "2.8.6",
@@ -1113,6 +1142,7 @@ Direktori Sumber: C:\Users\user\Documents\Firstdeyan\LEGS
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "jsonwebtoken": "^9.0.3",
@@ -1187,35 +1217,36 @@ seedAdmin();
 require('dotenv').config();
 require('./db/connection');
 const express = require('express');
-const cors = require('cors'); // [WAJIB] Import CORS
+const cors = require('cors');
+const cookieParser = require('cookie-parser'); // [NEW]
 const errorHandler = require('./middlewares/errorHandler');
 const httpLogger = require('./middlewares/httpLogger');
 const logger = require('./utils/logger');               
 const { success } = require('./utils/response');
+
 const authRoutes = require('./routes/authRoutes');
 const applicationRoutes = require('./routes/applicationRoutes');
-const userRoutes = require('./routes/userRoutes')
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// 1. Global Middlewares
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+})); 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// 1.5. Pasang HTTP Logger
+app.use(cookieParser());
 app.use(httpLogger);
 
 app.get('/api/health', (req, res) => {
-    logger.info("Endpoint health check berhasil diakses.");
     return success(res, "EXVAN Backend is running smoothly", { uptime: process.uptime() });
 });
 
 app.use('/api/auth', authRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/users', userRoutes);
-
 
 app.use(errorHandler);
 
@@ -1310,24 +1341,29 @@ const { success } = require('../utils/response');
 const login = async (req, res, next) => {
     try {
         const { username, password } = req.body;
-
-        // Validasi input kosong
         if (!username || !password) {
-            throw { statusCode: 400, message: 'Username dan password wajib diisi.' };
+            throw { statusCode: 400, message: 'Username dan kata sandi wajib diisi.' };
         }
 
-        // Eksekusi logika login di Service
         const data = await authService.login(username, password);
+        
+        res.cookie('jwt_token', data.token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            maxAge: 8 * 60 * 60 * 1000 // 8 Jam
+        });
 
-        // Jika berhasil, kembalikan response sukses
-        return success(res, 'Login berhasil.', data);
-    } catch (error) {
-        // Jika gagal, lempar ke errorHandler global EXVAN
-        next(error);
-    }
+        return success(res, 'Login berhasil.', { user: data.user });
+    } catch (error) { next(error); }
 };
 
-module.exports = { login };
+const logout = (req, res) => {
+    res.clearCookie('jwt_token');
+    return success(res, 'Sesi berhasil diakhiri.');
+};
+
+module.exports = { login, logout };
 
 ================================================================================
 /// FILE: backend\controllers\userController.js
@@ -1440,17 +1476,13 @@ const { error } = require('../utils/response');
 
 const authenticate = (req, res, next) => {
     try {
-        const authHeader = req.headers.authorization;
+        const token = req.cookies.jwt_token;
         
-        // Cek apakah ada Karcis di dalam header
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return error(res, 'Akses ditolak. Token tidak ditemukan.', null, 401);
+        if (!token) {
+            return error(res, 'Akses ditolak. Sesi tidak ditemukan.', null, 401);
         }
 
-        const token = authHeader.split(' ')[1];
         const decoded = verifyToken(token);
-        
-        // Simpan data user (ID, username, role) ke request untuk dipakai di fungsi selanjutnya
         req.user = decoded; 
         next();
     } catch (err) {
@@ -1464,15 +1496,18 @@ module.exports = authenticate;
 /// FILE: backend\middlewares\errorHandler.js
 ================================================================================
 
-const logger = require('../utils/logger'); // [NEW] Import logger
+const logger = require('../utils/logger');
 const { error } = require('../utils/response');
 
 const errorHandler = (err, req, res, next) => { 
-    logger.error(`${err.name}: ${err.message}\nStack: ${err.stack}`);
+    const errName = err.name || 'CustomError';
+    const stack = err.stack || 'No stack trace provided';
+    
+    logger.error(`${errName}: ${err.message}\nStack: ${stack}`);
 
     const statusCode = err.statusCode || 500;
     const message = err.message || "Internal Server Error";
-    
+
     return error(res, message, err.details || null, statusCode);
 };
 
@@ -1528,49 +1563,43 @@ module.exports = requireRole;
 const pool = require('../db/connection');
 
 class Application {
-    // Dipakai di Landing Page (Hanya yang aktif)
     static async findAllActive() {
         const [rows] = await pool.execute(
-            'SELECT id, app_name, description, target_url FROM legs_applications WHERE is_active = 1 ORDER BY app_name ASC'
+            'SELECT * FROM legs_applications WHERE is_active = 1 ORDER BY app_name ASC'
         );
         return rows;
     }
 
-    // Dipakai di Tabel Admin (Tampilkan semua, termasuk yang non-aktif)
     static async findAll() {
         const [rows] = await pool.execute(
-            'SELECT * FROM legs_applications ORDER BY created_at DESC'
+            'SELECT * FROM legs_applications WHERE is_active = 1 ORDER BY app_name ASC'
         );
         return rows;
     }
 
-    // Tambah Aplikasi Baru
     static async create(data) {
-        const { app_name, description, target_url, is_active } = data;
+        const { app_name, category, description, target_url, is_active, is_login_from_legs } = data;
         const [result] = await pool.execute(
-            'INSERT INTO legs_applications (app_name, description, target_url, is_active) VALUES (?, ?, ?, ?)',
-            [app_name, description || null, target_url, is_active !== undefined ? is_active : 1]
+            'INSERT INTO legs_applications (app_name, category, description, target_url, is_active, is_login_from_legs) VALUES (?, ?, ?, ?, ?, ?)',
+            [app_name, category || 'Web App', description || null, target_url, is_active !== undefined ? is_active : 1, is_login_from_legs ? 1 : 0]
         );
         return result.insertId;
     }
 
-    // Edit Aplikasi
     static async update(id, data) {
-        const { app_name, description, target_url, is_active } = data;
+        const { app_name, category, description, target_url, is_active, is_login_from_legs } = data;
         const [result] = await pool.execute(
-            'UPDATE legs_applications SET app_name = ?, description = ?, target_url = ?, is_active = ? WHERE id = ?',
-            [app_name, description || null, target_url, is_active, id]
+            'UPDATE legs_applications SET app_name = ?, category = ?, description = ?, target_url = ?, is_active = ?, is_login_from_legs = ? WHERE id = ?',
+            [app_name, category, description || null, target_url, is_active, is_login_from_legs ? 1 : 0, id]
         );
-        return result.affectedRows; // Mengembalikan 1 jika sukses
+        return result.affectedRows;
     }
 
-    // Hapus Aplikasi Permanen
     static async delete(id) {
-        const [result] = await pool.execute('DELETE FROM legs_applications WHERE id = ?', [id]);
+        const [result] = await pool.execute('UPDATE legs_applications SET is_active = 0 WHERE id = ?', [id]);
         return result.affectedRows;
     }
 }
-
 module.exports = Application;
 
 ================================================================================
@@ -1585,9 +1614,8 @@ class User {
         return rows[0]; 
     }
 
-    // [BARU] Ambil semua data user untuk Admin
     static async findAll() {
-        const [rows] = await pool.execute('SELECT id, id_pegawai, username, role, is_active, created_at FROM core_users ORDER BY created_at DESC');
+        const [rows] = await pool.execute('SELECT id, id_pegawai, username, role, is_active, created_at FROM core_users WHERE is_active = 1 ORDER BY created_at DESC');
         return rows;
     }
 
@@ -1600,21 +1628,18 @@ class User {
         return result.insertId;
     }
 
-    // [BARU] Ganti hak akses (Role) & Status
     static async updateStatusAndRole(id, role, is_active) {
         const [result] = await pool.execute('UPDATE core_users SET role = ?, is_active = ? WHERE id = ?', [role, is_active, id]);
         return result.affectedRows;
     }
 
-    // [BARU] Reset Password
     static async resetPassword(id, newHash) {
         const [result] = await pool.execute('UPDATE core_users SET password_hash = ? WHERE id = ?', [newHash, id]);
         return result.affectedRows;
     }
 
-    // [BARU] Hapus Permanen
     static async delete(id) {
-        const [result] = await pool.execute('DELETE FROM core_users WHERE id = ?', [id]);
+        const [result] = await pool.execute('UPDATE core_users SET is_active = 0 WHERE id = ?', [id]);
         return result.affectedRows;
     }
 }
@@ -1630,16 +1655,12 @@ const applicationController = require('../controllers/applicationController');
 const authenticate = require('../middlewares/authMiddleware');
 const requireRole = require('../middlewares/roleMiddleware');
 
-// Rute Publik (Semua user yang sudah login bisa akses)
 router.get('/', authenticate, applicationController.getAllActive);
 
-// ==========================================================
-// RUTE KHUSUS ADMIN (Dilindungi oleh authenticate & requireRole)
-// ==========================================================
 router.get('/all', authenticate, requireRole('admin'), applicationController.getAllForAdmin);
 router.post('/', authenticate, requireRole('admin'), applicationController.createApp);
-router.put('/:id', authenticate, requireRole('admin'), applicationController.updateApp);
-router.delete('/:id', authenticate, requireRole('admin'), applicationController.deleteApp);
+router.post('/:id/update', authenticate, requireRole('admin'), applicationController.updateApp);
+router.post('/:id/delete', authenticate, requireRole('admin'), applicationController.deleteApp);
 
 module.exports = router;
 
@@ -1651,8 +1672,8 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 
-// Endpoint: POST /api/auth/login
 router.post('/login', authController.login);
+router.post('/logout', authController.logout);
 
 module.exports = router;
 
@@ -1666,14 +1687,13 @@ const userController = require('../controllers/userController');
 const authenticate = require('../middlewares/authMiddleware');
 const requireRole = require('../middlewares/roleMiddleware');
 
-// Semua rute user murni KHUSUS ADMIN
 router.use(authenticate, requireRole('admin'));
 
 router.get('/', userController.getAllUsers);
 router.post('/', userController.createUser);
-router.put('/:id/role', userController.updateUserRole);
-router.put('/:id/reset-password', userController.resetPassword);
-router.delete('/:id', userController.deleteUser);
+router.post('/:id/update', userController.updateUserRole);
+router.post('/:id/reset-password', userController.resetPassword);
+router.post('/:id/delete', userController.deleteUser);
 
 module.exports = router;
 
@@ -1686,38 +1706,21 @@ const { comparePassword } = require('../utils/hashUtil');
 const { generateToken } = require('../utils/jwtUtil');
 
 const login = async (username, password) => {
-    // 1. Cari user di database berdasarkan username
     const user = await User.findByUsername(username);
-    if (!user) {
-        // Kita lempar error dengan statusCode 401 (Unauthorized)
-        throw { statusCode: 401, message: 'Username atau password salah.' };
+    
+    if (!user || user.username !== username) {
+        throw { statusCode: 401, message: 'Username atau kata sandi yang Anda masukkan salah.' };
     }
 
-    // 2. Cocokkan password plaintext dari user dengan hash di database
     const isMatch = await comparePassword(password, user.password_hash);
     if (!isMatch) {
-        throw { statusCode: 401, message: 'Username atau password salah.' };
+        throw { statusCode: 401, message: 'Username atau kata sandi yang Anda masukkan salah.' };
     }
 
-    // 3. Jika cocok, siapkan data untuk dibungkus ke dalam Token JWT
-    const payload = {
-        id: user.id,
-        username: user.username,
-        role: user.role
-    };
-
-    // 4. Generate Token
+    const payload = { id: user.id, username: user.username, role: user.role };
     const token = generateToken(payload);
-
-    // 5. Kembalikan token dan data user (tanpa password) untuk dikonsumsi Frontend
-    return {
-        token,
-        user: {
-            id: user.id,
-            username: user.username,
-            role: user.role
-        }
-    };
+    
+    return { token, user: { id: user.id, username: user.username, role: user.role } };
 };
 
 module.exports = { login };
@@ -1876,6 +1879,85 @@ module.exports = { success, error };
 }
 
 ================================================================================
+/// FILE: docs\doc design phase 2.md
+================================================================================
+
+# 📄 SYSTEM DESIGN DOCUMENT - LEGS (PHASE 2)
+
+**Proyek:** LEGS (Library Engine Generate System) - Portal Utama
+**Fokus:** Security Refactoring, SSO Architecture, HTTP Method Standardization, & UI/UX Polishing.
+
+## 1. Standarisasi API & Arsitektur Keamanan
+
+- **Restriksi HTTP Method:** API Backend hanya akan menerima _request_ dengan _method_ `GET` (untuk membaca data) dan `POST` (untuk mengirim/mengubah data). _Method_ `PUT` dan `DELETE` dilarang.
+- **Soft Delete Policy:** - Tidak ada data yang dihapus secara permanen dari _database_.
+  - Aksi "Hapus" dari UI akan memicu _request_ `POST` ke Backend yang berfungsi mengubah _flag_ `is_active` menjadi `false` (0).
+  - Semua _query_ `GET` (baik di halaman Portal maupun halaman Admin) secara _default_ **hanya akan menarik data dengan `is_active = true` (1)**.
+- **Professional Login (HttpOnly Cookie):** Token JWT tidak lagi disimpan di `localStorage` melainkan diinjeksi langsung oleh Backend ke dalam `HttpOnly Cookie` browser untuk mencegah serangan XSS.
+- **Validasi Kredensial Ketat:** Pengecekan _username_ dan _password_ diatur menjadi _Case Sensitive_ (membedakan huruf besar dan kecil). Notifikasi _error_ spesifik (misal: "Username atau sandi salah") akan ditampilkan dengan jelas di UI jika _login_ gagal.
+
+## 2. Arsitektur SSO (Single Sign-On) LEGS
+
+Sistem LEGS dirancang menjadi _Identity Provider_ untuk aplikasi ekosistem perpustakaan lainnya.
+
+- **Database Update:** Menambahkan kolom `is_login_from_legs` (BOOLEAN) di tabel `legs_applications`.
+- **Mekanisme:** Jika `is_login_from_legs` bernilai `true`, aplikasi target tersebut wajib memverifikasi _Cookie/Token_ LEGS pengguna sebelum memberikan akses. Jika belum _login_, pengguna otomatis dilempar kembali ke halaman _Login_ LEGS.
+
+## 3. Standarisasi Data & Datatable Premium
+
+- **Kategori Aplikasi:** Menambahkan kolom `category` (String) pada tabel aplikasi. Opsinya dikunci melalui variabel _constant_ di Frontend: `Engine` dan `Web App`.
+- **Sorting Default:** Semua daftar aplikasi yang ditarik ke Frontend akan diurutkan berdasarkan Abjad (Nama Aplikasi) secara otomatis dari Backend.
+- **Datatable Spesification:** Semua tabel data di menu Admin (Aplikasi & Pengguna) wajib mengimplementasikan:
+  1. Kolom Nomor Urut (No).
+  2. Fitur Pencarian / _Filter_ (Live Search).
+  3. Fitur _Sorting_ (Klik _header_ kolom untuk mengurutkan data).
+  4. Fitur _Pagination_ (Pembagian halaman).
+- **Edit User:** Form modal Pengguna tidak hanya untuk menambah akun, tetapi mendukung pengeditan data (Role & Status pengguna).
+
+## 4. UI/UX Polishing & Modularitas CSS
+
+- **Pemecahan CSS (Modular):** File `pages.css` yang terlalu panjang akan dipecah menjadi: `login.css`, `dashboard.css`, `table.css`, dan `modal.css` agar _maintainable_.
+- **Pembaruan Teks (Copywriting):**
+  - Tombol login: "Buka aplikasi sekarang" ➔ **"Masuk"**.
+  - Judul Header: "LEGS Panel" ➔ **"LEGS"**.
+  - Aksi Card Aplikasi: "Buka Modul" ➔ **"Buka Aplikasi"**.
+  - Menambahkan paragraf penjelasan fungsi LEGS di halaman Portal Utama.
+- **Ikonografi Minimalis:** - Tombol "Akhiri Sesi" diganti menggunakan Ikon _Logout_ (Power).
+  - Tombol aksi di tabel (Edit, Hapus, Reset Sandi) murni menggunakan Ikon SVG tanpa teks.
+- **Bug & Layout Fixes:** - Memperbaiki interaksi (klik) pada ikon mata (lihat _password_) di halaman Login agar _smooth_.
+  - Merombak _Navbar_ agar responsif saat dibuka di layar kecil (HP/Tablet).
+  - Menambahkan fitur _Search Bar_ di Portal Utama untuk memfilter aplikasi secara _real-time_.
+
+---
+
+## 🚀 RENCANA KERJA (ACTION PLAN) EKSEKUSI PHASE 2
+
+**Tahap 1: Pembaruan Struktur Database (MySQL)**
+
+- Menambahkan kolom `category` (VARCHAR) dan `is_login_from_legs` (BOOLEAN) pada tabel `legs_applications`.
+
+**Tahap 2: Refactoring Backend API & Keamanan**
+
+- Menginstal `cookie-parser`.
+- Mengubah rute _login_ untuk merilis `HttpOnly Cookie`.
+- Mengubah semua rute `PUT` dan `DELETE` di _Controller_ dan _Routes_ (User & Aplikasi) menjadi `POST`.
+- Menulis ulang _Query_ di Model agar metode hapus menjadi _Soft Delete_ (`UPDATE is_active = 0`).
+- Memastikan semua fungsi `findAll` hanya memanggil data yang `is_active = 1`.
+
+**Tahap 3: Pemecahan Modularitas Frontend (CSS & Constants)**
+
+- Menghapus `pages.css` dan membuat 4 file CSS terpisah.
+- Menambahkan daftar kategori di `constants.js`.
+
+**Tahap 4: Update UI/UX & Logika Frontend**
+
+- Mengupdate `apiService.js` (Hapus fungsi PUT/DELETE, gunakan POST, tambahkan _credentials cookie_).
+- Merombak `LoginPage.js` (Bug mata, teks Masuk, notifikasi akurat).
+- Merombak `LandingPage.js` (Copywriting, Responsif, Search Filter, Icon Logout).
+- Merombak `AdminAppPage.js` & `AdminUserPage.js` (Datatables standar, Action Icons, Edit User).
+
+
+================================================================================
 /// FILE: docs\PRD n SRS.md
 ================================================================================
 
@@ -1955,11 +2037,14 @@ Aplikasi ini akan dibangun menggunakan standar struktur **EXVAN**:
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LEGS Portal - Perpustakaan Pusat UT</title>
+    <title>LEGS - Portal Perpustakaan Pusat UT</title>
     
     <link rel="stylesheet" href="/css/variables.css" />
     <link rel="stylesheet" href="/css/base.css" />
-    <link rel="stylesheet" href="/css/pages.css" />
+    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+    <link rel="stylesheet" href="/css/table.css" />
+    <link rel="stylesheet" href="/css/modal.css" />
   </head>
   <body>
     <div id="app"></div>
@@ -2111,6 +2196,63 @@ button, input {
 
 
 ================================================================================
+/// FILE: frontend\css\dashboard.css
+================================================================================
+
+/* --- DASHBOARD & NAVBAR --- */
+.app-unified-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at top left, #0f5bcc 0%, var(--ut-deep-blue) 100%); position: relative; overflow: hidden; padding: 20px; }
+/* [FIX BUG] Tambahkan position: relative dan z-index: 10 agar berada di atas Orb */
+.dashboard-panel { width: 100%; max-width: 1200px; height: 90vh; display: flex; flex-direction: column; overflow: hidden; background: rgba(255, 247, 225, 0.95); backdrop-filter: blur(25px); border-radius: 28px; box-shadow: 15px 15px 35px rgba(0,0,0,0.3); position: relative; z-index: 10; }
+.dashboard-nav { display: flex; justify-content: space-between; align-items: center; padding: 18px 35px; border-bottom: 1px solid rgba(10, 68, 148, 0.1); background: rgba(255, 255, 255, 0.6); flex-wrap: wrap; gap: 15px; } 
+.nav-brand { display: flex; align-items: center; gap: 12px; }
+/* [UPDATE] Placeholder Logo kecil untuk SVG */
+.logo-placeholder-small { width: 32px; height: 32px; background: linear-gradient(135deg, var(--ut-deep-blue), #0f5bcc); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: var(--ut-gold); }
+.brand-text-dark { font-size: 22px; font-weight: 800; color: var(--ut-deep-blue); letter-spacing: -0.5px; }
+.user-controls { display: flex; align-items: center; gap: 15px; }
+.greeting-text { color: #475569; font-size: 14px; }
+.greeting-text strong { color: var(--ut-deep-blue); font-weight: 700; }
+.btn-logout-icon { background: transparent; border: none; color: #ef4444; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 8px; border-radius: 10px; transition: all 0.2s; }
+.btn-logout-icon:hover { background: #fee2e2; color: #b91c1c; } 
+.nav-menu-center { display: flex; gap: 8px; background: rgba(10, 68, 148, 0.06); padding: 6px; border-radius: 14px; border: 1px solid rgba(10, 68, 148, 0.1); }
+.nav-tab { background: transparent; border: none; color: #64748b; padding: 8px 18px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.nav-tab:hover, .nav-tab.active { background: #ffffff; color: var(--ut-deep-blue); box-shadow: 0 4px 12px rgba(10, 68, 148, 0.08); }
+.dashboard-content { flex: 1; padding: 35px; overflow-y: auto; }
+.content-header { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+.content-title { color: var(--ut-deep-blue); font-size: 26px; font-weight: 800; margin-bottom: 8px; }
+.content-subtitle { color: #475569; font-size: 14px; line-height: 1.6; max-width: 600px; }
+
+/* [NEW] Filter Kategori UI */
+.filter-group { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-filter { background: rgba(255,255,255,0.7); border: 1px solid rgba(10,68,148,0.1); color: var(--ut-deep-blue); padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.btn-filter:hover { background: #fdfaf0; }
+.btn-filter.active { background: var(--ut-deep-blue); color: #fff; box-shadow: 0 4px 10px rgba(10, 68, 148, 0.3); border-color: var(--ut-deep-blue); }
+
+.premium-search { padding: 12px 18px; width: 300px; border-radius: 12px; border: 1px solid rgba(10,68,148,0.2); background: #fff; font-size: 14px; outline: none; color: var(--ut-deep-blue); }
+.premium-search:focus { border-color: var(--ut-deep-blue); box-shadow: 0 0 0 3px rgba(10,68,148,0.1); }
+.app-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; margin-top: 25px; }
+.app-card-premium { background: #ffffff; border: 1px solid rgba(10, 68, 148, 0.08); border-radius: 16px; padding: 24px; text-decoration: none; display: flex; flex-direction: column; justify-content: space-between; min-height: 160px; transition: all 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+.app-card-premium:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(10,68,148,0.1), 0 0 0 2px var(--ut-light-blue); }
+.app-card-title { color: var(--ut-deep-blue); font-size: 19px; font-weight: 800; margin-bottom: 8px; }
+.app-card-desc { color: #64748b; font-size: 13px; line-height: 1.5; margin-bottom: 16px; }
+.app-card-footer { display: flex; justify-content: space-between; align-items: center; color: var(--ut-deep-blue); font-weight: 700; font-size: 13px; text-transform: uppercase; }
+.app-card-premium:hover .app-card-footer { color: var(--ut-gold); }
+
+/* [FIX BUG] Badge tidak lagi absolute, posisikan secara normal, dan bedakan warna */
+.badge-container { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.app-category-badge { display: inline-block; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 6px; }
+.badge-webapp { background: #e0f2fe; color: #0284c7; }
+.badge-engine { background: #fef08a; color: #a16207; }
+.app-sso-badge { display: inline-flex; align-items: center; gap: 4px; background: #dcfce7; color: #166534; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 6px; }
+
+.empty-state-premium { grid-column: 1 / -1; text-align: center; padding: 50px 20px; background: rgba(255,255,255,0.5); border-radius: 16px; border: 2px dashed rgba(10,68,148,0.2); color: var(--ut-deep-blue); }
+
+@media (max-width: 768px) {
+    .dashboard-nav { flex-direction: column; justify-content: center; }
+    .nav-menu-center { order: 3; width: 100%; justify-content: center; }
+    .premium-search { width: 100%; }
+}
+
+================================================================================
 /// FILE: frontend\css\layout.css
 ================================================================================
 
@@ -2161,567 +2303,107 @@ button, input {
 
 
 ================================================================================
-/// FILE: frontend\css\pages.css
+/// FILE: frontend\css\login.css
 ================================================================================
 
-/* --- LOGIN PAGE: DEEP BLUE & CREAM PREMIUM EDITION --- */
-.login-wrapper {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* Latar belakang Dark (Deep Blue UT) */
-    background: radial-gradient(circle at top left, #0f5bcc 0%, var(--ut-deep-blue) 100%);
-    position: relative;
-    overflow: hidden;
-}
-
-/* Glow Orbs (Bola Cahaya Ambient) */
-.glow-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    z-index: 1;
-    opacity: 0.6;
-    animation: floatOrb 10s infinite ease-in-out alternate;
-}
-.orb-primary {
-    top: -5%; left: 5%;
-    width: 400px; height: 400px;
-    background-color: var(--ut-light-blue);
-}
-.orb-accent {
-    bottom: -10%; right: 10%;
-    width: 350px; height: 350px;
-    background-color: var(--ut-gold);
-    animation-delay: -3s;
-}
-
-/* Form Container (Light Cream Glass + Neumorphism) */
-.premium-light-card {
-    width: 100%;
-    max-width: 420px;
-    padding: 45px 45px;
-    position: relative;
-    z-index: 10;
-    
-    /* Penggunaan Warna Krem/Beige Utama */
-    background: rgba(255, 247, 225, 0.95); /* var(--ut-cream) dengan transparansi 95% */
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    
-    /* Aksen putih hanya sebagai list tipis (border) */
-    border: 1px solid rgba(255, 255, 255, 0.7);
-    border-radius: 28px;
-    
-    /* Neumorphism Shadow (Menonjol dari latar gelap) */
-    box-shadow: 
-        15px 15px 35px rgba(0, 0, 0, 0.3), 
-        -5px -5px 25px rgba(255, 199, 46, 0.1),
-        inset 2px 2px 4px rgba(255, 255, 255, 0.8);
-}
-
-.login-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-/* Penempatan Logo Presisi */
-.brand-logo-container {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 16px;
-}
-.logo-placeholder {
-    width: 65px;
-    height: 65px;
-    background: linear-gradient(135deg, var(--ut-deep-blue), #0f5bcc);
-    border-radius: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ut-gold);
-    box-shadow: 0 8px 20px rgba(10, 68, 148, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.5); /* Aksen putih */
-}
-
-.brand-title {
-    color: var(--ut-deep-blue);
-    font-size: 32px;
-    font-weight: 800;
-    margin-bottom: 4px;
-    letter-spacing: -0.5px;
-}
-
-.friendly-text {
-    color: #475569; /* Slate Gray untuk teks di atas Krem */
-    font-size: 13.5px;
-    line-height: 1.6;
-    font-weight: 500;
-}
-
-/* Group & Label */
-.neuromorphic-input-group {
-    margin-bottom: 22px;
-    display: flex;
-    flex-direction: column;
-}
-.neuromorphic-input-group label {
-    font-size: 13px;
-    color: var(--ut-deep-blue);
-    font-weight: 700;
-    margin-bottom: 8px;
-    padding-left: 4px;
-    letter-spacing: 0.3px;
-}
-
-/* Input Styles: Tenggelam ke dalam Beige (Inset Shadow) */
-.login-form input[type="text"],
-.login-form input[type="password"] {
-    width: 100%;
-    padding: 15px 18px;
-    background: #fdfaf0; /* Krem yang lebih muda untuk input */
-    border: 1px solid rgba(10, 68, 148, 0.1);
-    border-radius: 14px;
-    font-size: 15px;
-    color: var(--ut-deep-blue);
-    font-weight: 600;
-    box-shadow: 
-        inset 4px 4px 8px rgba(0, 0, 0, 0.04), 
-        inset -3px -3px 6px rgba(255, 255, 255, 1);
-    transition: all 0.3s ease;
-}
-.login-form input:focus {
-    outline: none;
-    background: #ffffff; /* Putih dipakai murni saat fokus input saja */
-    border-color: var(--ut-deep-blue);
-    box-shadow: 
-        inset 3px 3px 6px rgba(0, 0, 0, 0.05), 
-        0 0 0 4px rgba(10, 68, 148, 0.15);
-}
-.login-form input::placeholder {
-    color: #94a3b8;
-    font-weight: 500;
-}
-
-/* Wrapper Ikon Mata */
-.password-wrapper {
-    position: relative;
-    width: 100%;
-}
-.password-wrapper input {
-    padding-right: 48px;
-}
-.btn-icon {
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #94a3b8;
-    transition: color 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-}
+/* --- LOGIN PAGE --- */
+.login-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at top left, #0f5bcc 0%, var(--ut-deep-blue) 100%); position: relative; overflow: hidden; padding: 20px; }
+.glow-orb { position: absolute; border-radius: 50%; filter: blur(80px); z-index: 1; opacity: 0.6; animation: floatOrb 10s infinite ease-in-out alternate; }
+.orb-primary { top: -5%; left: 5%; width: 400px; height: 400px; background-color: var(--ut-light-blue); }
+.orb-accent { bottom: -10%; right: 10%; width: 350px; height: 350px; background-color: var(--ut-gold); animation-delay: -3s; }
+.premium-light-card { width: 100%; max-width: 420px; padding: 45px; position: relative; z-index: 10; background: rgba(255, 247, 225, 0.95); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.7); border-radius: 28px; box-shadow: 15px 15px 35px rgba(0, 0, 0, 0.3), inset 2px 2px 4px rgba(255, 255, 255, 0.8); }
+.login-header { text-align: center; margin-bottom: 30px; }
+.brand-title { color: var(--ut-deep-blue); font-size: 32px; font-weight: 800; margin-bottom: 4px; }
+.friendly-text { color: #475569; font-size: 13.5px; line-height: 1.6; font-weight: 500; }
+.neuromorphic-input-group { margin-bottom: 22px; display: flex; flex-direction: column; }
+.neuromorphic-input-group label { font-size: 13px; color: var(--ut-deep-blue); font-weight: 700; margin-bottom: 8px; padding-left: 4px; }
+.login-form input[type="text"], .login-form input[type="password"] { width: 100%; padding: 15px 18px; background: #fdfaf0; border: 1px solid rgba(10, 68, 148, 0.1); border-radius: 14px; font-size: 15px; color: var(--ut-deep-blue); font-weight: 600; box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.04), inset -3px -3px 6px #fff; transition: all 0.3s ease; }
+.login-form input:focus { outline: none; background: #ffffff; border-color: var(--ut-deep-blue); box-shadow: 0 0 0 4px rgba(10, 68, 148, 0.15); }
+.password-wrapper { position: relative; width: 100%; }
+.password-wrapper input { padding-right: 48px; }
+/* Bug Mata Fix: pointer-events: none pada SVG */
+.btn-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #94a3b8; padding: 5px; display: flex; align-items: center; justify-content: center; transition: color 0.2s; }
 .btn-icon:hover { color: var(--ut-deep-blue); }
-
-/* Tombol Submit Utama */
-.btn-glow.login-btn {
-    width: 100%;
-    padding: 16px 18px;
-    font-size: 15.5px;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--ut-deep-blue), #0f5bcc);
-    color: var(--ut-cream);
-    border: none;
-    border-radius: 14px;
-    margin-top: 14px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 
-        6px 6px 16px rgba(10, 68, 148, 0.3), 
-        -4px -4px 12px rgba(255, 255, 255, 0.8);
-}
-.btn-glow.login-btn:hover {
-    background: linear-gradient(135deg, var(--ut-gold), #eab308);
-    color: var(--ut-deep-blue);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(255, 199, 46, 0.4);
-}
-
-/* Alert Box */
-.alert {
-    padding: 14px 16px;
-    border-radius: 12px;
-    font-size: 13.5px;
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: 600;
-    animation: fadeIn 0.3s ease;
-}
+.btn-icon svg { pointer-events: none; } 
+.btn-glow { width: 100%; padding: 16px 18px; font-size: 15.5px; font-weight: 700; background: linear-gradient(135deg, var(--ut-deep-blue), #0f5bcc); color: var(--ut-cream); border: none; border-radius: 14px; margin-top: 14px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.3s; box-shadow: 6px 6px 16px rgba(10, 68, 148, 0.3); }
+.btn-glow:hover { background: linear-gradient(135deg, var(--ut-gold), #eab308); color: var(--ut-deep-blue); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255, 199, 46, 0.4); }
+.alert { padding: 14px 16px; border-radius: 12px; font-size: 13.5px; margin-bottom: 20px; text-align: center; font-weight: 600; animation: fadeIn 0.3s ease; }
 .alert.hidden { display: none; }
 .alert.error { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
 .alert.success { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
-
-/* Animasi */
 @keyframes floatOrb { 0% { transform: translate(0, 0); } 100% { transform: translate(25px, -25px); } }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-.shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
-@keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
-  40%, 60% { transform: translate3d(3px, 0, 0); }
+.shake { animation: shake 0.4s both; }
+@keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-3px, 0, 0); } 40%, 60% { transform: translate3d(3px, 0, 0); } }
+.spinner { width: 18px; height: 18px; border: 2.5px solid rgba(255,255,255,0.3); border-top: 2.5px solid currentColor; border-radius: 50%; animation: spin 1s linear infinite; }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+
+.brand-logo-container { 
+    display: flex; 
+    justify-content: center; 
+    margin-bottom: 16px; 
+}
+.logo-placeholder { 
+    width: 65px; 
+    height: 65px; 
+    background: linear-gradient(135deg, var(--ut-deep-blue), #0f5bcc); 
+    border-radius: 18px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    color: var(--ut-gold); /* Ini yang bikin iconnya jadi kuning emas */
+    box-shadow: 0 8px 20px rgba(10, 68, 148, 0.3); 
+    border: 2px solid rgba(255, 255, 255, 0.5); 
 }
 
-.spinner {
-    width: 18px;
-    height: 18px;
-    border: 2.5px solid rgba(255,255,255,0.3);
-    border-top: 2.5px solid currentColor;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+================================================================================
+/// FILE: frontend\css\modal.css
+================================================================================
 
-/* --- UNIFIED BACKGROUND (LOGIN & DASHBOARD) --- */
-.login-wrapper, .app-unified-wrapper {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(circle at top left, #0f5bcc 0%, var(--ut-deep-blue) 100%);
-    position: relative;
-    overflow: hidden;
-    padding: 20px;
-}
+/* --- MODAL (POP-UP) --- */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 18, 32, 0.7); backdrop-filter: blur(8px); z-index: 100; display: flex; align-items: center; justify-content: center; animation: fadeIn 0.2s ease; }
+.modal-overlay.hidden { display: none; }
+.modal-card { width: 100%; max-width: 500px; padding: 35px; background: rgba(255, 247, 225, 0.95); border-radius: 24px; border: 1px solid rgba(255,255,255,0.7); }
+.premium-select { width: 100%; padding: 15px 18px; background: #fdfaf0; border: 1px solid rgba(10, 68, 148, 0.1); border-radius: 14px; font-size: 15px; color: var(--ut-deep-blue); font-weight: 600; outline: none; }
+.checkbox-group { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; font-size: 14px; font-weight: 600; color: var(--ut-deep-blue); cursor: pointer; }
+.checkbox-group input { width: 18px; height: 18px; cursor: pointer; }
 
-/* --- DASHBOARD PREMIUM PANEL --- */
-.dashboard-panel {
-    width: 100%;
-    max-width: 1100px;
-    height: 90vh; /* Agar tidak kepanjangan, ada ruang untuk background Deep Blue terlihat */
-    display: flex;
-    flex-direction: column;
-    padding: 0; /* Padding diatur per elemen di dalamnya */
-    overflow: hidden;
-}
+/* [FIX BUG] Tombol Batal Premium */
+.btn-cancel { background: transparent; border: 1.5px solid #cbd5e1; color: #64748b; padding: 12px 24px; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.btn-cancel:hover { background: #f1f5f9; color: #334155; border-color: #94a3b8; }
 
-/* Navigasi Dalam Dashboard */
-.dashboard-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24px 40px;
-    border-bottom: 1px solid rgba(10, 68, 148, 0.1);
-    background: rgba(255, 255, 255, 0.4); /* Transparansi halus */
-}
+================================================================================
+/// FILE: frontend\css\pages.css
+================================================================================
 
-.nav-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
 
-.logo-placeholder-small {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, var(--ut-deep-blue), #0f5bcc);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ut-gold);
-}
 
-.brand-text-dark {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--ut-deep-blue);
-    letter-spacing: -0.5px;
-}
+================================================================================
+/// FILE: frontend\css\table.css
+================================================================================
 
-.user-controls {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.greeting-text {
-    color: #475569;
-    font-size: 14.5px;
-}
-.greeting-text strong {
-    color: var(--ut-deep-blue);
-    font-weight: 700;
-}
-
-.btn-logout-premium {
-    background: transparent;
-    border: 1.5px solid rgba(10, 68, 148, 0.2);
-    color: var(--ut-deep-blue);
-    padding: 8px 18px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.btn-logout-premium:hover {
-    background: #fee2e2;
-    border-color: #fca5a5;
-    color: #b91c1c;
-}
-
-/* Area Konten Utama */
-.dashboard-content {
-    flex: 1;
-    padding: 40px;
-    overflow-y: auto; /* Bisa di-scroll jika aplikasi banyak */
-}
-
-.content-header {
-    margin-bottom: 35px;
-}
-
-.content-title {
-    color: var(--ut-deep-blue);
-    font-size: 28px;
-    font-weight: 800;
-    margin-bottom: 6px;
-    letter-spacing: -0.5px;
-}
-
-.content-subtitle {
-    color: #475569;
-    font-size: 15px;
-    font-weight: 500;
-}
-
-/* Grid & Card Aplikasi */
-.app-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
-}
-
-.app-card-premium {
-    background: #ffffff; /* Putih bersih kontras dengan latar panel Krem */
-    border: 1px solid rgba(10, 68, 148, 0.08);
-    border-radius: 16px;
-    padding: 28px 24px;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 170px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-}
-
-.app-card-premium:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(10, 68, 148, 0.1), 0 0 0 2px var(--ut-light-blue);
-}
-
-.app-card-title {
-    color: var(--ut-deep-blue);
-    font-size: 20px;
-    font-weight: 800;
-    margin-bottom: 10px;
-    line-height: 1.3;
-}
-
-.app-card-desc {
-    color: #64748b;
-    font-size: 13.5px;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.app-card-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--ut-deep-blue);
-    font-weight: 700;
-    font-size: 13.5px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.app-card-premium:hover .app-card-footer {
-    color: var(--ut-gold);
-}
-
-/* State Kosong & Loading */
-.empty-state-premium {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 60px 20px;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 16px;
-    border: 2px dashed rgba(10, 68, 148, 0.2);
-    color: var(--ut-deep-blue);
-}
-
-.loading-state {
-    grid-column: 1 / -1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    color: var(--ut-deep-blue);
-    font-weight: 600;
-    padding: 40px;
-}
-
-.spinner-dark {
-    width: 20px;
-    height: 20px;
-    border: 2.5px solid rgba(10, 68, 148, 0.2);
-    border-top: 2.5px solid var(--ut-deep-blue);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-/* --- PREMIUM TABLE STYLES --- */
-.table-container {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 1px; /* Sebagai border halus */
-    box-shadow: 0 10px 25px rgba(10, 68, 148, 0.08);
-    overflow-x: auto;
-}
-
-.premium-table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: left;
-}
-
-.premium-table th {
-    background: #fdfaf0; /* Krem muda */
-    color: var(--ut-deep-blue);
-    font-weight: 800;
-    padding: 18px 24px;
-    font-size: 14.5px;
-    border-bottom: 2px solid rgba(10, 68, 148, 0.1);
-}
-
-.premium-table th:first-child { border-top-left-radius: 16px; }
-.premium-table th:last-child { border-top-right-radius: 16px; }
-
-.premium-table td {
-    padding: 18px 24px;
-    border-bottom: 1px solid rgba(10, 68, 148, 0.05);
-    font-size: 14.5px;
-    color: #334155;
-}
-
-.premium-table tr:hover td {
-    background: rgba(27, 176, 209, 0.03); /* Highlight sangat tipis */
-}
-
-/* Badge Status */
-.status-badge {
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 12.5px;
-    font-weight: 700;
-}
+/* --- PREMIUM DATATABLE STYLES --- */
+.table-container { background: #ffffff; border-radius: 16px; padding: 1px; box-shadow: 0 10px 25px rgba(10, 68, 148, 0.08); overflow-x: auto; margin-top: 20px; }
+.table-controls { display: flex; justify-content: space-between; align-items: center; padding: 15px 24px; background: #fff; border-bottom: 1px solid rgba(10,68,148,0.08); border-top-left-radius: 16px; border-top-right-radius: 16px; }
+.premium-table { width: 100%; border-collapse: collapse; text-align: left; }
+.premium-table th { background: #fdfaf0; color: var(--ut-deep-blue); font-weight: 800; padding: 16px 20px; font-size: 13.5px; border-bottom: 2px solid rgba(10, 68, 148, 0.1); cursor: pointer; user-select: none; }
+.premium-table th:hover { background: #fef5d4; }
+.premium-table td { padding: 16px 20px; border-bottom: 1px solid rgba(10, 68, 148, 0.05); font-size: 14px; color: #334155; }
+.premium-table tr:hover td { background: rgba(27, 176, 209, 0.03); }
+.status-badge { padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; }
 .status-badge.active { background: #dcfce7; color: #166534; }
 .status-badge.inactive { background: #fee2e2; color: #991b1b; }
-
-/* Tombol Aksi Tabel */
-.btn-action {
-    background: transparent;
-    border: none;
-    font-weight: 700;
-    font-size: 13.5px;
-    cursor: pointer;
-    margin-left: 12px;
-    transition: color 0.2s;
-}
-.edit-btn { color: var(--ut-light-blue); }
-.edit-btn:hover { color: var(--ut-deep-blue); }
-.delete-btn { color: #f87171; }
-.delete-btn:hover { color: #b91c1c; }
-
-/* --- MODAL (POP-UP) STYLES --- */
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(11, 18, 32, 0.7);
-    backdrop-filter: blur(8px);
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.2s ease;
-}
-
-.modal-overlay.hidden {
-    display: none;
-}
-
-.premium-select {
-    width: 100%;
-    padding: 15px 18px;
-    background: #fdfaf0;
-    border: 1px solid rgba(10, 68, 148, 0.1);
-    border-radius: 14px;
-    font-size: 15px;
-    color: var(--ut-deep-blue);
-    font-weight: 600;
-    box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.04);
-    cursor: pointer;
-}
-.premium-select:focus {
-    outline: none;
-    background: #ffffff;
-    border-color: var(--ut-deep-blue);
-}
-
-/* --- SEGMENTED NAV TABS (ADMIN MENU) --- */
-.nav-menu-center {
-    display: flex;
-    gap: 8px;
-    background: rgba(10, 68, 148, 0.06);
-    padding: 6px;
-    border-radius: 14px;
-    border: 1px solid rgba(10, 68, 148, 0.1);
-    backdrop-filter: blur(10px);
-}
-
-.nav-tab {
-    background: transparent;
-    border: none;
-    color: #64748b;
-    padding: 8px 18px;
-    border-radius: 10px;
-    font-size: 13.5px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.nav-tab:hover { color: var(--ut-deep-blue); }
-
-.nav-tab.active {
-    background: #ffffff;
-    color: var(--ut-deep-blue);
-    box-shadow: 0 4px 12px rgba(10, 68, 148, 0.08);
-}
+.btn-action-icon { background: transparent; border: none; cursor: pointer; padding: 6px; margin: 0 4px; border-radius: 6px; transition: all 0.2s; }
+.edit-btn { color: var(--ut-light-blue); } .edit-btn:hover { background: #e0f2fe; color: var(--ut-deep-blue); }
+.delete-btn { color: #f87171; } .delete-btn:hover { background: #fee2e2; color: #b91c1c; }
+.reset-btn { color: var(--ut-gold); } .reset-btn:hover { background: #fef3c7; color: #d97706; }
+.pagination { display: flex; gap: 8px; justify-content: flex-end; padding: 15px 24px; background: #fff; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; }
+/* [UPDATE] Padding disesuaikan untuk ikon SVG */
+.page-btn { padding: 8px; border: 1px solid rgba(10,68,148,0.2); background: #fff; border-radius: 8px; cursor: pointer; color: var(--ut-deep-blue); display: flex; align-items: center; justify-content: center; transition: all 0.2s;}
+.page-btn:hover:not(:disabled) { background: #f1f5f9; }
+.page-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.page-info { align-self: center; font-size: 13px; color: #64748b; margin-right: auto; }
 
 ================================================================================
 /// FILE: frontend\css\variables.css
@@ -2745,8 +2427,12 @@ button, input {
 /// FILE: frontend\js\constants.js
 ================================================================================
 
-// URL dasar untuk mengarah ke backend EXVAN kita
 export const API_BASE_URL = 'http://localhost:4000/api';
+
+export const APP_CATEGORIES = [
+    "Web App",
+    "Engine"
+];
 
 ================================================================================
 /// FILE: frontend\js\main.js
@@ -2791,16 +2477,12 @@ class Router {
         const currentPath = window.location.pathname;
         let route = this.routes.find(r => r.path === currentPath) || this.routes.find(r => r.path === '/404');
         
-        // --- LOGIKA SATPAM (ROUTE GUARD) ---
-        const isAuthenticated = !!localStorage.getItem('jwt_token');
+        const isAuthenticated = !!localStorage.getItem('user_data');
 
-        // Jika belum login tapi mencoba akses halaman selain login -> tendang ke /login
         if (!isAuthenticated && currentPath !== '/login') {
             this.navigate('/login');
             return;
         }
-
-        // Jika sudah login tapi mencoba buka halaman login -> tendang ke Dashboard (/)
         if (isAuthenticated && currentPath === '/login') {
             this.navigate('/');
             return;
@@ -2866,20 +2548,22 @@ export default Router;
 
 import ApiService from '../services/apiService.js';
 import { Dialog } from '../utils/dialog.js';
+import { APP_CATEGORIES } from '../constants.js';
 
 const AdminAppPage = {
     render: async () => {
         const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
         if (userData.role !== 'admin') return `<div>Akses Ditolak</div>`;
+        const catOptions = APP_CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
 
         return `
             <div class="app-unified-wrapper">
                 <div class="glow-orb orb-primary"></div><div class="glow-orb orb-accent"></div>
-                <div class="dashboard-panel premium-light-card">
+                <div class="dashboard-panel">
                     <nav class="dashboard-nav">
                         <div class="nav-brand">
-                            <div class="logo-placeholder-small"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg></div>
-                            <span class="brand-text-dark">LEGS Panel</span>
+                            <div class="logo-placeholder-small"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg></div>
+                            <span class="brand-text-dark">LEGS</span>
                         </div>
                         <div class="nav-menu-center">
                             <button class="nav-tab" data-path="/">Portal Utama</button>
@@ -2887,25 +2571,43 @@ const AdminAppPage = {
                             <button class="nav-tab" data-path="/admin/users">Pengguna</button>
                         </div>
                         <div class="user-controls">
-                            <span class="greeting-text">Halo, <strong>${userData.username}</strong></span>
-                            <button id="logoutBtn" class="btn-logout-premium" style="margin-left:10px;">Akhiri Sesi</button>
+                            <span class="greeting-text">Admin: <strong>${userData.username}</strong></span>
+                            <button id="logoutBtn" class="btn-logout-icon" title="Akhiri Sesi"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
                         </div>
                     </nav>
                     <main class="dashboard-content">
-                        <header class="content-header" style="display:flex; justify-content:space-between; align-items:center;">
+                        <header class="content-header">
                             <div><h1 class="content-title">Manajemen Aplikasi</h1><p class="content-subtitle">Atur modul dan engine yang tampil di portal.</p></div>
-                            <button id="openModalBtn" class="btn-glow login-btn" style="width:auto; padding:12px 24px; margin-top:0;">+ Tambah Aplikasi</button>
+                            <button id="openModalBtn" class="btn-glow" style="width:auto; padding:12px 24px; margin-top:0;">+ Tambah Aplikasi</button>
                         </header>
+                        
                         <div class="table-container">
+                            <div class="table-controls">
+                                <input type="text" id="dtSearch" class="premium-search" placeholder="Cari nama atau URL..." style="width:250px;">
+                            </div>
                             <table class="premium-table">
-                                <thead><tr><th>Nama Aplikasi</th><th>URL Tujuan</th><th>Status</th><th style="text-align:right;">Aksi</th></tr></thead>
-                                <tbody id="tableBody"><tr><td colspan="4" style="text-align:center;">Memuat data...</td></tr></tbody>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 50px;">No</th>
+                                        <th data-sort="app_name">Nama Aplikasi ↕</th>
+                                        <th data-sort="category">Kategori ↕</th>
+                                        <th data-sort="target_url">URL Tujuan ↕</th>
+                                        <th style="text-align:center;">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableBody"><tr><td colspan="5" style="text-align:center;">Memuat data...</td></tr></tbody>
                             </table>
+                            <div class="pagination">
+                                <span class="page-info" id="pageInfo">Menampilkan 0 data</span>
+                                <button class="page-btn" id="prevPage" title="Sebelumnya"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                                <button class="page-btn" id="nextPage" title="Selanjutnya"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                            </div>
                         </div>
                     </main>
                 </div>
+                
                 <div id="appModal" class="modal-overlay hidden">
-                    <div class="modal-card premium-light-card" style="max-width: 500px; padding: 35px;">
+                    <div class="modal-card">
                         <div class="modal-header" style="margin-bottom: 25px; display:flex; justify-content:space-between;">
                             <h2 id="modalTitle" class="content-title" style="font-size: 22px;">Form Aplikasi</h2>
                             <button id="closeModalBtn" class="btn-icon" style="position:static;">✖</button>
@@ -2913,14 +2615,19 @@ const AdminAppPage = {
                         <form id="appForm" class="login-form">
                             <input type="hidden" id="appId" value="">
                             <div class="form-group neuromorphic-input-group"><label>Nama Aplikasi</label><input type="text" id="appName" required autocomplete="off"></div>
+                            <div style="display:flex; gap:15px; margin-bottom:22px;">
+                                <div style="flex:1;"><label style="font-size:13px; color:var(--ut-deep-blue); font-weight:700; margin-bottom:8px; display:block;">Kategori</label><select id="appCategory" class="premium-select">${catOptions}</select></div>
+                                <div style="flex:1;"><label style="font-size:13px; color:var(--ut-deep-blue); font-weight:700; margin-bottom:8px; display:block;">Status</label><select id="isActive" class="premium-select"><option value="1">Aktif</option><option value="0">Non-aktif</option></select></div>
+                            </div>
                             <div class="form-group neuromorphic-input-group"><label>URL Tujuan</label><input type="text" id="targetUrl" required autocomplete="off"></div>
                             <div class="form-group neuromorphic-input-group"><label>Deskripsi</label><input type="text" id="description" autocomplete="off"></div>
-                            <div class="form-group neuromorphic-input-group">
-                                <label>Status</label>
-                                <select id="isActive" class="premium-select"><option value="1">Aktif</option><option value="0">Non-aktif</option></select>
-                            </div>
+                            
+                            <label class="checkbox-group">
+                                <input type="checkbox" id="isSso"> Jadikan LEGS sebagai Gerbang Login (SSO)
+                            </label>
+
                             <div id="modalAlert" class="alert hidden"></div>
-                            <button type="submit" id="saveAppBtn" class="btn-glow login-btn">Simpan Data</button>
+                            <button type="submit" id="saveAppBtn" class="btn-glow">Simpan Data</button>
                         </form>
                     </div>
                 </div>
@@ -2928,52 +2635,82 @@ const AdminAppPage = {
         `;
     },
     afterRender: async () => {
-        // Navigasi Tab
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                window.history.pushState({}, "", e.target.getAttribute('data-path'));
-                window.dispatchEvent(new Event('popstate'));
-            });
-        });
-
+        document.querySelectorAll('.nav-tab').forEach(t => t.addEventListener('click', (e) => {
+            window.history.pushState({}, "", e.target.getAttribute('data-path')); window.dispatchEvent(new Event('popstate'));
+        }));
         document.getElementById('logoutBtn').addEventListener('click', () => {
-            Dialog.confirm('Akhiri Sesi', 'Yakin ingin keluar dari portal?', () => {
-                localStorage.removeItem('jwt_token'); localStorage.removeItem('user_data');
+            Dialog.confirm('Akhiri Sesi', 'Yakin ingin keluar dari portal?', async () => {
+                await ApiService.post('/auth/logout', {}); localStorage.removeItem('user_data');
                 window.history.pushState({}, "", "/login"); window.dispatchEvent(new Event('popstate'));
             });
         });
 
-        const modal = document.getElementById('appModal');
-        const loadTable = async () => {
-            const tbody = document.getElementById('tableBody');
-            try {
-                const res = await ApiService.get('/applications/all');
-                tbody.innerHTML = res.data.map(app => `
-                    <tr>
-                        <td style="font-weight:700; color:var(--ut-deep-blue);">${app.app_name}</td>
-                        <td style="color:#64748b;">${app.target_url}</td>
-                        <td><span class="status-badge ${app.is_active ? 'active' : 'inactive'}">${app.is_active ? 'Aktif' : 'Non-aktif'}</span></td>
-                        <td style="text-align:right;">
-                            <button class="btn-action edit-btn" data-app='${JSON.stringify(app)}'>Edit</button>
-                            <button class="btn-action delete-btn" data-id="${app.id}">Hapus</button>
-                        </td>
-                    </tr>`).join('');
+        let allData = []; let filteredData = []; let currentPage = 1; const rowsPerPage = 5; let sortCol = ''; let sortAsc = true;
 
-                document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', (e) => openModal(JSON.parse(e.target.getAttribute('data-app')))));
-                document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', (e) => {
-                    Dialog.confirm('Hapus Aplikasi', 'Aplikasi ini akan dihapus permanen. Lanjutkan?', async () => {
-                        await ApiService.delete(`/applications/${e.target.getAttribute('data-id')}`); loadTable();
-                    });
-                }));
-            } catch (err) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:red;">${err.message}</td></tr>`; }
+        const renderTable = () => {
+            const tbody = document.getElementById('tableBody');
+            const start = (currentPage - 1) * rowsPerPage; const end = start + rowsPerPage;
+            const paginatedData = filteredData.slice(start, end);
+
+            document.getElementById('pageInfo').textContent = `Menampilkan ${start + 1}-${Math.min(end, filteredData.length)} dari ${filteredData.length} data`;
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = end >= filteredData.length;
+
+            if(paginatedData.length === 0) return tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Data tidak ditemukan.</td></tr>`;
+
+            tbody.innerHTML = paginatedData.map((app, index) => `
+                <tr>
+                    <td>${start + index + 1}</td>
+                    <td style="font-weight:700; color:var(--ut-deep-blue);">${app.app_name} <br><span class="status-badge ${app.is_active ? 'active' : 'inactive'}" style="font-size:10px; padding:2px 6px;">${app.is_active ? 'Aktif' : 'Non-aktif'}</span> ${app.is_login_from_legs ? '🛡️' : ''}</td>
+                    <td>${app.category || 'Web App'}</td>
+                    <td style="color:#64748b;">${app.target_url}</td>
+                    <td style="text-align:center;">
+                        <button class="btn-action-icon edit-btn" data-app='${JSON.stringify(app)}' title="Edit">
+                            <svg pointer-events="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </button>
+                        <button class="btn-action-icon delete-btn" data-id="${app.id}" title="Hapus">
+                            <svg pointer-events="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                        </button>
+                    </td>
+                </tr>`).join('');
+
+            document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', (e) => openModal(JSON.parse(e.currentTarget.getAttribute('data-app')))));
+            document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', (e) => {
+                Dialog.confirm('Hapus Aplikasi', 'Aplikasi ini akan diarsipkan (Soft Delete). Lanjutkan?', async () => {
+                    await ApiService.post(`/applications/${e.currentTarget.getAttribute('data-id')}/delete`); loadTableData();
+                });
+            }));
         };
 
+        const loadTableData = async () => {
+            try {
+                const res = await ApiService.get('/applications/all');
+                allData = res.data; filteredData = [...allData]; renderTable();
+            } catch (err) { document.getElementById('tableBody').innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">${err.message}</td></tr>`; }
+        };
+
+        document.getElementById('dtSearch').addEventListener('input', (e) => {
+            const kw = e.target.value.toLowerCase();
+            filteredData = allData.filter(a => a.app_name.toLowerCase().includes(kw) || a.target_url.toLowerCase().includes(kw));
+            currentPage = 1; renderTable();
+        });
+        document.getElementById('prevPage').addEventListener('click', () => { if(currentPage > 1) { currentPage--; renderTable(); } });
+        document.getElementById('nextPage').addEventListener('click', () => { if(currentPage * rowsPerPage < filteredData.length) { currentPage++; renderTable(); } });
+        document.querySelectorAll('th[data-sort]').forEach(th => th.addEventListener('click', (e) => {
+            const col = e.target.getAttribute('data-sort');
+            sortAsc = sortCol === col ? !sortAsc : true; sortCol = col;
+            filteredData.sort((a,b) => (a[col] > b[col] ? 1 : -1) * (sortAsc ? 1 : -1)); renderTable();
+        }));
+
+        const modal = document.getElementById('appModal');
         const openModal = (app = null) => {
             document.getElementById('modalAlert').className = 'alert hidden';
             if(app) {
                 document.getElementById('appId').value = app.id; document.getElementById('appName').value = app.app_name;
+                document.getElementById('appCategory').value = app.category || 'Web App';
                 document.getElementById('targetUrl').value = app.target_url; document.getElementById('description').value = app.description || '';
                 document.getElementById('isActive').value = app.is_active;
+                document.getElementById('isSso').checked = app.is_login_from_legs ? true : false;
             } else { document.getElementById('appForm').reset(); document.getElementById('appId').value = ''; }
             modal.classList.remove('hidden');
         };
@@ -2982,14 +2719,19 @@ const AdminAppPage = {
         document.getElementById('closeModalBtn').addEventListener('click', () => modal.classList.add('hidden'));
         document.getElementById('appForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const payload = { app_name: document.getElementById('appName').value, target_url: document.getElementById('targetUrl').value, description: document.getElementById('description').value, is_active: parseInt(document.getElementById('isActive').value) };
+            const payload = { 
+                app_name: document.getElementById('appName').value, category: document.getElementById('appCategory').value,
+                target_url: document.getElementById('targetUrl').value, description: document.getElementById('description').value, 
+                is_active: parseInt(document.getElementById('isActive').value), is_login_from_legs: document.getElementById('isSso').checked 
+            };
             try {
                 const id = document.getElementById('appId').value;
-                if (id) await ApiService.put(`/applications/${id}`, payload); else await ApiService.post('/applications', payload);
-                modal.classList.add('hidden'); loadTable(); 
+                if (id) await ApiService.post(`/applications/${id}/update`, payload); else await ApiService.post('/applications', payload);
+                modal.classList.add('hidden'); loadTableData(); 
             } catch (err) { const alert = document.getElementById('modalAlert'); alert.textContent = err.message; alert.className = 'alert error'; }
         });
-        loadTable();
+        
+        loadTableData();
     }
 };
 export default AdminAppPage;
@@ -3009,11 +2751,11 @@ const AdminUserPage = {
         return `
             <div class="app-unified-wrapper">
                 <div class="glow-orb orb-primary"></div><div class="glow-orb orb-accent"></div>
-                <div class="dashboard-panel premium-light-card">
+                <div class="dashboard-panel">
                     <nav class="dashboard-nav">
                         <div class="nav-brand">
-                            <div class="logo-placeholder-small"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg></div>
-                            <span class="brand-text-dark">LEGS Panel</span>
+                            <div class="logo-placeholder-small"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg></div>
+                            <span class="brand-text-dark">LEGS</span>
                         </div>
                         <div class="nav-menu-center">
                             <button class="nav-tab" data-path="/">Portal Utama</button>
@@ -3021,39 +2763,49 @@ const AdminUserPage = {
                             <button class="nav-tab active" data-path="/admin/users">Pengguna</button>
                         </div>
                         <div class="user-controls">
-                            <span class="greeting-text">Halo, <strong>${userData.username}</strong></span>
-                            <button id="logoutBtn" class="btn-logout-premium" style="margin-left:10px;">Akhiri Sesi</button>
+                            <span class="greeting-text">Admin: <strong>${userData.username}</strong></span>
+                            <button id="logoutBtn" class="btn-logout-icon" title="Akhiri Sesi"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg></button>
                         </div>
                     </nav>
                     <main class="dashboard-content">
-                        <header class="content-header" style="display:flex; justify-content:space-between; align-items:center;">
+                        <header class="content-header">
                             <div><h1 class="content-title">Manajemen Pengguna</h1><p class="content-subtitle">Atur hak akses staf untuk portal LEGS.</p></div>
-                            <button id="openUserModalBtn" class="btn-glow login-btn" style="width:auto; padding:12px 24px; margin-top:0;">+ Akun Baru</button>
+                            <button id="openUserModalBtn" class="btn-glow" style="width:auto; padding:12px 24px; margin-top:0;">+ Akun Baru</button>
                         </header>
+                        
                         <div class="table-container">
+                            <div class="table-controls">
+                                <input type="text" id="dtSearch" class="premium-search" placeholder="Cari username..." style="width:250px;">
+                            </div>
                             <table class="premium-table">
-                                <thead><tr><th>Username</th><th>Role</th><th>Status</th><th style="text-align:right;">Aksi</th></tr></thead>
-                                <tbody id="userTableBody"><tr><td colspan="4" style="text-align:center;">Memuat data...</td></tr></tbody>
+                                <thead><tr><th style="width: 50px;">No</th><th data-sort="username">Username ↕</th><th data-sort="role">Role ↕</th><th>Status</th><th style="text-align:center;">Aksi</th></tr></thead>
+                                <tbody id="userTableBody"><tr><td colspan="5" style="text-align:center;">Memuat data...</td></tr></tbody>
                             </table>
+                            <div class="pagination">
+                                <span class="page-info" id="pageInfo">Menampilkan 0 data</span>
+                                <button class="page-btn" id="prevPage" title="Sebelumnya"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+                                <button class="page-btn" id="nextPage" title="Selanjutnya"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+                            </div>
                         </div>
                     </main>
                 </div>
 
                 <div id="userModal" class="modal-overlay hidden">
-                    <div class="modal-card premium-light-card" style="max-width: 450px; padding: 35px;">
+                    <div class="modal-card">
                         <div class="modal-header" style="margin-bottom: 25px; display:flex; justify-content:space-between;">
-                            <h2 class="content-title" style="font-size: 22px;">Buat Akun Staf</h2>
+                            <h2 id="modalUserTitle" class="content-title" style="font-size: 22px;">Buat Akun Staf</h2>
                             <button id="closeUserModalBtn" class="btn-icon" style="position:static;">✖</button>
                         </div>
                         <form id="userForm" class="login-form">
+                            <input type="hidden" id="userId" value="">
                             <div class="form-group neuromorphic-input-group"><label>Username</label><input type="text" id="newUsername" required autocomplete="off"></div>
-                            <div class="form-group neuromorphic-input-group"><label>Password</label><input type="password" id="newPassword" required></div>
-                            <div class="form-group neuromorphic-input-group">
-                                <label>Hak Akses (Role)</label>
-                                <select id="newRole" class="premium-select"><option value="user">User Biasa</option><option value="admin">Administrator</option></select>
+                            <div class="form-group neuromorphic-input-group" id="passGroup"><label>Password</label><input type="password" id="newPassword" required></div>
+                            <div style="display:flex; gap:15px; margin-bottom:22px;">
+                                <div style="flex:1;"><label style="font-size:13px; color:var(--ut-deep-blue); font-weight:700; margin-bottom:8px; display:block;">Hak Akses</label><select id="newRole" class="premium-select"><option value="user">User Biasa</option><option value="admin">Administrator</option></select></div>
+                                <div style="flex:1;" id="statusGroup"><label style="font-size:13px; color:var(--ut-deep-blue); font-weight:700; margin-bottom:8px; display:block;">Status</label><select id="newStatus" class="premium-select"><option value="1">Aktif</option><option value="0">Diblokir</option></select></div>
                             </div>
                             <div id="userModalAlert" class="alert hidden"></div>
-                            <button type="submit" id="saveUserBtn" class="btn-glow login-btn">Buat Akun</button>
+                            <button type="submit" id="saveUserBtn" class="btn-glow">Simpan Akun</button>
                         </form>
                     </div>
                 </div>
@@ -3061,71 +2813,112 @@ const AdminUserPage = {
         `;
     },
     afterRender: async () => {
-        // Navigasi Tab
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                window.history.pushState({}, "", e.target.getAttribute('data-path'));
-                window.dispatchEvent(new Event('popstate'));
-            });
-        });
-
+        document.querySelectorAll('.nav-tab').forEach(t => t.addEventListener('click', (e) => {
+            window.history.pushState({}, "", e.target.getAttribute('data-path')); window.dispatchEvent(new Event('popstate'));
+        }));
         document.getElementById('logoutBtn').addEventListener('click', () => {
-            Dialog.confirm('Akhiri Sesi', 'Yakin ingin keluar dari portal?', () => {
-                localStorage.removeItem('jwt_token'); localStorage.removeItem('user_data');
+            Dialog.confirm('Akhiri Sesi', 'Yakin ingin keluar dari portal?', async () => {
+                await ApiService.post('/auth/logout', {}); localStorage.removeItem('user_data');
                 window.history.pushState({}, "", "/login"); window.dispatchEvent(new Event('popstate'));
             });
         });
 
-        const loadTable = async () => {
+        let allData = []; let filteredData = []; let currentPage = 1; const rowsPerPage = 5; let sortCol = ''; let sortAsc = true;
+
+        const renderTable = () => {
             const tbody = document.getElementById('userTableBody');
-            try {
-                const res = await ApiService.get('/users');
-                tbody.innerHTML = res.data.map(user => `
-                    <tr>
-                        <td style="font-weight:700; color:var(--ut-deep-blue);">${user.username}</td>
-                        <td style="text-transform: capitalize; color:#64748b;">${user.role}</td>
-                        <td><span class="status-badge ${user.is_active ? 'active' : 'inactive'}">${user.is_active ? 'Aktif' : 'Terblokir'}</span></td>
-                        <td style="text-align:right;">
-                            <button class="btn-action reset-btn" data-id="${user.id}" style="color:var(--ut-gold);">Reset Sandi</button>
-                            <button class="btn-action delete-btn" data-id="${user.id}" data-name="${user.username}">Hapus</button>
-                        </td>
-                    </tr>`).join('');
+            const start = (currentPage - 1) * rowsPerPage; const end = start + rowsPerPage;
+            const paginatedData = filteredData.slice(start, end);
 
-                // Action: Reset Password
-                document.querySelectorAll('.reset-btn').forEach(btn => btn.addEventListener('click', (e) => {
-                    Dialog.confirm('Reset Kata Sandi', 'Sandi staf ini akan direset menjadi "UTLibrary2026!". Lanjutkan?', async () => {
-                        try {
-                            const res = await ApiService.put(`/users/${e.target.getAttribute('data-id')}/reset-password`);
-                            Dialog.alert('Berhasil', res.message);
-                        } catch (err) { Dialog.alert('Error', err.message); }
-                    });
-                }));
+            document.getElementById('pageInfo').textContent = `Menampilkan ${start + 1}-${Math.min(end, filteredData.length)} dari ${filteredData.length} data`;
+            document.getElementById('prevPage').disabled = currentPage === 1; document.getElementById('nextPage').disabled = end >= filteredData.length;
 
-                // Action: Delete User
-                document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', (e) => {
-                    const name = e.target.getAttribute('data-name');
-                    if(name === JSON.parse(localStorage.getItem('user_data')).username) return Dialog.alert('Ditolak', 'Anda tidak bisa menghapus akun Anda sendiri saat sedang login.');
-                    
-                    Dialog.confirm('Hapus Akun', `Akun staf "${name}" akan dihapus permanen. Lanjutkan?`, async () => {
-                        try { await ApiService.delete(`/users/${e.target.getAttribute('data-id')}`); loadTable(); } 
-                        catch (err) { Dialog.alert('Error', err.message); }
-                    });
-                }));
-            } catch (err) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:red;">${err.message}</td></tr>`; }
+            if(paginatedData.length === 0) return tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Data tidak ditemukan.</td></tr>`;
+
+            tbody.innerHTML = paginatedData.map((user, idx) => `
+                <tr>
+                    <td>${start + idx + 1}</td>
+                    <td style="font-weight:700; color:var(--ut-deep-blue);">${user.username}</td>
+                    <td style="text-transform: capitalize; color:#64748b;">${user.role}</td>
+                    <td><span class="status-badge ${user.is_active ? 'active' : 'inactive'}">${user.is_active ? 'Aktif' : 'Terblokir'}</span></td>
+                    <td style="text-align:center;">
+                        <button class="btn-action-icon edit-btn" data-user='${JSON.stringify(user)}' title="Edit User"><svg pointer-events="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></button>
+                        <button class="btn-action-icon reset-btn" data-id="${user.id}" title="Reset Sandi"><svg pointer-events="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg></button>
+                        <button class="btn-action-icon delete-btn" data-id="${user.id}" data-name="${user.username}" title="Hapus"><svg pointer-events="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
+                    </td>
+                </tr>`).join('');
+
+            document.querySelectorAll('.edit-btn').forEach(btn => btn.addEventListener('click', (e) => openModal(JSON.parse(e.currentTarget.getAttribute('data-user')))));
+            document.querySelectorAll('.reset-btn').forEach(btn => btn.addEventListener('click', (e) => {
+                Dialog.confirm('Reset Kata Sandi', 'Sandi staf ini akan direset menjadi "UTLibrary2026!". Lanjutkan?', async () => {
+                    try { const res = await ApiService.post(`/users/${e.currentTarget.getAttribute('data-id')}/reset-password`); Dialog.alert('Berhasil', res.message); } catch (err) { Dialog.alert('Error', err.message); }
+                });
+            }));
+            document.querySelectorAll('.delete-btn').forEach(btn => btn.addEventListener('click', (e) => {
+                const name = e.currentTarget.getAttribute('data-name');
+                if(name === JSON.parse(localStorage.getItem('user_data')).username) return Dialog.alert('Ditolak', 'Tidak bisa menghapus akun sendiri.');
+                Dialog.confirm('Arsipkan Akun', `Akun staf "${name}" akan diarsipkan (Soft Delete). Lanjutkan?`, async () => {
+                    await ApiService.post(`/users/${e.currentTarget.getAttribute('data-id')}/delete`); loadTableData();
+                });
+            }));
         };
 
+        const loadTableData = async () => {
+            try { const res = await ApiService.get('/users'); allData = res.data; filteredData = [...allData]; renderTable(); } 
+            catch (err) { document.getElementById('userTableBody').innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">${err.message}</td></tr>`; }
+        };
+
+        document.getElementById('dtSearch').addEventListener('input', (e) => {
+            const kw = e.target.value.toLowerCase(); filteredData = allData.filter(u => u.username.toLowerCase().includes(kw));
+            currentPage = 1; renderTable();
+        });
+        document.getElementById('prevPage').addEventListener('click', () => { if(currentPage > 1) { currentPage--; renderTable(); } });
+        document.getElementById('nextPage').addEventListener('click', () => { if(currentPage * rowsPerPage < filteredData.length) { currentPage++; renderTable(); } });
+        document.querySelectorAll('th[data-sort]').forEach(th => th.addEventListener('click', (e) => {
+            const col = e.target.getAttribute('data-sort'); sortAsc = sortCol === col ? !sortAsc : true; sortCol = col;
+            filteredData.sort((a,b) => (a[col] > b[col] ? 1 : -1) * (sortAsc ? 1 : -1)); renderTable();
+        }));
+
         const modal = document.getElementById('userModal');
-        document.getElementById('openUserModalBtn').addEventListener('click', () => { document.getElementById('userForm').reset(); modal.classList.remove('hidden'); });
+        const openModal = (user = null) => {
+            document.getElementById('userModalAlert').className = 'alert hidden';
+            const passGrp = document.getElementById('passGroup'); const statGrp = document.getElementById('statusGroup');
+            if(user) {
+                document.getElementById('modalUserTitle').textContent = 'Edit Akses Pengguna';
+                document.getElementById('userId').value = user.id;
+                document.getElementById('newUsername').value = user.username;
+                document.getElementById('newUsername').disabled = true; // Kunci Username
+                document.getElementById('newRole').value = user.role;
+                document.getElementById('newStatus').value = user.is_active;
+                document.getElementById('newPassword').required = false;
+                passGrp.style.display = 'none'; statGrp.style.display = 'block';
+            } else {
+                document.getElementById('modalUserTitle').textContent = 'Buat Akun Staf';
+                document.getElementById('userForm').reset();
+                document.getElementById('userId').value = '';
+                document.getElementById('newUsername').disabled = false;
+                document.getElementById('newPassword').required = true;
+                passGrp.style.display = 'flex'; statGrp.style.display = 'none';
+            }
+            modal.classList.remove('hidden');
+        };
+
+        document.getElementById('openUserModalBtn').addEventListener('click', () => openModal());
         document.getElementById('closeUserModalBtn').addEventListener('click', () => modal.classList.add('hidden'));
 
         document.getElementById('userForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const id = document.getElementById('userId').value;
             try {
-                await ApiService.post('/users', { username: document.getElementById('newUsername').value, password: document.getElementById('newPassword').value, role: document.getElementById('newRole').value });
-                modal.classList.add('hidden'); loadTable(); Dialog.alert('Berhasil', 'Akun staf baru telah dibuat.');
+                if(id) {
+                    await ApiService.post(`/users/${id}/update`, { role: document.getElementById('newRole').value, is_active: parseInt(document.getElementById('newStatus').value) });
+                } else {
+                    await ApiService.post('/users', { username: document.getElementById('newUsername').value, password: document.getElementById('newPassword').value, role: document.getElementById('newRole').value });
+                }
+                modal.classList.add('hidden'); loadTableData(); 
             } catch (err) { const alert = document.getElementById('userModalAlert'); alert.textContent = err.message; alert.className = 'alert error'; }
         });
-        loadTable();
+        loadTableData();
     }
 };
 export default AdminUserPage;
@@ -3140,37 +2933,48 @@ import { Dialog } from '../utils/dialog.js';
 const LandingPage = {
     render: async () => {
         const userData = JSON.parse(localStorage.getItem('user_data') || '{}');
-        
-        // Menu Tengah yang Estetik (Hanya untuk Admin)
         const adminNavHTML = userData.role === 'admin' ? `
             <div class="nav-menu-center">
                 <button class="nav-tab active" data-path="/">Portal Utama</button>
                 <button class="nav-tab" data-path="/admin/apps">Aplikasi</button>
                 <button class="nav-tab" data-path="/admin/users">Pengguna</button>
-            </div>
-        ` : '';
+            </div>` : '';
 
         return `
             <div class="app-unified-wrapper">
                 <div class="glow-orb orb-primary"></div><div class="glow-orb orb-accent"></div>
-                <div class="dashboard-panel premium-light-card">
+                <div class="dashboard-panel">
                     <nav class="dashboard-nav">
                         <div class="nav-brand">
-                            <div class="logo-placeholder-small"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg></div>
+                            <div class="logo-placeholder-small">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
+                            </div>
                             <span class="brand-text-dark">LEGS</span>
                         </div>
                         ${adminNavHTML}
                         <div class="user-controls">
                             <span class="greeting-text">Halo, <strong>${userData.username || 'Staf'}</strong></span>
-                            <button id="logoutBtn" class="btn-logout-premium" style="margin-left: 10px;">Akhiri Sesi</button>
+                            <button id="logoutBtn" class="btn-logout-icon" title="Akhiri Sesi">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                            </button>
                         </div>
                     </nav>
                     <main class="dashboard-content">
                         <header class="content-header">
-                            <h1 class="content-title">Library Engine Generate System</h1>
-                            <p class="content-subtitle">Pilih modul atau engine yang ingin Anda akses hari ini.</p>
+                            <div>
+                                <h1 class="content-title">Library Engine Generate System</h1>
+                                <p class="content-subtitle">Portal gerbang tunggal yang aman untuk mengakses seluruh ekosistem aplikasi, modul, dan sistem otomasi perpustakaan secara terintegrasi (SSO).</p>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 15px; align-items: flex-end;">
+                                <input type="text" id="searchPortal" class="premium-search" placeholder="Cari nama aplikasi..." autocomplete="off">
+                                <div class="filter-group" id="categoryFilter">
+                                    <button class="btn-filter active" data-filter="All">Semua</button>
+                                    <button class="btn-filter" data-filter="Web App">Web App</button>
+                                    <button class="btn-filter" data-filter="Engine">Engine</button>
+                                </div>
+                            </div>
                         </header>
-                        <div id="appGrid" class="app-grid"><div class="loading-state"><span class="spinner-dark"></span> Memuat engine...</div></div>
+                        <div id="appGrid" class="app-grid"><div class="loading-state"><span class="spinner-dark"></span> Memuat aplikasi...</div></div>
                     </main>
                 </div>
             </div>
@@ -3178,31 +2982,74 @@ const LandingPage = {
     },
 
     afterRender: async () => {
-        // Logika Navigasi Tab
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                const path = e.target.getAttribute('data-path');
-                window.history.pushState({}, "", path);
-                window.dispatchEvent(new Event('popstate'));
-            });
-        });
+        let allApps = [];
+        let currentFilter = 'All';
+        let currentSearch = '';
+
+        document.querySelectorAll('.nav-tab').forEach(t => t.addEventListener('click', (e) => {
+            window.history.pushState({}, "", e.target.getAttribute('data-path')); window.dispatchEvent(new Event('popstate'));
+        }));
 
         document.getElementById('logoutBtn').addEventListener('click', () => {
-            Dialog.confirm('Akhiri Sesi', 'Apakah Anda yakin ingin keluar dari portal?', () => {
-                localStorage.removeItem('jwt_token'); localStorage.removeItem('user_data');
+            Dialog.confirm('Akhiri Sesi', 'Apakah Anda yakin ingin keluar dari portal?', async () => {
+                await ApiService.post('/auth/logout', {}); 
+                localStorage.removeItem('user_data');
                 window.history.pushState({}, "", "/login"); window.dispatchEvent(new Event('popstate'));
             });
         });
 
         const appGrid = document.getElementById('appGrid');
+        
+        const applyFilters = () => {
+            let filtered = allApps;
+            if (currentFilter !== 'All') {
+                filtered = filtered.filter(a => a.category === currentFilter);
+            }
+            if (currentSearch !== '') {
+                filtered = filtered.filter(a => a.app_name.toLowerCase().includes(currentSearch) || (a.description && a.description.toLowerCase().includes(currentSearch)));
+            }
+            renderGrid(filtered);
+        };
+
+        const renderGrid = (data) => {
+            if (data.length === 0) return appGrid.innerHTML = `<div class="empty-state-premium"><h3>Aplikasi tidak ditemukan</h3></div>`;
+            appGrid.innerHTML = data.map(app => {
+                // [FIX BUG] Perbaikan posisi Badge dan Warna
+                const catClass = app.category === 'Engine' ? 'badge-engine' : 'badge-webapp';
+                return `
+                <a href="${app.target_url}" target="_blank" class="app-card-premium">
+                    <div>
+                        <div class="badge-container">
+                            ${app.is_login_from_legs ? `<div class="app-sso-badge"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> SSO</div>` : ''}
+                            <span class="app-category-badge ${catClass}">${app.category || 'Web App'}</span>
+                        </div>
+                        <h2 class="app-card-title">${app.app_name}</h2>
+                        <p class="app-card-desc">${app.description || ''}</p>
+                    </div>
+                    <div class="app-card-footer"><span>Buka Aplikasi</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
+                </a>`;
+            }).join('');
+        };
+
+        document.getElementById('searchPortal').addEventListener('input', (e) => {
+            currentSearch = e.target.value.toLowerCase();
+            applyFilters();
+        });
+
+        // Filter Clicks
+        document.querySelectorAll('.btn-filter').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                currentFilter = e.target.getAttribute('data-filter');
+                applyFilters();
+            });
+        });
+
         try {
             const res = await ApiService.get('/applications');
-            if (res.data.length === 0) return appGrid.innerHTML = `<div class="empty-state-premium"><h3>Belum ada engine</h3></div>`;
-            appGrid.innerHTML = res.data.map(app => `
-                <a href="${app.target_url}" target="_blank" class="app-card-premium">
-                    <div class="app-card-body"><h2 class="app-card-title">${app.app_name}</h2><p class="app-card-desc">${app.description || ''}</p></div>
-                    <div class="app-card-footer"><span>Buka Modul</span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></div>
-                </a>`).join('');
+            allApps = res.data.sort((a, b) => a.app_name.localeCompare(b.app_name));
+            applyFilters();
         } catch (error) { appGrid.innerHTML = `<div class="alert error">${error.message}</div>`; }
     }
 };
@@ -3225,7 +3072,7 @@ const LoginPage = {
                     <div class="login-header">
                         <div class="brand-logo-container">
                             <div class="logo-placeholder">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="logo-icon"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
                             </div>
                         </div>
                         <h1 class="brand-title">LEGS</h1>
@@ -3243,7 +3090,7 @@ const LoginPage = {
                             <div class="password-wrapper">
                                 <input type="password" id="password" placeholder="Ketik sandi rahasia..." required />
                                 <button type="button" id="togglePassword" class="btn-icon" aria-label="Lihat Password">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                    <svg style="pointer-events: none;" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                 </button>
                             </div>
                         </div>
@@ -3251,7 +3098,7 @@ const LoginPage = {
                         <div id="loginAlert" class="alert hidden"></div>
                         
                         <button type="submit" id="loginBtn" class="btn-glow login-btn">
-                            Buka Aplikasi Sekarang
+                            Masuk
                         </button>
                     </form>
                 </div>
@@ -3267,11 +3114,12 @@ const LoginPage = {
         const passwordInput = document.getElementById('password');
         const usernameInput = document.getElementById('username');
 
-        // Fitur Mata Visibilitas Password
-        togglePasswordBtn.addEventListener('click', () => {
+        // Fitur Mata Visibilitas Password (Smooth Fix)
+        togglePasswordBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
-            togglePasswordBtn.style.color = type === 'text' ? 'var(--ut-deep-blue)' : 'var(--ut-gray)';
+            togglePasswordBtn.style.color = type === 'text' ? 'var(--ut-deep-blue)' : '#94a3b8';
         });
 
         // Submit Logic
@@ -3289,7 +3137,7 @@ const LoginPage = {
             try {
                 const response = await ApiService.post('/auth/login', { username, password });
                 
-                localStorage.setItem('jwt_token', response.data.token);
+                // [FIX BUG]: jwt_token tidak lagi di-set di sini, melainkan melalui HttpOnly Cookie dari Backend
                 localStorage.setItem('user_data', JSON.stringify(response.data.user));
 
                 loginAlert.textContent = 'Akses Diberikan. Selamat Bekerja!';
@@ -3329,42 +3177,28 @@ import { API_BASE_URL } from '../constants.js';
 class ApiService {
     static async request(endpoint, options = {}) {
         const url = `${API_BASE_URL}${endpoint}`;
-        const token = localStorage.getItem('jwt_token');
-        
-        const headers = { 
-            'Content-Type': 'application/json',
-            ...(token && { 'Authorization': `Bearer ${token}` }),
-            ...options.headers 
-        };
+        const headers = { 'Content-Type': 'application/json', ...options.headers };
 
         try {
-            const response = await fetch(url, { ...options, headers });
+            const response = await fetch(url, { ...options, headers, credentials: 'include' });
             const responseData = await response.json();
 
             if (response.status === 401 || response.status === 403) {
-                if(response.status === 401) {
-                    localStorage.removeItem('jwt_token');
+                if(response.status === 401 && !endpoint.includes('/auth/login')) {
                     localStorage.removeItem('user_data');
                     window.location.href = '/login';
                 }
                 throw new Error(responseData.message || 'Akses ditolak.');
             }
 
-            if (!response.ok) {
-                throw new Error(responseData.message || 'Terjadi kesalahan pada server');
-            }
+            if (!response.ok) throw new Error(responseData.message || 'Terjadi kesalahan pada server');
             return responseData;
-        } catch (error) {
-            throw error; 
-        }
+        } catch (error) { throw error; }
     }
 
     static get(endpoint) { return this.request(endpoint, { method: 'GET' }); }
     static post(endpoint, data) { return this.request(endpoint, { method: 'POST', body: JSON.stringify(data) }); }
-    static put(endpoint, data) { return this.request(endpoint, { method: 'PUT', body: JSON.stringify(data) }); }
-    static delete(endpoint) { return this.request(endpoint, { method: 'DELETE' }); }
 }
-
 export default ApiService;
 
 ================================================================================
@@ -3387,14 +3221,14 @@ export const Dialog = {
             overlay = document.createElement('div');
             overlay.id = 'legs-dialog-overlay';
             overlay.className = 'modal-overlay hidden';
-            overlay.style.zIndex = '9999'; // Pastikan paling atas
+            overlay.style.zIndex = '9999'; 
             overlay.innerHTML = `
-                <div class="modal-card premium-light-card" style="max-width: 400px; padding: 35px; text-align: center;">
+                <div class="modal-card" style="max-width: 400px; padding: 35px; text-align: center;">
                     <h3 id="legs-dialog-title" class="content-title" style="font-size: 22px; margin-bottom: 12px;"></h3>
                     <p id="legs-dialog-message" style="color: #475569; margin-bottom: 28px; font-size: 14.5px; line-height: 1.6;"></p>
                     <div style="display: flex; gap: 16px; justify-content: center;">
-                        <button id="legs-dialog-cancel" class="btn-logout-premium" style="display: none; padding: 12px 24px;">Batal</button>
-                        <button id="legs-dialog-confirm" class="btn-glow login-btn" style="margin-top: 0; padding: 12px 24px; width: auto;">OK</button>
+                        <button id="legs-dialog-cancel" class="btn-cancel" style="display: none;">Batal</button>
+                        <button id="legs-dialog-confirm" class="btn-glow" style="margin-top: 0; padding: 12px 24px; width: auto;">OK</button>
                     </div>
                 </div>
             `;

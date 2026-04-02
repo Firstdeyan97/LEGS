@@ -1,47 +1,41 @@
 const pool = require('../db/connection');
 
 class Application {
-    // Dipakai di Landing Page (Hanya yang aktif)
     static async findAllActive() {
         const [rows] = await pool.execute(
-            'SELECT id, app_name, description, target_url FROM legs_applications WHERE is_active = 1 ORDER BY app_name ASC'
+            'SELECT * FROM legs_applications WHERE is_active = 1 ORDER BY app_name ASC'
         );
         return rows;
     }
 
-    // Dipakai di Tabel Admin (Tampilkan semua, termasuk yang non-aktif)
     static async findAll() {
         const [rows] = await pool.execute(
-            'SELECT * FROM legs_applications ORDER BY created_at DESC'
+            'SELECT * FROM legs_applications WHERE is_active = 1 ORDER BY app_name ASC'
         );
         return rows;
     }
 
-    // Tambah Aplikasi Baru
     static async create(data) {
-        const { app_name, description, target_url, is_active } = data;
+        const { app_name, category, description, target_url, is_active, is_login_from_legs } = data;
         const [result] = await pool.execute(
-            'INSERT INTO legs_applications (app_name, description, target_url, is_active) VALUES (?, ?, ?, ?)',
-            [app_name, description || null, target_url, is_active !== undefined ? is_active : 1]
+            'INSERT INTO legs_applications (app_name, category, description, target_url, is_active, is_login_from_legs) VALUES (?, ?, ?, ?, ?, ?)',
+            [app_name, category || 'Web App', description || null, target_url, is_active !== undefined ? is_active : 1, is_login_from_legs ? 1 : 0]
         );
         return result.insertId;
     }
 
-    // Edit Aplikasi
     static async update(id, data) {
-        const { app_name, description, target_url, is_active } = data;
+        const { app_name, category, description, target_url, is_active, is_login_from_legs } = data;
         const [result] = await pool.execute(
-            'UPDATE legs_applications SET app_name = ?, description = ?, target_url = ?, is_active = ? WHERE id = ?',
-            [app_name, description || null, target_url, is_active, id]
+            'UPDATE legs_applications SET app_name = ?, category = ?, description = ?, target_url = ?, is_active = ?, is_login_from_legs = ? WHERE id = ?',
+            [app_name, category, description || null, target_url, is_active, is_login_from_legs ? 1 : 0, id]
         );
-        return result.affectedRows; // Mengembalikan 1 jika sukses
+        return result.affectedRows;
     }
 
-    // Hapus Aplikasi Permanen
     static async delete(id) {
-        const [result] = await pool.execute('DELETE FROM legs_applications WHERE id = ?', [id]);
+        const [result] = await pool.execute('UPDATE legs_applications SET is_active = 0 WHERE id = ?', [id]);
         return result.affectedRows;
     }
 }
-
 module.exports = Application;

@@ -11,7 +11,7 @@ const LoginPage = {
                     <div class="login-header">
                         <div class="brand-logo-container">
                             <div class="logo-placeholder">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo-icon"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="logo-icon"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path></svg>
                             </div>
                         </div>
                         <h1 class="brand-title">LEGS</h1>
@@ -29,7 +29,7 @@ const LoginPage = {
                             <div class="password-wrapper">
                                 <input type="password" id="password" placeholder="Ketik sandi rahasia..." required />
                                 <button type="button" id="togglePassword" class="btn-icon" aria-label="Lihat Password">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                    <svg style="pointer-events: none;" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                 </button>
                             </div>
                         </div>
@@ -37,7 +37,7 @@ const LoginPage = {
                         <div id="loginAlert" class="alert hidden"></div>
                         
                         <button type="submit" id="loginBtn" class="btn-glow login-btn">
-                            Buka Aplikasi Sekarang
+                            Masuk
                         </button>
                     </form>
                 </div>
@@ -53,11 +53,12 @@ const LoginPage = {
         const passwordInput = document.getElementById('password');
         const usernameInput = document.getElementById('username');
 
-        // Fitur Mata Visibilitas Password
-        togglePasswordBtn.addEventListener('click', () => {
+        // Fitur Mata Visibilitas Password (Smooth Fix)
+        togglePasswordBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
-            togglePasswordBtn.style.color = type === 'text' ? 'var(--ut-deep-blue)' : 'var(--ut-gray)';
+            togglePasswordBtn.style.color = type === 'text' ? 'var(--ut-deep-blue)' : '#94a3b8';
         });
 
         // Submit Logic
@@ -75,15 +76,21 @@ const LoginPage = {
             try {
                 const response = await ApiService.post('/auth/login', { username, password });
                 
-                localStorage.setItem('jwt_token', response.data.token);
                 localStorage.setItem('user_data', JSON.stringify(response.data.user));
 
                 loginAlert.textContent = 'Akses Diberikan. Selamat Bekerja!';
                 loginAlert.className = 'alert success';
                 
+                const urlParams = new URLSearchParams(window.location.search);
+                const redirectUrl = urlParams.get('redirect');
+
                 setTimeout(() => {
-                    window.history.pushState({}, "", "/");
-                    window.dispatchEvent(new Event('popstate'));
+                    if (redirectUrl) {
+                        window.location.href = redirectUrl;
+                    } else {
+                        window.history.pushState({}, "", "/");
+                        window.dispatchEvent(new Event('popstate'));
+                    }
                 }, 1000);
 
             } catch (error) {

@@ -6,9 +6,8 @@ class User {
         return rows[0]; 
     }
 
-    // [BARU] Ambil semua data user untuk Admin
     static async findAll() {
-        const [rows] = await pool.execute('SELECT id, id_pegawai, username, role, is_active, created_at FROM core_users ORDER BY created_at DESC');
+        const [rows] = await pool.execute('SELECT id, id_pegawai, username, role, is_active, created_at FROM core_users WHERE is_active = 1 ORDER BY created_at DESC');
         return rows;
     }
 
@@ -21,21 +20,18 @@ class User {
         return result.insertId;
     }
 
-    // [BARU] Ganti hak akses (Role) & Status
     static async updateStatusAndRole(id, role, is_active) {
         const [result] = await pool.execute('UPDATE core_users SET role = ?, is_active = ? WHERE id = ?', [role, is_active, id]);
         return result.affectedRows;
     }
 
-    // [BARU] Reset Password
     static async resetPassword(id, newHash) {
         const [result] = await pool.execute('UPDATE core_users SET password_hash = ? WHERE id = ?', [newHash, id]);
         return result.affectedRows;
     }
 
-    // [BARU] Hapus Permanen
     static async delete(id) {
-        const [result] = await pool.execute('DELETE FROM core_users WHERE id = ?', [id]);
+        const [result] = await pool.execute('UPDATE core_users SET is_active = 0 WHERE id = ?', [id]);
         return result.affectedRows;
     }
 }

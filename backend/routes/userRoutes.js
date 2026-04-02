@@ -4,13 +4,12 @@ const userController = require('../controllers/userController');
 const authenticate = require('../middlewares/authMiddleware');
 const requireRole = require('../middlewares/roleMiddleware');
 
-// Semua rute user murni KHUSUS ADMIN
 router.use(authenticate, requireRole('admin'));
 
 router.get('/', userController.getAllUsers);
 router.post('/', userController.createUser);
-router.put('/:id/role', userController.updateUserRole);
-router.put('/:id/reset-password', userController.resetPassword);
-router.delete('/:id', userController.deleteUser);
+router.post('/:id/update', userController.updateUserRole);
+router.post('/:id/reset-password', userController.resetPassword);
+router.post('/:id/delete', userController.deleteUser);
 
 module.exports = router;

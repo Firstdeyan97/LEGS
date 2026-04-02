@@ -39,3 +39,7 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+
+
+# 7. Folder Document
+docs/

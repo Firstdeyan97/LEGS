@@ -5,14 +5,14 @@ export const Dialog = {
             overlay = document.createElement('div');
             overlay.id = 'legs-dialog-overlay';
             overlay.className = 'modal-overlay hidden';
-            overlay.style.zIndex = '9999'; // Pastikan paling atas
+            overlay.style.zIndex = '9999'; 
             overlay.innerHTML = `
-                <div class="modal-card premium-light-card" style="max-width: 400px; padding: 35px; text-align: center;">
+                <div class="modal-card" style="max-width: 400px; padding: 35px; text-align: center;">
                     <h3 id="legs-dialog-title" class="content-title" style="font-size: 22px; margin-bottom: 12px;"></h3>
                     <p id="legs-dialog-message" style="color: #475569; margin-bottom: 28px; font-size: 14.5px; line-height: 1.6;"></p>
                     <div style="display: flex; gap: 16px; justify-content: center;">
-                        <button id="legs-dialog-cancel" class="btn-logout-premium" style="display: none; padding: 12px 24px;">Batal</button>
-                        <button id="legs-dialog-confirm" class="btn-glow login-btn" style="margin-top: 0; padding: 12px 24px; width: auto;">OK</button>
+                        <button id="legs-dialog-cancel" class="btn-cancel" style="display: none;">Batal</button>
+                        <button id="legs-dialog-confirm" class="btn-glow" style="margin-top: 0; padding: 12px 24px; width: auto;">OK</button>
                     </div>
                 </div>
             `;

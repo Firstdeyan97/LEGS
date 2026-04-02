@@ -4,21 +4,30 @@ const { success } = require('../utils/response');
 const login = async (req, res, next) => {
     try {
         const { username, password } = req.body;
-
-        // Validasi input kosong
         if (!username || !password) {
-            throw { statusCode: 400, message: 'Username dan password wajib diisi.' };
+            throw { statusCode: 400, message: 'Username dan kata sandi wajib diisi.' };
         }
 
-        // Eksekusi logika login di Service
         const data = await authService.login(username, password);
+        
+        res.cookie('jwt_token', data.token, {
+            httpOnly: true,  // Wajib True agar aman dari XSS
+            secure: false,   // Wajib False karena IP 172.30.14.94 tidak menggunakan HTTPS
+            sameSite: 'Lax', // Konfigurasi optimal untuk koneksi HTTP internal
+            maxAge: 8 * 60 * 60 * 1000 // 8 Jam
+        });
 
-        // Jika berhasil, kembalikan response sukses
-        return success(res, 'Login berhasil.', data);
-    } catch (error) {
-        // Jika gagal, lempar ke errorHandler global EXVAN
-        next(error);
-    }
+        return success(res, 'Login berhasil.', { user: data.user });
+    } catch (error) { next(error); }
 };
 
-module.exports = { login };
+const logout = (req, res) => {
+    res.clearCookie('jwt_token');
+    return success(res, 'Sesi berhasil diakhiri.');
+};
+
+const verifySession = (req, res) => {
+    return success(res, 'Sesi valid terverifikasi.', { user: req.user });
+};
+
+module.exports = { login, logout, verifySession };

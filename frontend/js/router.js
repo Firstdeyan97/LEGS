@@ -14,16 +14,12 @@ class Router {
         const currentPath = window.location.pathname;
         let route = this.routes.find(r => r.path === currentPath) || this.routes.find(r => r.path === '/404');
         
-        // --- LOGIKA SATPAM (ROUTE GUARD) ---
-        const isAuthenticated = !!localStorage.getItem('jwt_token');
+        const isAuthenticated = !!localStorage.getItem('user_data');
 
-        // Jika belum login tapi mencoba akses halaman selain login -> tendang ke /login
         if (!isAuthenticated && currentPath !== '/login') {
             this.navigate('/login');
             return;
         }
-
-        // Jika sudah login tapi mencoba buka halaman login -> tendang ke Dashboard (/)
         if (isAuthenticated && currentPath === '/login') {
             this.navigate('/');
             return;
